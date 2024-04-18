@@ -1,0 +1,14 @@
+프로젝트명 : gameshop
+엔티티명 : Game
+테이블명 : games
+RESTful API
+GET	/products	getAllGames
+GET	/products/{id}	getGameById
+PUT	/products/{id}	updateGameById
+Game의 필요설정
+id	long
+title	String	@Column(length=100)
+genre	String	@Column(length=100)
+price	int
+image	String	@Column(length=65535)
+text	String	@Column(length=65535)
