@@ -1,5 +1,6 @@
 package dw.firstapp.service;
 
+import dw.firstapp.exception.ResourceNotFoundException;
 import dw.firstapp.model.Employee;
 import dw.firstapp.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,8 @@ public class EmployeeService {
     public Employee getEmployeeById(Long id) { // 컨트롤러가 던져준 employee 정보
         Optional<Employee> employee = employeeRepository.findById(id); // 중요, 많이 사용
         if (employee.isEmpty()) {
-            // 예외처리
-            return null;
+            // 예외처리 case를 만듬
+            throw new ResourceNotFoundException("Employee","ID",id);
         }  else {
             return employee.get();
         }
@@ -67,7 +68,8 @@ public class EmployeeService {
             return employee1.get();
         }
         else {
-            return null;
+            // 예외처리
+            throw new ResourceNotFoundException("Employee", "ID", id);
         }
     }
 

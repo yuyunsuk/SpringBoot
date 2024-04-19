@@ -1,0 +1,7 @@
+구매 테이블
+Id => Autoincrement
+gameId(FK)
+userId(FK)
+purchaseTime
+
+@GeneratedValue(strategy = GenerationType.IDENTITY
