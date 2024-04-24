@@ -1,0 +1,198 @@
+@Entity
+@Table(name="부서")
+
+@Id
+@Column(name = "부서번호", length = 2, nullable = false)
+private String departId;
+
+@Column(name = "부서명", length = 20)
+private String departName;
+
+CREATE TABLE `부서` (
+  `부서번호` char(2) NOT NULL,
+  `부서명` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`부서번호`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+@Entity
+@Table(name="마일리지등급")
+
+@Id
+@Column(name = "등급명", length = 1, nullable = false)
+private String mileageGrade;
+
+@Column(name = "하한마일리지")
+private int lowLimit;
+
+@Column(name = "상한마일리지")
+private int highLimit;
+
+CREATE TABLE `마일리지등급` (
+  `등급명` char(1) NOT NULL,
+  `하한마일리지` int(11) DEFAULT NULL,
+  `상한마일리지` int(11) DEFAULT NULL,
+  PRIMARY KEY (`등급명`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+============================================
+
+@Entity
+@Table(name="사원")
+
+@Id
+@Column(name = "사원번호", length = 3, nullable = false)
+private String employeeId;
+
+@Column(name = "이름", length = 20)
+private String name;
+
+@Column(name = "영문이름", length = 20)
+private String englishName;
+
+@Column(name = "직위", length = 10)
+private String position;
+
+@Column(name = "성별", length = 2)
+private String gender;
+
+@Column(name = "생일")
+private LocalDateTime birthDate;
+
+@Column(name = "입사일")
+private LocalDateTime hireDate;
+
+@Column(name = "주소", length=50)
+private String address;
+
+@Column(name = "도시", length=20)
+private String city;
+
+@Column(name = "지역", length=20)
+private String area;
+
+@Column(name = "집전화", length=20)
+private String telephoneNo;
+
+@Column(name = "상사번호", length=3)
+private String managerId;
+
+@ManyToOne
+@JoinColumn(name = "부서번호")
+private Department department;
+
+CREATE TABLE `사원` (
+  `사원번호` char(3) NOT NULL,
+  `이름` varchar(20) DEFAULT NULL,
+  `영문이름` varchar(20) DEFAULT NULL,
+  `직위` varchar(10) DEFAULT NULL,
+  `성별` char(2) DEFAULT NULL,
+  `생일` date DEFAULT NULL,
+  `입사일` date DEFAULT NULL,
+  `주소` varchar(50) DEFAULT NULL,
+  `도시` varchar(20) DEFAULT NULL,
+  `지역` varchar(20) DEFAULT NULL,
+  `집전화` varchar(20) DEFAULT NULL,
+  `상사번호` char(3) DEFAULT NULL,
+  `부서번호` char(2) DEFAULT NULL,
+  PRIMARY KEY (`사원번호`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+@Entity
+@Table(name="제품")
+
+@Id
+@Column(name = "제품번호", nullable = false)
+private int productId;
+
+@Column(name = "제품명", length=50)
+private String productName;
+
+@Column(name = "포장단위", length=30)
+private String pkgUnit;
+
+@Column(name = "단가")
+private int unitPrice;
+
+@Column(name = "재고")
+private int inventory;
+
+
+
+CREATE TABLE `제품` (
+  `제품번호` int(11) NOT NULL,
+  `제품명` varchar(50) DEFAULT NULL,
+  `포장단위` varchar(30) DEFAULT NULL,
+  `단가` int(11) DEFAULT NULL,
+  `재고` int(11) DEFAULT NULL,
+  PRIMARY KEY (`제품번호`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+@Entity
+@Table(name="주문")
+
+@Id
+@Column(name = "주문번호", length=5, nullable = false)
+private String orderId;
+
+@ManyToOne
+@JoinColumn(name = "고객번호")
+private Customer customer;
+
+@ManyToOne
+@JoinColumn(name = "사원번호")
+private Employee employee;
+
+@Column(name = "주문일")
+private LocalDateTime orderDate;
+
+@Column(name = "요청일")
+private LocalDateTime requestDate;
+
+@Column(name = "발송일")
+private LocalDateTime shippingDate;
+
+CREATE TABLE `주문` (
+  `주문번호` char(5) NOT NULL,
+  `고객번호` char(5) DEFAULT NULL,
+  `사원번호` char(3) DEFAULT NULL,
+  `주문일` date DEFAULT NULL,
+  `요청일` date DEFAULT NULL,
+  `발송일` date DEFAULT NULL,
+  PRIMARY KEY (`주문번호`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+OrderDetail.java
+
+@Entity
+@Table(name="주문세부")
+
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+@Column(name="주문세부번호")
+private long orderDetailId;
+
+@ManyToOne
+@JoinColumn(name="주문번호")
+private Order order;
+
+@ManyToOne
+@JoinColumn(name="제품번호")
+private Product product;
+
+@Column(name="단가")
+private int unitPrice;
+
+@Column(name="주문수량")
+private int orderQuantity;
+
+@Column(name="할인율")
+private float discountRate;
+
+CREATE TABLE `주문세부` (
+  `주문번호` char(5) NOT NULL,
+  `제품번호` int(11) NOT NULL,
+  `단가` int(11) DEFAULT NULL,
+  `주문수량` int(11) DEFAULT NULL,
+  `할인율` float DEFAULT NULL,
+  PRIMARY KEY (`주문번호`,`제품번호`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

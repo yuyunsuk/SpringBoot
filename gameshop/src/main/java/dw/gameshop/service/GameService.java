@@ -5,13 +5,16 @@ import dw.gameshop.model.Game;
 import dw.gameshop.model.User;
 import dw.gameshop.repository.GameRepository;
 import dw.gameshop.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.sql.SQLData;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class GameService {
 
     GameRepository gameRepository;
@@ -58,5 +61,122 @@ public class GameService {
         return userRepository.save(user);
     }
 
+    // 제일 비싼 게임의 정보
+    public Game getInfoMostExpensiveGame() {
+        List<Game> gameList = gameRepository.findAll();
 
+//        int maxPrice = 0;
+//        int maxIndex = 0;
+//        int gamePrice = 0;
+//        for (int i=0; i<gameList.size(); i++) {
+//            gamePrice = gameList.get(i).getPrice();
+//            if (gamePrice > maxPrice) {
+//                maxPrice = gamePrice;
+//                maxIndex = i;
+//            }
+//        }
+//        return gameList.get(maxIndex);
+
+//        // 람다식이 아닌 일반 자바코드 사용 예 (선생님 코드)
+//        List<Game> games = gameRepository.findAll();
+//
+//        if (games.size() <= 0) {
+//            throw new ResourceNotFoundException("Max Price","GameService", " ");
+//        }
+//
+//        Game max = games.get(0);
+//        for (int i=0; i<games.size()-1; i++) {
+//            if (max.getPrice() < games.get(i+1).getPrice()) {
+//                max = games.get(i+1);
+//            }
+//        }
+//        return max;
+
+//        gameList.sort(Comparator.comparingInt(Game::getPrice).reversed());
+//        return gameList.getFirst();
+
+//        // 람다식 사용 예
+//        return gameList.stream().sorted(Comparator.comparingInt((Game g)->g.getPrice())
+//                        .reversed()).findFirst()
+//                .orElseThrow(()->new ResourceNotFoundException("Max Price","GameService", " "));
+
+//        // 람다식 사용 예
+//        return gameList.stream()
+//                .sorted(Comparator.comparingInt(Game::getPrice)
+//                .reversed())
+//                .findFirst()
+//                .orElseThrow(()->new ResourceNotFoundException("Max Price","GameService", " "));
+
+        // GameRepository 에 JPQL 사용
+        return gameRepository.getGameWithMaxPrice();
+
+    }
+
+    // 제일 비싼 게임 Top 3
+    public List<Game> getInfoTop3ExpensiveGame() {
+        List<Game> gameList = gameRepository.findAll();
+
+//        int firstIndex = 0;
+//        int secondIndex = 0;
+//        int thirdIndex = 0;
+//        int gamePrice = 0;
+//        int maxPrice;
+//
+//        maxPrice = 0;
+//        for (int i=0; i<gameList.size(); i++) {
+//            gamePrice = gameList.get(i).getPrice();
+//            if (gamePrice > maxPrice) {
+//                maxPrice = gamePrice;
+//                firstIndex = i;
+//            }
+//        }
+//
+//        maxPrice = 0;
+//        for (int i=0; i<gameList.size(); i++) {
+//            gamePrice = gameList.get(i).getPrice();
+//            if (i == firstIndex) continue;
+//            if (gamePrice > maxPrice) {
+//                maxPrice = gamePrice;
+//                secondIndex = i;
+//            }
+//        }
+//
+//        maxPrice = 0;
+//        for (int i=0; i<gameList.size(); i++) {
+//            gamePrice = gameList.get(i).getPrice();
+//            if (i == firstIndex || i == secondIndex) continue;
+//            if (gamePrice > maxPrice) {
+//                maxPrice = gamePrice;
+//                thirdIndex = i;
+//            }
+//        }
+//
+//        List<Game> newGameList = new ArrayList<>();
+//        newGameList.add(gameList.get(firstIndex));
+//        newGameList.add(gameList.get(secondIndex));
+//        newGameList.add(gameList.get(thirdIndex));
+//        return newGameList;
+
+//        // 선생님 코드
+//        List<Game> gameList = gameRepository.findAll();
+//        //gameList.sort(Comparator.comparingInt((Game g)->g.getPrice()).reversed()); // g는 변수
+//        gameList.sort(Comparator.comparingInt(Game::getPrice).reversed()); // g는 변수
+//
+//        List<Game> newGameList = new ArrayList<>();
+//        newGameList.add(gameList.get(0));
+//        newGameList.add(gameList.get(1));
+//        newGameList.add(gameList.get(2));
+//        return newGameList;
+
+//        // 람다식 표현
+//        return gameList.stream()
+//                .sorted(Comparator.comparingInt(Game::getPrice).reversed())
+//                .limit(3)
+//                .collect(Collectors.toList());
+
+        return gameRepository.getGameWithMaxPriceTop3()
+                .stream().limit(3)
+                .collect(Collectors.toList());
+
+    }
 }

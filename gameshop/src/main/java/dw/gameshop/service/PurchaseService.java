@@ -9,17 +9,26 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
 @Transactional
 public class PurchaseService {
-    @Autowired
+
     PurchaseRepository purchaseRepository;
-    @Autowired
     UserRepository userRepository;
 
-    public Purchase savePurchase(Purchase purchase) {
+    // @Autowired 생략
+    public PurchaseService(PurchaseRepository purchaseRepository, UserRepository userRepository) {
+        this.purchaseRepository = purchaseRepository;
+        this.userRepository = userRepository;
+    }
+
+    public Purchase savePurchase(Purchase purchase)
+    {
+        // 구매확정 바로 직전, 현재시간을 저장함
+        purchase.setPurchaseTime(LocalDateTime.now());
         return purchaseRepository.save(purchase);
     }
 
@@ -35,4 +44,16 @@ public class PurchaseService {
         }
         return purchaseRepository.findByUser(userOptional.get());
     }
+
+    // 유저 이름으로 구매한 게임 찾기
+    public List<Purchase> getPurchaseListByUserName(String userName) {
+        // 유저이름으로 유저객체 찾기
+        Optional<User> userNameOptional = userRepository.findByUserName(userName);
+        if (userNameOptional.isEmpty()) {
+            throw new ResourceNotFoundException("User", "Name", userName);
+        }
+
+        return purchaseRepository.findByUser(userNameOptional.get());
+    }
+
 }

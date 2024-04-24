@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -24,12 +26,15 @@ public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @ManyToOne // 게임 3개 구입시 하나당 구매 데이터 3개 생김
     @JoinColumn(name="game_id") // 한글 사용 가능
     private Game game; // 객체 변수에는 한글을 사용하지 말것
+
     @ManyToOne
     @JoinColumn(name="user_id") // 한글 사용 가능
     private User user; // 객체 변수에는 한글을 사용하지 말것
+
     @Column(name="purchase_time")
     private LocalDateTime purchaseTime;
 }

@@ -56,7 +56,7 @@ public class EmployeeService {
             return employee1.get();
         }
         else {
-            return null;
+            throw new ResourceNotFoundException("Employee", "update", id);
         }
     }
 
@@ -69,7 +69,7 @@ public class EmployeeService {
         }
         else {
             // 예외처리
-            throw new ResourceNotFoundException("Employee", "ID", id);
+            throw new ResourceNotFoundException("Employee", "delete", id);
         }
     }
 

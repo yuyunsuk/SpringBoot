@@ -1,0 +1,82 @@
+@GetMapping
+@PostMapping
+@PutMapping
+@DeleteMapping
+
+@PathVariable
+@RequestParam
+@RequestBody
+
+@Autowired
+[매개변수 있는 생성자 어노테이션 생략 가능]
+
+@Controller
+@RestController
+@Service
+@Repository
+public interface GameRepository extends JpaRepository<Game, Long> {}
+public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
+    List<Purchase> findByUser(User user);
+}
+public interface UserRepository extends JpaRepository<User, String> {
+    Optional<User> findByUserId(String userId);
+}
+
+[Class 위에]
+@Entity
+@Table(name="games")
+
+[Key 컬럼 위에, Primary Key]
+@Id
+
+[Lombok]
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+===================================
+[Controller]
+public ResponseEntity<Game> getGameById(@PathValiable long Id) {
+	return new ResponseEntity<>(gameShopService.getGameById(id), httpStatus.OK);
+}
+
+[Service]
+@Transactional
+
+[Exception]
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+
+[Model]
+@GeneratedValue(strategy = GenerationType.IDENTITY) // Maria 에서는 해당 type만 사용
+@Column(name="title", nullable = false, length=100)
+
+[Join]
+@ManyToOne // 게임 3개 구입시 하나당 구매 데이터 3개 생김
+private Game game;
+단독
+
+@OneToMany
+List
+
+@JoinColumn(name="game_id") // 한글 사용 가능, DB 에서만 사용
+
+@CreationTimestamp // INSERT 시 자동으로 값을 채워줌
+@Column(name = "sys_date")
+private LocalDateTime sysDate = LocalDateTime.now();
+
+@UpdateTimestamp // UPDATE 시 자동으로 값을 채워줌
+@Column(name = "upd_date")
+private LocalDateTime upDate = LocalDateTime.now();
+
+@CreatedDate
+private Timestamp createdDate;
+@LastModifiedDate
+private Timestamp modifiedDate;
+
+@CreationTimestamp
+private Timestamp creationTimestamp;
+@UdateTimestamp
+private Timestamp updateTimestamp;
+
+@CreationTimestamp 는 하이버네이트 제공 => 안쓰는 추세
+@CreatedDate 는 스프링 프레임워크 제공
