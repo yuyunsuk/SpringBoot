@@ -28,6 +28,14 @@ public class DepartmentController {
         return new ResponseEntity<>(departmentService.getAllDepartments(), HttpStatus.OK);
     }
 
+    @GetMapping("/departments/JPQL1")
+    public ResponseEntity<List<Department>> getAllDepartmentJPQL1() {
+        return new ResponseEntity<>(departmentService.getAllDepartmentJPQL1(), HttpStatus.OK);
+    }
 
+    @GetMapping("/departments/JPQL2")
+    public ResponseEntity<List<Department>> getAllDepartmentJPQL2() {
+        return new ResponseEntity<>(departmentService.getAllDepartmentJPQL2(), HttpStatus.OK);
+    }
 
 }

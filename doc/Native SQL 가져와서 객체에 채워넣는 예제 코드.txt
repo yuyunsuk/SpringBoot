@@ -1,0 +1,51 @@
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(name = "your_table_name")
+public class YourEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    // Add other fields and mappings as needed
+
+    // Getters and setters
+}
+
+public class YourEntityDAO {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    public List<YourEntity> fetchDataWithNativeQuery() {
+        String nativeQuery = "SELECT * FROM your_table_name";
+        Query query = entityManager.createNativeQuery(nativeQuery, YourEntity.class);
+        List<YourEntity> resultList = query.getResultList();
+        return resultList;
+    }
+
+    // You can add other methods here for different queries or operations
+}
+
+public class MainClass {
+
+    public static void main(String[] args) {
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("your_persistence_unit_name");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        YourEntityDAO yourEntityDAO = new YourEntityDAO();
+        yourEntityDAO.setEntityManager(entityManager);
+
+        List<YourEntity> result = yourEntityDAO.fetchDataWithNativeQuery();
+
+        for (YourEntity entity : result) {
+            // Process each entity as needed
+            System.out.println(entity.toString());
+        }
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+}

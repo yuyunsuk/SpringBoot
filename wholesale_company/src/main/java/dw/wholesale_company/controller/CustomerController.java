@@ -4,11 +4,9 @@ import dw.wholesale_company.model.Customer;
 import dw.wholesale_company.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -36,12 +34,20 @@ public class CustomerController {
     }
 
     // 선생님 코드
-    @GetMapping("/customers/highmilethanavg")
+    @GetMapping("/customers/highMileThanAvg")
     public ResponseEntity<List<Customer>> getCustomerWithHighMileThanAvg() {
         return new ResponseEntity<>(customerService.getCustomerWithHighMileThanAvg(),
                 HttpStatus.OK);
     }
 
+    @GetMapping("/customers/orderdate/{orderDate}")
+    public ResponseEntity<List<Customer>> getCustomerByOrderDate(@PathVariable LocalDate orderDate) {
+        return new ResponseEntity<>(customerService.getCustomerByOrderDate(orderDate), HttpStatus.OK);
+    }
 
+    @GetMapping("/customers/mileage/{mileageGrade}")
+    public ResponseEntity<List<Customer>> getCustomerByMileageGrade(@PathVariable String mileageGrade){
+        return new ResponseEntity<>(customerService.getCustomerByMileageGrade(mileageGrade), HttpStatus.OK);
+    }
 
 }

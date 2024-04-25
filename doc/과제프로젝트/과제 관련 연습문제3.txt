@@ -1,0 +1,2 @@
+6. 마일리지 등급별로 고객수를 보이시오.
+public List<Customer> getCustomerByMileageGrade(String grade);

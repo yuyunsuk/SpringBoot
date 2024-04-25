@@ -174,9 +174,10 @@ public class GameService {
 //                .limit(3)
 //                .collect(Collectors.toList());
 
+        // GameRepository 에 JPQL 사용
         return gameRepository.getGameWithMaxPriceTop3()
                 .stream().limit(3)
                 .collect(Collectors.toList());
-
     }
+
 }

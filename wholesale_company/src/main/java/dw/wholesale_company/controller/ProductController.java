@@ -1,5 +1,6 @@
 package dw.wholesale_company.controller;
 
+import dw.wholesale_company.dto.ProductDto;
 import dw.wholesale_company.model.Product;
 import dw.wholesale_company.service.ProductService;
 import org.springframework.http.HttpStatus;
@@ -55,5 +56,45 @@ public class ProductController {
     }
 
     // /products/price?lowLimit=5000&highLimit=10000
+
+    @GetMapping("/products/targetList")
+    public ResponseEntity<List<Product>> getAllProductsByArray(@RequestBody List<Long> targetList) {
+        //System.out.println(targetList.toString());
+        return new ResponseEntity<>(productService.getAllProductsByArray(targetList), HttpStatus.OK);
+    }
+
+    // PostMan Get => Body [1,2,4,7,11,20]
+
+    @GetMapping("/products/productsTopInvPrice/{limitNum}")
+    public ResponseEntity<List<Product>> getProductsTopInvPrice(@PathVariable int limitNum) {
+        //System.out.println(targetList.toString());
+        return new ResponseEntity<>(productService.getProductsTopInvPrice(limitNum), HttpStatus.OK);
+    }
+
+    // Dto 활용
+    @GetMapping("/products/productsTopInvPriceDto/{limitNum}")
+    public ResponseEntity<List<ProductDto>> getProductsTopInvPriceDto(@PathVariable int limitNum) {
+        //System.out.println(targetList.toString());
+        return new ResponseEntity<>(productService.getProductsTopInvPriceDto(limitNum), HttpStatus.OK);
+    }
+
+    @GetMapping("/products/productsTopInvPriceJPQL1/{limitNum}")
+    public ResponseEntity<List<Product>> getProductsTopInvPriceJPQL1(@PathVariable int limitNum) {
+        //System.out.println(targetList.toString());
+        return new ResponseEntity<>(productService.getProductsTopInvPriceJPQL1(limitNum), HttpStatus.OK);
+    }
+
+    // JPQL 활용
+    @GetMapping("/products/productsTopInvPriceJPQL2/{limitNum}")
+    public ResponseEntity<List<ProductDto>> getProductsTopInvPriceJPQL2(@PathVariable int limitNum) {
+        //System.out.println(targetList.toString());
+        return new ResponseEntity<>(productService.getProductsTopInvPriceJPQL2(limitNum), HttpStatus.OK);
+    }
+
+    @GetMapping("/products/productsTopInvPriceJPQL3/{limitNum}")
+    public ResponseEntity<List<Product>> getProductsTopInvPriceJPQL3(@PathVariable int limitNum) {
+        //System.out.println(targetList.toString());
+        return new ResponseEntity<>(productService.getProductsTopInvPriceJPQL3(limitNum), HttpStatus.OK);
+    }
 
 }

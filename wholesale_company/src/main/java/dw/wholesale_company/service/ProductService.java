@@ -1,10 +1,13 @@
 package dw.wholesale_company.service;
 
+import dw.wholesale_company.dto.ProductDto;
 import dw.wholesale_company.model.Product;
 import dw.wholesale_company.repository.ProductRepository;
+import jakarta.persistence.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,6 +70,86 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    public List<Product> getAllProductsByArray(List<Long> productList) {
+//        List<Product> allProducts = productRepository.findAll();
+//        List<Product> targetProducts = new ArrayList<>();
+//
+//        System.out.println("productList: "+ productList.toString());
+//
+//        for (int i=0; i<productList.size(); i++) {
+//            for (int j = 0; j < allProducts.size(); j++) {
+//                if (allProducts.get(j).getProductId() == productList.get(i)) {
+//                    targetProducts.add(allProducts.get(i));
+//                    break;
+//                }
+//            }
+//        }
+//
+//        return targetProducts;
 
+        return productRepository.findAll().stream()
+                .filter(a->productList.contains(a.getProductId()))
+                .collect(Collectors.toList());
+    }
+
+    // Product 클래스 내에 함수 추가 활용
+    public List<Product> getProductsTopInvPrice(int limitNum) {
+        List<Product> allProducts = productRepository.findAll();
+
+//        // 선생님 코드
+//        return productRepository.findAll().stream()
+//                .sorted(Comparator.comparingInt((Product p)->p.getUnitPrice() * p.getInventory()).reversed())
+//                .limit(limitNum)
+//                .collect(Collectors.toList());
+
+        // 수식에 대한 함수를 클래스 내에 만들고 정렬에서 이용
+        return productRepository.findAll().stream()
+                .sorted(Comparator.comparingInt(Product::getInventoryPrice).reversed())
+                .limit(limitNum)
+                .collect(Collectors.toList());
+
+    }
+
+    // Dto 활용 Service 코드
+    public List<ProductDto> getProductsTopInvPriceDto(int limitNum) {
+        List<Product> allProducts = productRepository.findAll();
+        List<ProductDto> allProductsInvPrice = new ArrayList<>();
+
+        for (int i=0; i<allProducts.size(); i++) {
+            ProductDto productDto = new ProductDto(); // NoArgConstructor 사용 객체 생성
+            allProductsInvPrice.add(productDto.toProductDtoFromProduct(allProducts.get(i))); // 함수를 이용 Dto 로 데이터 변환
+        }
+
+        // 수식에 대한 함수를 클래스 내에 만들고 정렬에서 이용
+        return allProductsInvPrice.stream()
+                .sorted(Comparator.comparingInt(ProductDto::getInventoryPrice).reversed())
+                .limit(limitNum)
+                .collect(Collectors.toList());
+    }
+
+    // JPQL 활용 Service 코드
+    public List<Product> getProductsTopInvPriceJPQL1(int limitNum) {
+        //List<ProductDto> allProductsInvPrice = productRepository.getAllProductsTopInvPriceJPQL(limitNum);
+        List<Product> allProductsInvPrice = productRepository.getAllProductsTopInvPriceJPQL1(limitNum);
+
+        // 수식에 대한 함수를 클래스 내에 만들고 정렬에서 이용
+        return allProductsInvPrice;
+    }
+
+    // JPQL 활용 Service 코드
+    public List<ProductDto> getProductsTopInvPriceJPQL2(int limitNum) {
+        //List<ProductDto> allProductsInvPrice = productRepository.getAllProductsTopInvPriceJPQL(limitNum);
+        List<ProductDto> allProductsInvPrice = productRepository.getAllProductsTopInvPriceJPQL2(limitNum);
+
+        return allProductsInvPrice;
+    }
+
+    public List<Product> getProductsTopInvPriceJPQL3(int limitNum) {
+        //List<ProductDto> allProductsInvPrice = productRepository.getAllProductsTopInvPriceJPQL(limitNum);
+        List<Product> allProductsInvPrice = productRepository.getAllProductsTopInvPriceJPQL3(limitNum);
+
+        // 수식에 대한 함수를 클래스 내에 만들고 정렬에서 이용
+        return allProductsInvPrice;
+    }
 
 }

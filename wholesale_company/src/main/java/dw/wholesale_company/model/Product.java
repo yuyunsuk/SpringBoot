@@ -19,7 +19,7 @@ import lombok.Setter;
 public class Product {
     @Id
     @Column(name = "제품번호")
-    private int productId;
+    private long productId;
 
     @Column(name = "제품명", length=50)
     private String productName;
@@ -32,4 +32,8 @@ public class Product {
 
     @Column(name = "재고")
     private int inventory;
+
+    public int getInventoryPrice() {
+        return unitPrice * inventory;
+    }
 }

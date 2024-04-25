@@ -25,4 +25,14 @@ public class DepartmentService {
     public List<Department> getAllDepartments() {
         return departmentRepository.findAll();
     }
+
+    public List<Department> getAllDepartmentJPQL1() {
+        return departmentRepository.getAllDepartmentJPQL1();
+    }
+
+    public List<Department> getAllDepartmentJPQL2()
+    {
+        return departmentRepository.getAllDepartmentJPQL2();
+    }
+
 }

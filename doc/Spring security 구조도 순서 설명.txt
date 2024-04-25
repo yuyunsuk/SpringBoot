@@ -1,0 +1,26 @@
+인증[Authentication]
+
+1. Form 기반 로그인 사용자 인증 요청
+
+2. AuthenticationFilter가 사용자가 보낸 ID와 PW를 인터셉트하고,
+   이를 기반으로 Authentication Token(UsernamePasswordAuthenticationToken)을 생성.
+
+3. AuthenticationManager(Provider 관리)는 Authentication Token을 전달받음
+
+4. AuthenticationManager의 구현체인 AuthenticationProvider에서 실제 인증 처리 진행
+
+5. PasswordEncoder을 통한 패스워드 암호화
+
+6. UserDetailsService 객체에게 사용자 ID를 넘겨주고, DB에서 사용자 정보(ID, 암호화된 PW, 권한 등)를 UserDetails객체로 전달받음.
+
+7. AuthenticationProvider는 UserDetails 객체를 전달 받고, 실제 사용자의 입력정보와 UserDetails에 담긴 정보를 가지고 인증을 시도한다.
+
+8~11. 인증이 완료되면 Authentication 객체를 SecurityContextHolder에 저장
+
+12. 유저에게 session ID와 함께 응답
+
+13. 이후 요청에서 요청 쿠키에서 JSESSIONID을 검증 후 인증 처리
+
+개발자는 PasswordEncoder, UserDetailsService, UserDetails 작업
+
+SecurityContext 는 세션당 1개(현재 로그인 정보[username 과 권한], Password 는 없음)
