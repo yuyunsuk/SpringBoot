@@ -127,7 +127,7 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    // JPQL 활용 Service 코드
+    // JPQL 활용 Service 코드1 => JPQL 사용 원래의 테이블 Class 객체에 담기
     public List<Product> getProductsTopInvPriceJPQL1(int limitNum) {
         //List<ProductDto> allProductsInvPrice = productRepository.getAllProductsTopInvPriceJPQL(limitNum);
         List<Product> allProductsInvPrice = productRepository.getAllProductsTopInvPriceJPQL1(limitNum);
@@ -136,7 +136,7 @@ public class ProductService {
         return allProductsInvPrice;
     }
 
-    // JPQL 활용 Service 코드
+    // JPQL 활용 Service 코드 => JPQL 사용 Dto 에 담기
     public List<ProductDto> getProductsTopInvPriceJPQL2(int limitNum) {
         //List<ProductDto> allProductsInvPrice = productRepository.getAllProductsTopInvPriceJPQL(limitNum);
         List<ProductDto> allProductsInvPrice = productRepository.getAllProductsTopInvPriceJPQL2(limitNum);
@@ -144,6 +144,7 @@ public class ProductService {
         return allProductsInvPrice;
     }
 
+    // JPQL 활용 Native Query 옵션 사용 예제
     public List<Product> getProductsTopInvPriceJPQL3(int limitNum) {
         //List<ProductDto> allProductsInvPrice = productRepository.getAllProductsTopInvPriceJPQL(limitNum);
         List<Product> allProductsInvPrice = productRepository.getAllProductsTopInvPriceJPQL3(limitNum);
@@ -151,5 +152,79 @@ public class ProductService {
         // 수식에 대한 함수를 클래스 내에 만들고 정렬에서 이용
         return allProductsInvPrice;
     }
+
+    // Native Query 사용 Object 객체에 가져오는 함수
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    //public List<Object[]> executeNativeQuery(String param1, String param2) {
+    public List<Object[]> executeNativeQueryPoductDto(int limitNum) {
+        //String sqlQuery = "SELECT column1, column2 FROM your_table WHERE column3 = :param1 AND column4 = :param2";
+        String sqlQuery = "select a.제품번호 " +
+                          "     , a.제품명   " +
+                          "     , a.포장단위 " +
+                          "     , a.단가    " +
+                          "     , a.재고    " +
+                          "     , a.단가 * a.재고 as 재고금액" +
+                          "  from 제품 a order by 6 desc limit :limitNum ";
+        Query query = entityManager.createNativeQuery(sqlQuery);
+        //query.setParameter("param1", param1);
+        //query.setParameter("param2", param2);
+        query.setParameter("limitNum", limitNum);
+
+        //System.out.println("QueryResult: "+ query.getResultList().toString());
+
+        return query.getResultList(); // Returns a list of Object arrays
+    }
+
+    // Native Query 사용2 => Dto 에 담는 예제
+    public List<ProductDto> getProductsTopInvPriceJPQL4(int limitNum) {
+
+        //YourRepository repository = new YourRepository();
+        //List<Object[]> results = repository.executeNativeQuery("value1", "value2");
+
+        List<ProductDto> targetProductDto = new ArrayList<>();
+        List<Object[]> results = executeNativeQueryPoductDto(limitNum);
+
+// [ProductDto]
+//        private long productId;
+//        private String productName;
+//        private String pkgUnit;
+//        private int unitPrice;
+//        private int inventory;
+//        private int inventoryPrice;
+
+        // Process the results
+        for (Object[] row : results) {
+            // Access each column in the row
+            System.out.println("productId: "+row[0].toString());
+            System.out.println("productName: "+row[1].toString());
+            System.out.println("pkgUnit: "+row[2].toString());
+            System.out.println("unitPrice: "+row[3].toString());
+            System.out.println("inventory: "+row[4].toString());
+            System.out.println("inventoryPrice: "+row[5].toString());
+
+            Long    column1Value = Long.valueOf(row[0].toString()); // Assuming column1 is of type String
+            String  column2Value = row[1].toString(); // Assuming column2 is of type int
+            String  column3Value = row[2].toString(); // Assuming column2 is of type int
+            Integer column4Value = Integer.valueOf(row[3].toString()); // Assuming column2 is of type int
+            Integer column5Value = Integer.valueOf(row[4].toString()); // Assuming column2 is of type int
+            Integer column6Value = Integer.valueOf(row[5].toString()); // Assuming column2 is of type int
+
+            System.out.println("column1Value: "+ column1Value);
+            System.out.println("column2Value: "+ column2Value);
+            System.out.println("column3Value: "+ column3Value);
+            System.out.println("column4Value: "+ column4Value);
+            System.out.println("column5Value: "+ column5Value);
+            System.out.println("column6Value: "+ column6Value);
+
+            ProductDto productDto = new ProductDto(column1Value, column2Value, column3Value, column4Value, column5Value, column6Value);
+            targetProductDto.add(productDto);
+            // Do something with the values...
+        }
+
+        return targetProductDto;
+    }
+
 
 }

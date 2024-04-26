@@ -62,6 +62,7 @@ public class ReviewService {
         return reviewDtoList;
     }
 
+    // @Transactional Test
     // @Transactional 의 Transaction Test Code, 있는 경우 에러 발생시 Rollback 발생, 없는 경우 그냥 Save 됨.
     public List<ReviewDto> getReviewByDtoTt(){
         List<Review> reviewList = reviewRepository.findAll(); // 전체 받아옴

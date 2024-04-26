@@ -4,8 +4,10 @@ import dw.wholesale_company.model.OrderDetail;
 import dw.wholesale_company.repository.OrderDetailRepository;
 import dw.wholesale_company.repository.OrderRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderDetailService {
@@ -24,4 +26,7 @@ public class OrderDetailService {
     public List<OrderDetail> getAllOrderDetails() {
         return orderDetailRepository.findAll();
     }
+
+
+
 }

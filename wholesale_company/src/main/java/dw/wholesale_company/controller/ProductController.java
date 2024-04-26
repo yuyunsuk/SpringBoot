@@ -97,4 +97,10 @@ public class ProductController {
         return new ResponseEntity<>(productService.getProductsTopInvPriceJPQL3(limitNum), HttpStatus.OK);
     }
 
+    @GetMapping("/products/productsTopInvPriceJPQL4/{limitNum}")
+    public ResponseEntity<List<ProductDto>> getProductsTopInvPriceJPQL4(@PathVariable int limitNum) {
+        //System.out.println(targetList.toString());
+        return new ResponseEntity<>(productService.getProductsTopInvPriceJPQL4(limitNum), HttpStatus.OK);
+    }
+
 }

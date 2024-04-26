@@ -1,5 +1,6 @@
 package dw.wholesale_company.service;
 
+import dw.wholesale_company.exception.ResourceNotFoundException;
 import dw.wholesale_company.model.Customer;
 import dw.wholesale_company.model.Mileage;
 import dw.wholesale_company.model.Order;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -136,6 +138,26 @@ public class CustomerService {
                 .sorted(Comparator.comparingInt(Customer::getMileage).reversed())
                 .collect(Collectors.toList());
     }
+
+    public List<Customer> getCustomerByMileageGrade2(String grade) {
+        List<Customer> customerList = customerRepository.findAll();
+        List<Mileage> mileageList = mileageRepository.findAll();
+
+        Optional<Mileage> mileageOptional = mileageList.stream().filter(a->a.getMileageGrade().equals(grade)).findFirst();
+        // 선생님 코드
+        // Optional<Mileage> mileageOptional = mileageRepository.findById(grade);
+        if (mileageOptional.isEmpty()) {
+            throw new ResourceNotFoundException("Mileage", "Grade", grade);
+        }
+
+        int lowLimit = mileageOptional.get().getLowLimit();
+        int highLimit = mileageOptional.get().getHighLimit();
+
+        System.out.println("lowLimit: "+lowLimit+" "+"highLimit: "+highLimit);
+
+        return customerList.stream().filter(a->a.getMileage()>=lowLimit && a.getMileage()<=highLimit).collect(Collectors.toList());
+    }
+
 
 
 }

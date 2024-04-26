@@ -38,11 +38,11 @@ public class PurchaseService {
 
     public List<Purchase> getPurchaseListByUser(String userId) {
         // 유저아이디로 유저객체 찾기
-        Optional<User> userOptional = userRepository.findByUserId(userId);
+        Optional<User> userOptional = userRepository.findByUserId(userId); // User 의 findByUserId 사용
         if (userOptional.isEmpty()) {
             throw new ResourceNotFoundException("User", "ID", userId);
         }
-        return purchaseRepository.findByUser(userOptional.get());
+        return purchaseRepository.findByUser(userOptional.get()); // Purchase 의 findByUser 사용
     }
 
     // 유저 이름으로 구매한 게임 찾기

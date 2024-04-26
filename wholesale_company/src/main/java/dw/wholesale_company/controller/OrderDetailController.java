@@ -5,6 +5,7 @@ import dw.wholesale_company.service.OrderDetailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,5 +28,7 @@ public class OrderDetailController {
     public ResponseEntity<List<OrderDetail>> getAllOrderDetails() {
         return new ResponseEntity<>(orderDetailService.getAllOrderDetails(), HttpStatus.OK);
     }
+
+
 
 }

@@ -1,0 +1,49 @@
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.PersistenceContext;
+import java.util.List;
+
+public class YourRepository {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    public List<Object[]> executeNativeQuery(String param1, String param2) {
+        String sqlQuery = "SELECT column1, column2 FROM your_table WHERE column3 = :param1 AND column4 = :param2";
+        Query query = entityManager.createNativeQuery(sqlQuery);
+        query.setParameter("param1", param1);
+        query.setParameter("param2", param2);
+        return query.getResultList(); // Returns a list of Object arrays
+    }
+
+    // Example of using the method
+    public static void main(String[] args) {
+        YourRepository repository = new YourRepository();
+        List<Object[]> results = repository.executeNativeQuery("value1", "value2");
+
+        // Process the results
+        for (Object[] row : results) {
+            // Access each column in the row
+            String column1Value = (String) row[0]; // Assuming column1 is of type String
+            int column2Value = (int) row[1]; // Assuming column2 is of type int
+
+            // Do something with the values...
+        }
+    }
+}
+
+///////////////////////////////////////////////////////
+
+당신이 말하는 "Java Native Query"는 일반적으로 JPA(Java Persistence API)에서 네이티브 쿼리를 사용하는 것을
+의미할 것으로 추정됩니다. 네이티브 쿼리는 SQL 쿼리를 직접 작성하여 데이터베이스와 상호 작용할 때 사용됩니다.
+
+아래는 JPA를 사용하여 네이티브 쿼리를 실행하고 결과를 처리하는 간단한 예제입니다.
+이 예제에서는 EntityManager를 사용하여 네이티브 쿼리를 실행하고, 결과를 처리하기 위해 Object 배열로 값을 받습니다.
+
+이 예제에서는 EntityManager를 사용하여 네이티브 쿼리를 실행하고,
+쿼리에 파라미터를 전달하기 위해 setParameter 메서드를 사용합니다.
+그런 다음 getResultList 메서드를 사용하여 쿼리 결과를 가져옵니다.
+결과는 Object 배열의 리스트로 반환됩니다. 결과를 처리하는 데에는 각 열에 대한 캐스팅이 필요합니다.
+
+더 복잡한 쿼리를 처리할 때는 반환되는 객체를 적절히 처리해야 합니다.
+가능한 경우 JPA 엔티티 클래스를 사용하여 결과를 매핑하고, 쿼리의 결과를 엔티티 객체로 변환하여 처리하는 것이 좋습니다.

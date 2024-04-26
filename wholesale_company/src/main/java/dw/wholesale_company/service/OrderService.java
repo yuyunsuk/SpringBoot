@@ -2,6 +2,7 @@ package dw.wholesale_company.service;
 
 import dw.wholesale_company.model.Order;
 import dw.wholesale_company.repository.OrderRepository;
+import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,8 +15,11 @@ import java.util.stream.Collectors;
 public class OrderService {
     OrderRepository orderRepository;
 
-    public OrderService(OrderRepository orderRepository) {
+    EntityManager entityManager;
+
+    public OrderService(OrderRepository orderRepository, EntityManager entityManager) {
         this.orderRepository = orderRepository;
+        this.entityManager = entityManager;
     }
 
     // save Method
@@ -52,6 +56,25 @@ public class OrderService {
         List<Order> orders = orderRepository.findAll();
         return orders.stream().filter(a -> a.getOrderDate().compareTo(date) > 0)
                 .collect(Collectors.toList());
+    }
+
+    public List<Object[]> getTopCitiesByTotalOrderAmount(int intNum) {
+        return orderRepository.getTopCitiesByTotalOrderAmount().stream()
+                .limit(intNum)
+                .collect(Collectors.toList());
+    }
+
+    public List<Object[]> getTopCitiesByTotalOrderAmount2(int limit) {
+        return entityManager.createQuery("SELECT c.city, SUM(a.unitPrice * a.orderQuantity) AS totalOrderAmount " +
+                        "  FROM OrderDetail a " +
+                        "  JOIN a.order b" +
+                        "  JOIN b.customer c" +
+                        " GROUP BY c.city" +
+                        " ORDER BY totalOrderAmount DESC")
+                .setMaxResults(limit).getResultList();
+
+
+
     }
 
 

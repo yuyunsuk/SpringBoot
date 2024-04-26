@@ -43,6 +43,16 @@ public class OrderController {
                 HttpStatus.OK);
     }
 
+    @GetMapping("/TopCitiesByTotalOrderAmount/{intNum}")
+    public ResponseEntity<List<Object[]>> getTopCitiesByTotalOrderAmount(@PathVariable int intNum) {
+        return new ResponseEntity<>(orderService.getTopCitiesByTotalOrderAmount(intNum), HttpStatus.OK);
+    }
+
+    @GetMapping("/TopCitiesByTotalOrderAmount2/{intNum}")
+    public ResponseEntity<List<Object[]>> getTopCitiesByTotalOrderAmount2(@PathVariable int intNum) {
+        return new ResponseEntity<>(orderService.getTopCitiesByTotalOrderAmount2(intNum), HttpStatus.OK);
+    }
+
 
 
 }

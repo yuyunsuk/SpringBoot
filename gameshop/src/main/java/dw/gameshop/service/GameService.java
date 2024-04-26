@@ -31,17 +31,17 @@ public class GameService {
     }
 
     public Game getGameById(Long id) {
-        Optional<Game> game = gameRepository.findById(id);
+        Optional<Game> game = gameRepository.findById(id); // Id 로 Game 조회 없으면 예외사항 처리, 있으면 조회결과 리턴;
         if (game.isEmpty()) {
             //return null;
-            throw new ResourceNotFoundException("Game", "ID", id);
+            throw new ResourceNotFoundException("Game", "ID", id); // 예외사항 객체 리턴
         } else {
             return game.get();
         }
     }
 
     public Game updateGameById(Long id, Game game) {
-        Optional<Game> game1 = gameRepository.findById(id);
+        Optional<Game> game1 = gameRepository.findById(id); // Id 로 Game 조회 있으면 Update, 없으면 예외사항 처리
         if (game1.isPresent()) {
             game1.get().setGenre(game.getGenre()); // 입력받은 값을 세팅
             game1.get().setImage(game.getImage()); // 입력받은 값을 세팅
@@ -52,7 +52,7 @@ public class GameService {
             return game1.get();
         } else {
             //return null;
-            throw new ResourceNotFoundException("Game", "ID", id);
+            throw new ResourceNotFoundException("Game", "ID", id); // 예외사항 객체 리턴
         }
 
     }

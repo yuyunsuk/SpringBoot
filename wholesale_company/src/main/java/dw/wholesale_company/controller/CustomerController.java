@@ -50,4 +50,11 @@ public class CustomerController {
         return new ResponseEntity<>(customerService.getCustomerByMileageGrade(mileageGrade), HttpStatus.OK);
     }
 
+    @GetMapping("/customers/mileage2/{mileageGrade}")
+    public ResponseEntity<List<Customer>> getCustomerByMileageGrade2(@PathVariable String mileageGrade){
+        return new ResponseEntity<>(customerService.getCustomerByMileageGrade2(mileageGrade), HttpStatus.OK);
+    }
+
+
+
 }
