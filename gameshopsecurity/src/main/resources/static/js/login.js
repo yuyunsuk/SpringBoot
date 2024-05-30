@@ -82,7 +82,7 @@ document.querySelector(".registrationBtn").addEventListener("click", ()=>{
         userEmail: signupEmail
     }
     
-    /* 가입정보를 모두 입력하도록 막음 */
+    /* 가입정보를 모두 입력하지 않으면 진행이 안되도록 막음 */
     if (signupUserId.length > 0 && signupPassword.length > 0 && signupUserName.length > 0 && signupEmail.length > 0 ) {
 
         axios

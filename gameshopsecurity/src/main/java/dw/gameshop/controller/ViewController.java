@@ -40,6 +40,4 @@ public class ViewController { // 디자인 패턴, MVC(Model[정보] View(=>Fron
         return "mypage";
     }
 
-
-
 }

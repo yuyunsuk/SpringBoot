@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Closures</title>
+</head>
+<body>
+    <!-- <button onclick="add()">Add</button> -->
+    <button onclick="runAdd()">Add</button>
+    <p class="result"></p>
+    <script>
+        let counter = 0;
+        // 카운터는 정상 동작하지만 전역변수를 사용하므로 의도치 않은
+        // 값의 변경 가능성 있음 ==> 카운터 딜레마
+        // function add() {
+        //     counter = counter + 1;
+        //     document.querySelector(".result").textContent = counter;
+        // }
+
+        // 전역변수를 사용하지 않아서 외부에서 변경가능성은 없으나
+        // 카운터 기능은 불가
+        // function add() {
+        //     let counter = 0;
+        //     counter = counter + 1;
+        //     document.querySelector(".result").textContent = counter;
+        // }
+
+        // // runAdd() 호출 해도 여전히 값은 1
+        // function add() {
+        //     let counter = 0;
+        //     counter += 1;
+        //     return counter
+        // }
+        // function runAdd() {
+        //     document.querySelector(".result").textContent = add();
+        // }
+
+        // 클로저(closure)의 개념
+        // counter 를 리턴하지 말고, 함수(메소드 영역)를 리턴
+        // 익명함수를 사용하여 다른곳에서 호출을 못하도록 함, 값을 저장
+        // 클로저는 외부 변수를 기억하고 이 외부 변수에 접근할 수 있는 함수를 의미
+        const add = (function() {
+            let counter = 0;
+            return function () {
+                counter += 1;
+                return counter
+            }
+        })();
+        
+        function runAdd() {
+            document.querySelector(".result").textContent = add();
+        }
+
+    </script>
+    
+</body>
+</html>

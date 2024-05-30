@@ -26,13 +26,12 @@ function displayProducts(gameData) {
         
         gameData.forEach((data)=>{
             const game = document.createElement("div");
-            content.appendChild(game);
             game.classList.add("game");
 
             const img = document.createElement("img");
-            game.appendChild(img);
             img.classList.add("image");
             img.src = data.image;
+            game.appendChild(img);
 
             const title = document.createElement("p");
             const genre = document.createElement("p");
@@ -47,6 +46,7 @@ function displayProducts(gameData) {
             game.addEventListener("click", ()=>{
                 window.location.href = "singleProduct.html?id=" + data.id;
             })
+            content.appendChild(game);
 
         })
     }
