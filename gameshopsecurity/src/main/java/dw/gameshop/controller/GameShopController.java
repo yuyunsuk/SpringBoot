@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+/* @CrossOrigin(origins="*", allowedHeaders = "*") */
+/* @CrossOrigin(origins="http://127.0.0.1:5500/") => origin 사이트로 허용함 */
+/* WebConfig.java 에 allowedOrigins 부분에 추가 */
 public class GameShopController {
     GameShopService gameShopService;
 
@@ -17,13 +20,13 @@ public class GameShopController {
         this.gameShopService = gameShopService;
     }
 
-    @GetMapping("/products")
+    @GetMapping("/products") // Gameshop products 12개 자료 모두 조회
     public ResponseEntity<List<Game>> getAllGames() {
         return new ResponseEntity<>(gameShopService.getAllGames(),
                 HttpStatus.OK);
     }
 
-    @GetMapping("/products/{id}")
+    @GetMapping("/products/{id}") // Gameshop product ID 를 가지고 1개의 데이터를 조회
     public ResponseEntity<Game> getGameById(@PathVariable long id) {
         return new ResponseEntity<>(gameShopService.getGameById(id),
                 HttpStatus.OK);
