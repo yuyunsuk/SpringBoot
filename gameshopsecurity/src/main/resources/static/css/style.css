@@ -194,6 +194,7 @@ em 단위  => 부모의 폰트 사이즈 대비 비율
 }
 
 .purchaseBtn {
+    display: inline-block;
     width: 100px;
     height: 40px;
     background-color: dodgerblue;
@@ -204,6 +205,7 @@ em 단위  => 부모의 폰트 사이즈 대비 비율
     border-radius: 5px;
     cursor: pointer;
     margin-top: 50px;
+    margin-right: 50px;
 }
 
 .cartBtn {
@@ -286,6 +288,48 @@ em 단위  => 부모의 폰트 사이즈 대비 비율
     display: grid;
     grid-template-columns: 8fr 2fr;
     align-items: center;
+}
+
+.cart {
+    width: 100%;
+    background-color: khaki;
+    padding: 20px;
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse; /* => 줄이 두개씩 안나오도록
+        collapse : 서로 이웃하는 테이블이나 셀의 테두리선을 겹쳐서 표현 합니다.
+        separate : 기본값으로 서로 이웃하는 테이블이나 셀의 테두리선을 분리시켜 표현*/
+    border-radius: 5px;
+    overflow: hidden; /* => 스크롤바 없앰 */
+    background-color: white;
+}
+
+.cart-table td {
+    text-align: center;
+}
+
+thead { /* thead 는 Tag 임 */
+    background-color: #27ea60;
+    height: 50px;
+}
+
+.tr:nth-child(even) td { /* tr:nth-child(even) – 짝수, tr:nth-child(odd) – 홀수 */
+    background-color: #eaeaed;
+}
+
+.imgtd {
+    width: 200px;
+}
+
+.totalprice {
+    display: inline-block;
+}
+
+.deleteBtn {
+    height: 30px;
+    padding: 0px 30px;
 }
 
 /* CSS 에서 hidden 은 맨 아래에 위치해야 함, 반응형 media query 등 */

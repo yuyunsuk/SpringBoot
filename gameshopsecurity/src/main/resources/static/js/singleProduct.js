@@ -95,7 +95,10 @@ function sessionCurrent(data) {
         console.log("SingleProduct 세션확인 데이터: ", response.data);
         console.log("SingleProduct 세션 Status: ", response.status);
         if (response.status == 200) {
-            const userId = response.data;
+            const userId = response.data.userId; // 권한 관련 수정하였음
+
+            console.log("유저 ID: " + userId);
+
             let cartItems = JSON.parse(localStorage.getItem(userId));
             if (!cartItems) { // null 이면 초기화
                 cartItems = [];

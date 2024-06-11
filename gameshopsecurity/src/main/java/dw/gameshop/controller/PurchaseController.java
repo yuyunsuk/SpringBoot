@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,8 @@ public class PurchaseController {
 
     // List 형태로 Post Save 추가
     @PostMapping("/products/purchaselist")
+    //@PreAuthorize("hasAnyRole('ADMIN')") // 권한 중요(ROLE_ 뒤에만 인식 적용)
+    @PreAuthorize("hasAnyRole('ADMIN','USER','TEACHER')") //권한 중요(ROLE_ 뒤에만 인식 적용)
     public List<Purchase> savePurchase(@RequestBody List<Purchase> purchaseList) {
         return purchaseService.savePurchaseList(purchaseList);
     }

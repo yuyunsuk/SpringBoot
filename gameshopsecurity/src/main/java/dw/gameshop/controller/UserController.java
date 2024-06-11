@@ -1,5 +1,6 @@
 package dw.gameshop.controller;
 
+import dw.gameshop.dto.SessionDto;
 import dw.gameshop.dto.UserDto;
 import dw.gameshop.service.UserDetailService;
 import dw.gameshop.service.UserService;
@@ -34,7 +35,7 @@ public class UserController {
     @PostMapping("signup") // "/user/signup"
     public ResponseEntity<String> signUp(@RequestBody UserDto userDto) {
         return new ResponseEntity<>(userService.saveUser(userDto), // 저장 Service 로 보냄
-                HttpStatus.CREATED);
+                HttpStatus.CREATED); // CREATED => 201 리턴
     }
 
     @PostMapping("login") // "/user/login" => @PostMapping("login") 에서 "/"를 붙이면 안됨
@@ -50,7 +51,7 @@ public class UserController {
         // 세션에 인증 객체 저장
         session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 
-        return ResponseEntity.ok("Success");
+        return ResponseEntity.ok("Success"); // ok => 200 리턴
     }
 
     @PostMapping("/logout")
@@ -64,11 +65,18 @@ public class UserController {
     }
 
     @GetMapping("current") // 현재 세션의 주인의 정보를 알고 싶을때 사용
-    public String getCurrentUser() {
+    public SessionDto getCurrentUser() { // 리턴값 String 에서 SessionDto 로 변경
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new IllegalStateException("User is not authenticated");
         }
-        return authentication.getName(); // 없는 경우 무명(anonymous), 있는 경우 유저네임
+
+        // 유저네임과 권한 Dto 에 적용
+        SessionDto sessionDto = new SessionDto();
+        sessionDto.setUserId(authentication.getName());
+        sessionDto.setAuthority(authentication.getAuthorities());
+
+        //return authentication.getName(); // 없는 경우 무명(anonymous), 있는 경우 유저네임
+        return sessionDto; // 없는 경우 무명(anonymous), 있는 경우 유저네임 과 함께 권한도 같이 보냄
     }
 }

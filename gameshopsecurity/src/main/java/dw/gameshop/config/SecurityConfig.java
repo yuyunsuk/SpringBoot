@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity // 권한 관련 추가 => @PreAuthorize("hasAnyRole('ADMIN','USER','TEACHER')") 사용시는 꼭 필요
 public class SecurityConfig {
     @Autowired
     private UserDetailService userDetailService;
@@ -50,6 +52,7 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/user/signup"), // REST API 용 주소(WAS 까지), 가입
                                 new AntPathRequestMatcher("/login"),       // 일반주소, Static Page login 등 허용 주소를 기재함
                                 new AntPathRequestMatcher("/gameshop/**"), // 페이지 요청 (위의 3개와 다름) (톰켓 까지)
+                                new AntPathRequestMatcher("/image/**"),    // 페이지 요청 (위의 3개와 다름) (톰켓 까지)
                                 new AntPathRequestMatcher("/css/**"),      // 페이지 요청 (위의 3개와 다름) (톰켓 까지)
                                 new AntPathRequestMatcher("/js/**")        // 페이지 요청 (위의 3개와 다름) (톰켓 까지)
                         ).permitAll() // 모두 허용
