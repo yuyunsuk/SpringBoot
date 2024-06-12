@@ -1,0 +1,18 @@
+[
+  {
+    "game":{
+      "id": 1
+    },
+    "user":{
+      "userId": "tom12"
+    }
+  },
+  {
+    "game":{
+      "id": 2
+    },
+    "user":{
+      "userId": "tom12"
+    }
+  }
+]

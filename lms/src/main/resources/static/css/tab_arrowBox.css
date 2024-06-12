@@ -1,0 +1,43 @@
+.tab_arrowBox {
+  margin-top: 50px;
+}
+.tab_arrow {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+}
+.tab_arrow>li {
+  flex: 1;
+  text-align: center;
+  border: 1px solid #dcdcdc;
+  border-bottom: 1px solid var(--skin01);
+  background: #f5f5f5;
+  font-size: 18px;
+  color: #999;
+}
+.tab_arrow>li.active {
+  background-color: white;
+  border: 1px solid var(--skin01);
+  border-bottom: 1px solid #fff;
+  color: #333;
+}
+.tab_arrow>li a {
+  display: block;
+  line-height: 50px;
+}
+.tab_arrow>li .cnt {
+  display: inline-block;
+  min-width: 24px;
+  height: 24px;
+  margin-left: 12px;
+  padding: 0 8px;
+  border-radius: 50px;
+  font-size: 14px;
+  color: #fff;
+  font-style: normal;
+  font-weight: 400;
+  background:var(--skin01);
+  line-height: 23px;
+  text-align: center;
+  vertical-align: 2px;
+}
