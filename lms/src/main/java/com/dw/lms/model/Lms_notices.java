@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Table(name="lms_notices")
 public class Lms_notices {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "lms_notices_seq")
     private Long lmsNoticesSeq;
 
@@ -24,7 +25,7 @@ public class Lms_notices {
     @Column(name = "lms_notices_title", length = 100)
     private String lmsNoticesTitle;
 
-    @Column(name = "lms_notices_content", length = 255)
+    @Column(name = "lms_notices_content", length = 2500)
     private String lmsNoticesContent;
 
     @ManyToOne
