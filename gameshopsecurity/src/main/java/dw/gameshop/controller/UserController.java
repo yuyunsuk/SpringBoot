@@ -2,6 +2,8 @@ package dw.gameshop.controller;
 
 import dw.gameshop.dto.SessionDto;
 import dw.gameshop.dto.UserDto;
+import dw.gameshop.model.Purchase;
+import dw.gameshop.model.User;
 import dw.gameshop.service.UserDetailService;
 import dw.gameshop.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +18,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController // Rest API 사용
 @RequestMapping("/user")
@@ -79,4 +83,10 @@ public class UserController {
         //return authentication.getName(); // 없는 경우 무명(anonymous), 있는 경우 유저네임
         return sessionDto; // 없는 경우 무명(anonymous), 있는 경우 유저네임 과 함께 권한도 같이 보냄
     }
+
+    @GetMapping("/user/id/{userId}")
+    public User getUserByUserId(@PathVariable String userId) {
+        return userService.getUserByUserId(userId);
+    }
+
 }

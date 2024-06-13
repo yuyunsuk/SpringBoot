@@ -84,7 +84,7 @@ public class UserController {
         return "You have been logged out.";
     }
 
-    @GetMapping("current") // 현재 세션의 주인의 정보를 알고 싶을때 사용
+    @GetMapping("current") // 현재 세션의 주인의 정보를 알고 싶을때 사용 // "/user/current"
     public SessionDto getCurrentUser() { // 리턴값 String 에서 SessionDto 로 변경
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -98,6 +98,11 @@ public class UserController {
 
         //return authentication.getName(); // 없는 경우 무명(anonymous), 있는 경우 유저네임
         return sessionDto; // 없는 경우 무명(anonymous), 있는 경우 유저네임 과 함께 권한도 같이 보냄
+    }
+
+    @GetMapping("/id/{userId}")
+    public User getUserByUserId(@PathVariable String userId) {
+        return userService.getUserByUserId(userId);
     }
 
 }

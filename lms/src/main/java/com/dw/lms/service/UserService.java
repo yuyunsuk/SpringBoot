@@ -1,6 +1,7 @@
 package com.dw.lms.service;
 
 import com.dw.lms.dto.UserDto;
+import com.dw.lms.exception.ResourceNotFoundException;
 import com.dw.lms.model.Authority;
 import com.dw.lms.model.User;
 import com.dw.lms.repository.UserRepository;
@@ -71,4 +72,14 @@ public class UserService {
 //            return "해당 ID로 등록된 사용자가 없습니다.";
 //        }
 //    }
+
+    public User getUserByUserId(String userId) {
+        // 유저아이디로 유저객체 찾기
+        Optional<User> userOptional = userRepository.findByUserId(userId);
+        if (userOptional.isEmpty()) {
+            throw new ResourceNotFoundException("User", "ID", userId);
+        }
+        return userOptional.get();
+    }
+
 }
