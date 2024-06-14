@@ -79,6 +79,11 @@ public class UserService {
         if (userOptional.isEmpty()) {
             throw new ResourceNotFoundException("User", "ID", userId);
         }
+
+//        System.out.println("UserId     : " + userOptional.get().getUserId());
+//        System.out.println("UserName   : " + userOptional.get().getUserNameKor());
+//        System.out.println("UserNameEng: " + userOptional.get().getUserNameEng());
+
         return userOptional.get();
     }
 

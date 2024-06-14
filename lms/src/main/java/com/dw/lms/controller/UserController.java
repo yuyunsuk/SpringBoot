@@ -105,4 +105,9 @@ public class UserController {
         return userService.getUserByUserId(userId);
     }
 
+//    @GetMapping("/id/{userId}")
+//    public UserDto getUserSQLByUserId(@PathVariable String userId) {
+//        return userService.getUserSQLByUserId(userId);
+//    }
+
 }
