@@ -1,11 +1,16 @@
 package com.dw.lms.service;
 
+import com.dw.lms.dto.LectureCategoryCountDto;
 import com.dw.lms.model.Course_registration;
 import com.dw.lms.model.Lecture;
 import com.dw.lms.repository.LectureRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,8 +19,73 @@ public class LectureService {
     LectureRepository lectureRepository;
 
     public List<Lecture> getAllLecture() {
-    		// findAll() »ç¿ë½Ã Á¶È¸ ¼ø¼­°¡ ¿À¸§Â÷¼ø, repository ¿¡¼­ Query ¸¦ »ç¿ëÇÏ¿© ³»¸²Â÷¼ø Á¶È¸·Î ¼öÁ¤
+    		// findAll() ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, repository ï¿½ï¿½ï¿½ï¿½ Query ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         // List<Lecture> lecture = lectureRepository.findAll();
         return lectureRepository.getAllLecture();
     }
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    public List<Object[]> executeNativeQueryDto() {
+        String sqlQuery = "select '00' as category_id " +
+                          "     , 'ì „ì²´ê³¼ì •' as category_name " +
+                          "     , count(*) as category_count " +
+                          "  from lecture a " +
+                          "union all " +
+                          "select a.category_id " +
+                          "     , b.category_name " +
+                          "     , count(*) as category_count " +
+                          "  from category b " +
+                          "     , lecture  a " +
+                          " where a.category_id = b.category_id " +
+                          " group by " +
+                          "       a.category_id " +
+                          "     , b.category_name " +
+                          " order by 1 ";
+        Query query = entityManager.createNativeQuery(sqlQuery);
+
+        return query.getResultList(); // Returns a list of Object arrays
+    }
+
+    // Native Query ì‚¬ìš©2 => Dto ì— ë‹´ëŠ” ì˜ˆì œ
+    public List<LectureCategoryCountDto> getLectureCategoryCountJPQL() {
+
+        List<LectureCategoryCountDto> targetDto = new ArrayList<>();
+        List<Object[]> results = executeNativeQueryDto();
+
+// [LectureCategoryCountDto]
+//        private String CategoryId;
+//        private String CategoryName;
+//        private Long CategoryCount;
+
+        // Process the results
+        for (Object[] row : results) {
+            // Access each column in the row
+            System.out.println("CategoryId:    "+row[0].toString());
+            System.out.println("CategoryName:  "+row[1].toString());
+            System.out.println("CategoryCount: "+row[2].toString());
+
+            String  column1Value = row[0].toString(); // Assuming column1 is of type String
+            String  column2Value = row[1].toString(); // Assuming column2 is of type String
+            Long    column3Value = Long.valueOf(row[0].toString()); // Assuming column3 is of type int
+
+            System.out.println("column1Value: "+ column1Value);
+            System.out.println("column2Value: "+ column2Value);
+            System.out.println("column3Value: "+ column3Value);
+
+            LectureCategoryCountDto lectureCategoryCountDto = new LectureCategoryCountDto(column1Value, column2Value, column3Value);
+            targetDto.add(lectureCategoryCountDto);
+            // Do something with the values...
+        }
+
+        return targetDto;
+    }
+
+
+
+
+
+
+
 }

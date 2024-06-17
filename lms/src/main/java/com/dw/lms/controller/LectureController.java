@@ -1,5 +1,6 @@
 package com.dw.lms.controller;
 
+import com.dw.lms.dto.LectureCategoryCountDto;
 import com.dw.lms.model.Course_registration;
 import com.dw.lms.model.Lecture;
 import com.dw.lms.repository.LectureRepository;
@@ -20,6 +21,12 @@ public class LectureController {
     @GetMapping("/lecture")
     public ResponseEntity<List<Lecture>> getAllLecture() {
         return new ResponseEntity<>(lectureService.getAllLecture(),
+                HttpStatus.OK);
+    }
+
+    @GetMapping("/lecture/categoryCount")
+    public ResponseEntity<List<LectureCategoryCountDto>> getLectureCategoryCountJPQL() {
+        return new ResponseEntity<>(lectureService.getLectureCategoryCountJPQL(),
                 HttpStatus.OK);
     }
 }

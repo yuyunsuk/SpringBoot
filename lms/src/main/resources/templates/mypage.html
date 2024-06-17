@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/styleMypage.css" />
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,12 +19,13 @@
   </head>
 <body>
     <div class="sideMenu">
-        <div class="sideBtn" id = "sideBtnUserInfo"><a href=#>회원정보</a></div>
-        <div class="sideBtn" id = "sideBtnUserEdu"><a href=#>나의학습</a></div>
-        <div class="sideBtn" id = "sideBtnUserDelete"><a href=#>회원탈퇴</a></div>
+        <div class="sideBtn" id = "sideBtnUserInfo"><a href="mypage.html">회원정보</a></div>
+        <div class="sideBtn" id = "sideBtnUserEdu"><a href="mypageEdu.html">나의학습</a></div>
+        <div class="sideBtn" id = "sideBtnUserDelete"><a href="mypageDelete.html">회원탈퇴</a></div>
     </div>
   <div class="container">
     <div id="header"></div>
+    <div class="root">
     <div class="title">
       <h2>마이페이지</h2>
     </div>
@@ -64,26 +67,13 @@
 
     </div>
 
-    <div class="userEducation-box hidden"> <!-- ------------------------------------나의학습------------------------------------ -->
-
-      <h2 class="userEducationBoxTitle">나의학습</h2>
-        <div class="userEducationContainer">
-          <div class="userEduGraph">
-            <div class="userEduGraphGraduations">
-              
-            </div>
-          </div>
-      </div>
-
-    </div>
-
     <div class="userDelete-box hidden"> <!-- ------------------------------------회원탈퇴------------------------------------ -->
 
       <h2 class="userDeleteBoxTitle">회원탈퇴</h2>
         <div class="userDeleteContainer"></div>
           
     </div>
-
+  </div>
     <div id="footer"></div>
   </div>
   <script src="/js/mypage.js"></script>

@@ -9,8 +9,6 @@ axios.get(urlCurrent)
   console.log("에러 발생: ", error);
 });
 
-// const urlUser = "http://localhost:8080/user/id/" + id;
-
 function loadHtml() {
     axios
       .get("header.html")
@@ -41,12 +39,11 @@ axios.get(UserData, {withCredentials: true})
   idGrid.textContent = data.userId;
 
   const nameGrid = document.querySelector(".nameGrid");
-  nameGrid.textContent = response.data.userName;
-  //data.username;
+  nameGrid.textContent = data.userNameKor;
 
 console.log(UserData);
 console.log(data.userId);
-console.log(data.userName);
+console.log(data.userNameKor);
 
   const genderGrid = document.querySelector(".genderGrid");
   genderGrid.textContent = data.gender;
@@ -63,10 +60,10 @@ console.log(data.userName);
   const hpTelGrid = document.querySelector(".hpTelGrid");
   hpTelGrid.value = data.hpTel;
 
-  educationGrid = document.querySelector(".educationGrid");
+  const educationGrid = document.querySelector(".educationGrid");
   educationGrid.value = data.education;
 
-  finalSchoolGrid = document.querySelector(".finalSchoolGrid");
+  const finalSchoolGrid = document.querySelector(".finalSchoolGrid");
   finalSchoolGrid.value = data.finalSchool;
 
   // jobGrid = document.querySelector(".jobGrid");
@@ -82,21 +79,3 @@ console.log(data.userName);
   console.log("에러 발생: ", error);
 });
 }
-
-document.querySelector("#sideBtnUserInfo").addEventListener("click", () => {
-  document.querySelector(".userInfo-box").classList.remove("hidden"); // 로그인 box 보이도록
-  document.querySelector(".userEducation-box").classList.add("hidden"); // 회원가입 box 안보이도록
-  document.querySelector(".userDelete-box").classList.add("hidden"); // 회원가입 box 안보이도록
-});
-
-document.querySelector("#sideBtnUserEdu").addEventListener("click", () => {
-  document.querySelector(".userInfo-box").classList.add("hidden"); // 로그인 box 보이도록
-  document.querySelector(".userEducation-box").classList.remove("hidden"); // 회원가입 box 안보이도록
-  document.querySelector(".userDelete-box").classList.add("hidden"); // 회원가입 box 안보이도록
-});
-
-document.querySelector("#sideBtnUserDelete").addEventListener("click", () => {
-  document.querySelector(".userInfo-box").classList.add("hidden"); // 로그인 box 보이도록
-  document.querySelector(".userEducation-box").classList.add("hidden"); // 회원가입 box 안보이도록
-  document.querySelector(".userDelete-box").classList.remove("hidden"); // 회원가입 box 안보이도록
-});

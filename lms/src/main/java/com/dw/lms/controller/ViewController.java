@@ -32,14 +32,14 @@ public class ViewController { // 디자인 패턴, MVC(Model[정보] View(=>Fron
         return "login";
     }
 
+    @GetMapping("/lms/login_past.html")
+    public String login_past() {
+        return "login_past";
+    }
+
     @GetMapping("/lms/cart.html")
     public String cart() {
         return "cart";
-    }
-
-    @GetMapping("/lms/mypage.html")
-    public String mypage() {
-        return "mypage";
     }
 
     @GetMapping("/lms/header.html")
@@ -56,5 +56,29 @@ public class ViewController { // 디자인 패턴, MVC(Model[정보] View(=>Fron
 
     @GetMapping("/lms/lecture.html")
     public String lecture(){return "lecture";}
+
+    @GetMapping("/lms/lms_notices.html")
+    public String lms_notices(){return "lms_notices";}
+
+    @GetMapping("/lms/lms_qa.html")
+    public String lms_qa(){return "lms_qa";}
+
+    @GetMapping("/lms/lms_events.html")
+    public String lms_events(){return "lms_events";}
+
+    @GetMapping("/lms/mypage.html")
+    public String mypage() {
+        return "mypage";
+    }
+
+    @GetMapping("/lms/mypageEdu.html")
+    public String mypageEdu() {
+        return "mypageEdu";
+    }
+
+    @GetMapping("/lms/mypageDelete.html")
+    public String mypageDelete() {
+        return "mypageDelete";
+    }
 
 }
