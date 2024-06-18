@@ -20,71 +20,104 @@ function loadHtml() {
   // 페이지가 로드될 때 header와 footer를 로드
   window.onload = loadHtml;
 
-// 서버에서 제품 목록을 가져올 URL을 정의합니다.
-const url = "http://localhost:8080/lms/lms_events";
-// axios를 사용하여 정의된 URL로 GET 요청을 보냅니다.
-axios
-.get(url)
-.then((response)=>{
-    // 서버로부터 받은 응답 전체를 콘솔에 출력합니다.
-    console.log("응답 Response: ", response);
-    // 응답 데이터로 제품 목록을 화면에 표시하는 함수를 호출합니다.
-    displayProducts(response.data);
-})
-.catch((error)=>{
-    // 요청 중 에러가 발생하면 콘솔에 에러 메시지를 출력합니다.
-    console.log("에러 발생: ", error);
-});
+  document.addEventListener('DOMContentLoaded', function() {
+    const noticeTableBody = document.getElementById('notice-list');
+    const prevPageBtn = document.getElementById('prev-page');
+    const nextPageBtn = document.getElementById('next-page');
+    const pageNumbersSpan = document.getElementById('page-numbers');
+    const noticeDetail = document.getElementById('notice-detail');
+    const backToListBtn = document.getElementById('back-to-list');
+    let currentPage = 1;
+    const noticesPerPage = 5;
 
-// 제품 목록을 화면에 표시하는 함수입니다.
-function displayProducts(gameData) {
-    // 제품 목록의 길이를 콘솔에 출력합니다.
-    console.log(gameData.length);
-    
-    // 제품 목록이 하나 이상 존재하는 경우에만 실행됩니다.
-    if (gameData.length > 0) {
-        // .content 클래스를 가진 요소를 선택합니다.
-        const content = document.querySelector(".content");
-        
-        // 제품 목록 데이터를 반복 처리합니다.
-        gameData.forEach((data)=>{
-            // 새로운 div 요소를 생성합니다.
-            const game = document.createElement("div");
-            // 생성한 div 요소에 'game' 클래스를 추가합니다.
-            game.classList.add("game");
-            
-            // 새로운 img 요소를 생성합니다.
-            const img = document.createElement("img");
-            // 생성한 img 요소에 'image' 클래스를 추가합니다.
-            img.classList.add("image");
-            // img 요소의 src 속성을 데이터에서 가져온 이미지 URL로 설정합니다.
-            img.src = data.image;
-            // img 요소를 game div에 자식 요소로 추가합니다.
-            game.appendChild(img);
-            
-            // 새로운 p 요소들을 생성합니다.
-            const title = document.createElement("p");
-            const genre = document.createElement("p");
-            const price = document.createElement("p");
-            
-            // 각 p 요소에 텍스트 내용을 설정합니다.
-            title.textContent = "게임 타이틀 : " + data.title;
-            genre.textContent = "게임 장르 : " + data.genre;
-            price.textContent = "게임 가격 : " + data.price + "원";
-            
-            // 각 p 요소를 game div에 자식 요소로 추가합니다.
-            game.appendChild(title);
-            game.appendChild(genre);
-            game.appendChild(price);
-            
-            // game div에 클릭 이벤트 리스너를 추가합니다.
-            game.addEventListener("click",()=>{
-                // 클릭 시 해당 제품의 상세 페이지로 이동합니다.
-                window.location.href = "singleProduct.html?id=" + data.id;
+    function loadNotices(page) {
+        const url = `/api/notices?page=${page - 1}&size=${noticesPerPage}`;
+        axios.get(url)
+            .then(response => {
+                const notices = response.data.content;
+                const totalPages = response.data.totalPages;
+                noticeTableBody.innerHTML = '';
+                notices.forEach((notice, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${index + 1 + (page - 1) * noticesPerPage}</td>
+                        <td>${notice.categoryId}</td>
+                        <td class="notice-title" data-id="${notice.lmsNoticesSeq}">${notice.lmsNoticesTitle}</td>
+                        <td>${notice.user ? notice.user.username : '관리자'}</td>
+                        <td>${notice.lmsNoticesWritingDate}</td>
+                        <td>${notice.lmsNoticesViewCount}</td>
+                    `;
+                    noticeTableBody.appendChild(row);
+                });
+
+                // 페이지 번호 업데이트
+                pageNumbersSpan.innerHTML = '';
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageNumber = document.createElement('span');
+                    pageNumber.textContent = i;
+                    if (i === currentPage) {
+                        pageNumber.style.fontWeight = 'bold';
+                    }
+                    pageNumber.addEventListener('click', () => {
+                        currentPage = i;
+                        loadNotices(currentPage);
+                    });
+                    pageNumbersSpan.appendChild(pageNumber);
+                }
+
+                // 이전, 다음 버튼 활성화/비활성화
+                prevPageBtn.disabled = (currentPage === 1);
+                nextPageBtn.disabled = (currentPage === totalPages);
+
+                // 게시글 클릭 이벤트 추가
+                document.querySelectorAll('.notice-title').forEach(title => {
+                    title.addEventListener('click', function() {
+                        const noticeId = this.dataset.id;
+                        loadNoticeDetails(noticeId);
+                    });
+                });
             })
-            
-            // game div를 content 요소에 자식 요소로 추가합니다.
-            content.appendChild(game);
-        })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
-}
+
+    function loadNoticeDetails(id) {
+        const url = `/api/notices/${id}`;
+        axios.get(url)
+            .then(response => {
+                const notice = response.data;
+                document.getElementById('detail-title').textContent = notice.lmsNoticesTitle;
+                document.getElementById('detail-content').textContent = notice.lmsNoticesContent;
+                document.getElementById('detail-writer').textContent = notice.user ? notice.user.username : '관리자';
+                document.getElementById('detail-date').textContent = notice.lmsNoticesWritingDate;
+                document.getElementById('detail-views').textContent = notice.lmsNoticesViewCount;
+                noticeDetail.style.display = 'block';
+                document.getElementById('notice-table').style.display = 'none';
+                document.querySelector('.pagination').style.display = 'none';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    backToListBtn.addEventListener('click', () => {
+        noticeDetail.style.display = 'none';
+        document.getElementById('notice-table').style.display = 'table';
+        document.querySelector('.pagination').style.display = 'flex';
+    });
+
+    prevPageBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            loadNotices(currentPage);
+        }
+    });
+
+    nextPageBtn.addEventListener('click', () => {
+        currentPage++;
+        loadNotices(currentPage);
+    });
+
+    loadNotices(currentPage);
+});

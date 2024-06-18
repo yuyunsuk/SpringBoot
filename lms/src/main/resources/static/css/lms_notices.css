@@ -66,8 +66,59 @@ aside ul li a.active {
     color: #007BFF;
 }
 
-main {
+/* main {
     flex-grow: 1;
     padding: 20px;
     background-color: #fafafa;
+} */
+
+main {
+    width: 80%;
+    margin: 0 auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.pagination button {
+    margin: 0 5px;
+}
+
+#page-numbers {
+    margin: 0 10px;
+}
+
+/* 상세 내용 스타일 */
+.notice-detail {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.notice-detail h2 {
+    margin-top: 0;
+}
+
+.notice-detail p {
+    margin: 10px 0;
 }

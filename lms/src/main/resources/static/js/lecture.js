@@ -81,6 +81,11 @@ function lectureSearch(data) {
       lecture.appendChild(date);
       lecture.appendChild(price);
 
+      lecture.addEventListener("click", () => {
+        window.location.href =
+          "lectureDetail.html?lectureId=" + lectureData.lectureId;
+      });
+
       content.appendChild(lecture);
     });
   }

@@ -26,6 +26,36 @@
                     </aside>
                     <main>
                         <h1>공지사항</h1>
+                        <table id="notice-table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>카테고리</th>
+                                    <th>제목</th>
+                                    <th>작성자</th>
+                                    <th>등록일</th>
+                                    <th>조회</th>
+                                </tr>
+                            </thead>
+                            <tbody id="notice-list">
+                                <!-- 동적으로 내용이 삽입될 부분 -->
+                            </tbody>
+                        </table>
+                        <div class="pagination">
+                            <button id="prev-page"><</button>
+                            <span id="page-numbers"></span>
+                            <button id="next-page">></button>
+                        </div>
+                
+                        <!-- 상세 내용 표시 -->
+                        <div id="notice-detail" class="notice-detail" style="display: none;">
+                            <h2 id="detail-title"></h2>
+                            <p><strong>작성자:</strong> <span id="detail-writer"></span></p>
+                            <p><strong>작성일:</strong> <span id="detail-date"></span></p>
+                            <p><strong>조회수:</strong> <span id="detail-views"></span></p>
+                            <p id="detail-content"></p>
+                            <button id="back-to-list">목록</button>
+                        </div>
                     </main>
                 </div>
             </div>

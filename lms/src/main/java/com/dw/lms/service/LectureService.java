@@ -1,6 +1,7 @@
 package com.dw.lms.service;
 
 import com.dw.lms.dto.LectureCategoryCountDto;
+import com.dw.lms.exception.ResourceNotFoundException;
 import com.dw.lms.model.Course_registration;
 import com.dw.lms.model.Lecture;
 import com.dw.lms.repository.LectureRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LectureService {
@@ -19,9 +21,17 @@ public class LectureService {
     LectureRepository lectureRepository;
 
     public List<Lecture> getAllLecture() {
-    		// findAll() ���� ��ȸ ������ ��������, repository ���� Query �� ����Ͽ� �������� ��ȸ�� ����
         // List<Lecture> lecture = lectureRepository.findAll();
         return lectureRepository.getAllLecture();
+    }
+
+    public Lecture getLecture(String lectureId){
+        Optional<Lecture> lectureOptional=lectureRepository.findById(lectureId);
+        if (lectureOptional.isPresent()){
+            return lectureOptional.get();
+        }else {
+            throw new ResourceNotFoundException("Lecture","lectureId",lectureId);
+        }
     }
 
     @PersistenceContext
@@ -68,7 +78,7 @@ public class LectureService {
 
             String  column1Value = row[0].toString(); // Assuming column1 is of type String
             String  column2Value = row[1].toString(); // Assuming column2 is of type String
-            Long    column3Value = Long.valueOf(row[0].toString()); // Assuming column3 is of type int
+            Long    column3Value = Long.valueOf(row[2].toString()); // Assuming column3 is of type int
 
             System.out.println("column1Value: "+ column1Value);
             System.out.println("column2Value: "+ column2Value);
@@ -81,11 +91,5 @@ public class LectureService {
 
         return targetDto;
     }
-
-
-
-
-
-
 
 }

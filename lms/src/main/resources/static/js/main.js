@@ -55,33 +55,37 @@ function lectureSearch(data) {
   }
 }
 
-function createLectureElement(lectureData) {
+function createLectureElement(data) {
   const lecture = document.createElement("div");
   lecture.classList.add("lecture");
 
   const lectureImg = document.createElement("img");
   lectureImg.classList.add("lectureImg");
-  lectureImg.src = lectureData.imagePath;
+  lectureImg.src = data.imagePath;
 
   const period = document.createElement("p");
   const hours = document.createElement("p");
   const date = document.createElement("p");
   const price = document.createElement("p");
 
-  period.textContent = "교육 기간 : " + lectureData.educationPeriod;
-  hours.textContent = "교육 시간 : " + lectureData.educationHours + " 시간";
+  period.textContent = "교육 기간 : " + data.educationPeriod;
+  hours.textContent = "교육 시간 : " + data.educationHours + " 시간";
   date.textContent =
     "신청 기간 : " +
-    lectureData.educationPeriodStartDate +
+    data.educationPeriodStartDate +
     " ~ " +
-    lectureData.educationPeriodEndDate;
-  price.textContent = "가격 : " + lectureData.educationPrice + "원";
+    data.educationPeriodEndDate;
+  price.textContent = "가격 : " + data.educationPrice + "원";
 
   lecture.appendChild(lectureImg);
   lecture.appendChild(period);
   lecture.appendChild(hours);
   lecture.appendChild(date);
   lecture.appendChild(price);
+
+  lecture.addEventListener("click", () => {
+    window.location.href = "lectureDetail.html?lectureId=" + data.lectureId;
+  });
 
   return lecture;
 }
