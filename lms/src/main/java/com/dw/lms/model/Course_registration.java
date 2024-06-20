@@ -43,6 +43,7 @@ public class Course_registration {
     private String lectureStatus;
 
     @Column(name = "lecture_completed_check", length = 1)
+    @ColumnDefault("'N'")
     private String lectureCompletedCheck;
 
     @Column(name = "sys_date", updatable = false)

@@ -3,8 +3,6 @@ package com.dw.lms.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.sql.Struct;
-
 @Controller // View 를 Controll
 public class ViewController { // 디자인 패턴, MVC(Model[정보] View(=>Front 로 넘어감) Controll[로직(Controll+Service)]) 디자인 패턴
     @GetMapping("/lms/login.html")
@@ -54,5 +52,22 @@ public class ViewController { // 디자인 패턴, MVC(Model[정보] View(=>Fron
     public String mypageDelete() {
         return "mypageDelete";
     }
+
+    @GetMapping("/lms/sub_navBox.html")
+    public String sub_navBox() {
+        return "sub_navBox";
+    }
+
+    @GetMapping("/lms/cart.html")
+    public String cart() {
+        return "cart";
+    }
+
+    @GetMapping("/lms/reviewDetail.html")
+    public String reviewDetail(){
+    		return "reviewDetail";
+		}
+
+
 
 }

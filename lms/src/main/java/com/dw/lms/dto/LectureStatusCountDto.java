@@ -10,8 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LectureStatusCountDto {
-    private String LectureStatusId;
-    private String LectureStatusName;
-    private Long LectureStatusCount;
-    private Long SortSeq;
+    private String lectureStatusId;
+    private String lectureStatusName;
+    private Long lectureStatusCount;
+    private Long sortSeq;
 }

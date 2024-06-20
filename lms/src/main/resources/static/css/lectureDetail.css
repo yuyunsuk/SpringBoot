@@ -26,10 +26,10 @@ td {
 
 /* 여기부터 */
 .root {
-  width: 80%;
+  width: 85%;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 20% 80%;
+  grid-template-columns: 15% 85%;
 }
 
 .side-box {
@@ -213,6 +213,9 @@ td {
 }
 .division {
   padding: 0 1px 0 1px;
+}
+.curser {
+  cursor: pointer;
 }
 
 .option {

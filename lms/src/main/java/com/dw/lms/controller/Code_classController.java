@@ -1,7 +1,6 @@
 package com.dw.lms.controller;
 
 import com.dw.lms.model.Code_class;
-import com.dw.lms.model.Lms_qa;
 import com.dw.lms.service.Code_classService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

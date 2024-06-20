@@ -2,7 +2,6 @@ package com.dw.lms.service;
 
 import com.dw.lms.dto.LectureCategoryCountDto;
 import com.dw.lms.exception.ResourceNotFoundException;
-import com.dw.lms.model.Course_registration;
 import com.dw.lms.model.Lecture;
 import com.dw.lms.repository.LectureRepository;
 import jakarta.persistence.EntityManager;

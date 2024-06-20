@@ -129,7 +129,7 @@ document
 
   /* 로그아웃 */
 document.querySelector(".logoutBtn").addEventListener("click", () => {
-  if (confirm("로그아웃 하시겠습니까?")) {
+  // if (confirm("로그아웃 하시겠습니까?")) {
     axios
       .post(urlLogout, {}, { withCredentials: true })
       .then((response) => {
@@ -142,7 +142,7 @@ document.querySelector(".logoutBtn").addEventListener("click", () => {
       .catch((error) => {
         console.log("에러 발생: ", error);
       });
-  }
+  // }
 });
 
 /* 입장 */
@@ -169,7 +169,8 @@ function sessionCurrent() {
           document.querySelector(".login-box").classList.add("hidden");
           document.querySelector(".user-box").classList.remove("hidden");
           document.querySelector(".user-box p").textContent =
-            response.data.userId + "님, 환영합니다.";
+            "로그아웃 하시겠습니까?";
+            //response.data.userId + "님, 환영합니다.";
           //window.location.href = "main.html";
         }
       }

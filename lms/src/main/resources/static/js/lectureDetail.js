@@ -3,6 +3,7 @@ const lectureId = urlParams.get("lectureId");
 const url = "http://localhost:8080/lecture/" + lectureId;
 const contentUrl = "http://localhost:8080/learning/contents/" + lectureId;
 const teacherUrl = "http://localhost:8080/teacher/" + lectureId;
+const reviewUrl = "http://localhost:8080/learning/review/" + lectureId;
 
 // 각 페이지별 #header와 #footer에 html파일 넣기
 function loadHtml() {
@@ -46,17 +47,25 @@ window.onload = loadHtml;
 //   });
 
 axios
-  .all([axios.get(url), axios.get(contentUrl), axios.get(teacherUrl)])
+  .all([
+    axios.get(url),
+    axios.get(contentUrl),
+    axios.get(teacherUrl),
+    axios.get(reviewUrl),
+  ])
   .then((response) => {
     const lectureResponse = response[0];
     const contentsResponse = response[1];
     const teacherResponse = response[2];
+    const reviewResponse = response[3];
     console.log("Lecture 데이터: ", lectureResponse.data);
     console.log("Content 데이터: ", contentsResponse.data);
     console.log("Teacher 데이터: ", teacherResponse.data);
+    console.log("Review 데이터: ", reviewResponse.data);
     lectureSearch(lectureResponse.data);
     contentsSearch(contentsResponse.data);
     teacherSearch(teacherResponse.data);
+    ReviewSearch(reviewResponse.data);
   })
   .catch((error) => {
     console.log("에러 발생 : ", error);
@@ -240,3 +249,60 @@ function btnClick4() {
   document.querySelector(".body3").classList.add("hidden");
   document.querySelector(".body4").classList.remove("hidden");
 }
+
+// Review데이터
+const ReviewList = [
+  {
+    learningReviewTitle: learningReviewTitle,
+    learningReviewDate: learningReviewDate,
+    learningReviewScore: learningReviewScore,
+  },
+];
+
+function ReviewSearch(dataList) {
+  if (dataList.length === 0) {
+    document.querySelector(".reviewTable").classList.add("hidden");
+    document.querySelector(".reviewUl").classList.add("hidden");
+    const none = document.querySelector(".review-box");
+    const p = document.createElement("p");
+    p.textContent = "후기가 없습니다.";
+    none.appendChild(p);
+  } else {
+    dataList.forEach((data, index) => {
+      const reviewTable = document.querySelector(".reviewTable");
+      const tr = document.createElement("tr");
+      const seq = document.createElement("td");
+      const text = document.createElement("td");
+      const date = document.createElement("td");
+      const score = document.createElement("td");
+
+      seq.classList.add("seq");
+      date.classList.add("seq");
+      score.classList.add("seq");
+      seq.classList.add("curser");
+      text.classList.add("curser");
+      date.classList.add("curser");
+      score.classList.add("curser");
+
+      seq.textContent = index + 1;
+      text.textContent = data.learningReviewTitle;
+      date.textContent = data.learningReviewDate;
+      score.textContent = data.learningReviewScore;
+
+      tr.appendChild(seq);
+      tr.appendChild(text);
+      tr.appendChild(date);
+      tr.appendChild(score);
+
+      tr.addEventListener("click", () => {
+        const lectureId = data.course_registration.lecture.lectureId;
+        const userId = data.course_registration.user.userId;
+        window.location.href =
+          "reviewDetail.html?lectureId=" + lectureId + "&userId=" + userId;
+      });
+
+      reviewTable.appendChild(tr);
+    });
+  }
+}
+ReviewSearch(ReviewList);

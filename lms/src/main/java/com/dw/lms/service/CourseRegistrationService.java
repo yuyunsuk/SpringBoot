@@ -1,16 +1,21 @@
 package com.dw.lms.service;
 
-import com.dw.lms.dto.LectureCategoryCountDto;
 import com.dw.lms.dto.LectureStatusCountDto;
-import com.dw.lms.model.Course_history;
 import com.dw.lms.model.Course_registration;
+import com.dw.lms.model.Lecture;
+import com.dw.lms.model.User;
 import com.dw.lms.repository.CourseRegistrationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.dw.lms.repository.LectureRepository;
+import com.dw.lms.repository.UserRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +24,91 @@ public class CourseRegistrationService {
     @Autowired
     CourseRegistrationRepository courseRegistrationRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    LectureRepository lectureRepository;
+
     public List<Course_registration> getAllRegistration() {
         return courseRegistrationRepository.findAll();
     }
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    // 수강목차의 마지막 횟차 가져오는 SQL
+    public List<Object> executeNativeQueryFLCS(String lectureId) {
+        String sqlQuery = "select max(learning_contents_seq) from learning_contents where lecture_id = :lectureId";
+        Query query = entityManager.createNativeQuery(sqlQuery);
+        query.setParameter("lectureId", lectureId);
+        return query.getResultList(); // Returns a list of Objects
+    }
+
+    // 수강목차의 마지막 횟차 가져오는 SQL 실행 후 값을 가져오는 부분
+    public Long getFinalLectureContentsSeqJPQL(String lectureId) {
+        List<Object> results = executeNativeQueryFLCS(lectureId);
+
+        Long column1Value = 0L; // 초기값을 Long 타입으로 설정
+
+        System.out.println("getFinalLectureContentsSeqJPQL Start!!!");
+
+        if (!results.isEmpty()) {
+            Object result = results.get(0);
+            if (result != null) {
+                column1Value = ((Number) result).longValue(); // Object를 Number로 캐스팅하여 Long 값으로 변환
+                System.out.println("column1Value: " + column1Value);
+            }
+        }
+
+        System.out.println("getFinalLectureContentsSeqJPQL End!!!");
+
+        return column1Value;
+    }
+
+    // 수강신청을 하는 부분
+    public String saveCourseRegistration(Course_registration course_registration) {
+        try {
+            // 입력된 리뷰의 course_registration에서 user와 lecture를 가져와 객체를 생성
+
+            User user = userRepository.findById(course_registration.getUser().getUserId())
+                    .orElseThrow(() -> new EntityNotFoundException("User not found"));
+            Lecture lecture = lectureRepository.findById(course_registration.getLecture().getLectureId())
+                    .orElseThrow(() -> new EntityNotFoundException("Lecture not found"));
+
+            course_registration.setUser(user);
+            course_registration.setLecture(lecture);
+
+            System.out.println("getLectureId:" + course_registration.getLecture().getLectureId());
+
+            Long finalSeq = getFinalLectureContentsSeqJPQL(course_registration.getLecture().getLectureId());
+            course_registration.setFinalLectureContentsSeq(finalSeq);
+
+            System.out.println("getFinalLectureContentsSeqJPQL:" + finalSeq);
+
+            Long contentSeq = Long.valueOf(0);
+            course_registration.setProgressLectureContentsSeq(contentSeq);
+
+            course_registration.setLectureStatus("I");
+            course_registration.setLectureCompletedCheck("N");
+
+            // 현재 날짜와 시간을 한 번만 가져옴
+            LocalDateTime now = LocalDateTime.now();
+            course_registration.setCourseRegistrationDate(now.toLocalDate()); // 현재일자
+            course_registration.setSysDate(now); // 현재일시
+            course_registration.setUpdDate(now); // 현재일시
+
+            // 리뷰를 저장하고 저장된 리뷰의 userId 반환
+            Course_registration savedReview = courseRegistrationRepository.save(course_registration);
+            return savedReview.getUser().getUserId(); // 없으면 Insert, 있으면 Update
+        } catch (Exception e) {
+            // 예외 발생 시 로그를 남기고 null 반환 (혹은 적절한 예외 처리)
+            // 예: log.error("Error saving review", e);
+            //throw new ResourceNotFoundException("User", "ID", learning_review.getCourse_registration().getUser().getUserId());
+            System.out.println("Error saving CourseRegistration: " + e);
+            return "saveCourseRegistration Error!";
+        }
+    }
 
     public List<Object[]> executeNativeQueryDto(String userId) {
         String sqlQuery = "select 'A'        as lecture_status_id " +
@@ -101,15 +185,5 @@ public class CourseRegistrationService {
 
         return targetDto;
     }
-
-
-
-
-
-
-
-
-
-
 
 }
