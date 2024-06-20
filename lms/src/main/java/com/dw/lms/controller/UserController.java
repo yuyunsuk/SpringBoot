@@ -93,6 +93,12 @@ public class UserController {
         // 유저네임과 권한 Dto 에 적용
         SessionDto sessionDto = new SessionDto();
         sessionDto.setUserId(authentication.getName());
+
+        Optional<User> userOptional = userRepository.findByUserId(authentication.getName());
+        if (userOptional.isPresent()){
+            sessionDto.setUserName(userOptional.get().getUserNameKor());
+        }
+
         sessionDto.setAuthority(authentication.getAuthorities());
 
         //return authentication.getName(); // 없는 경우 무명(anonymous), 있는 경우 유저네임

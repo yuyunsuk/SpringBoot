@@ -10,6 +10,7 @@ import com.dw.lms.repository.CourseRegistrationRepository;
 import com.dw.lms.repository.LearningReviewRepository;
 import com.dw.lms.repository.LectureRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class LearningReviewService {
     @Autowired
     LearningReviewRepository learningReviewRepository;
     @Autowired
     LectureRepository lectureRepository;
+
+    @Autowired
+    CourseRegistrationService courseRegistrationService;
 
     public List<Learning_review> getAllReview() {
         return learningReviewRepository.findAll();
@@ -57,16 +62,6 @@ public class LearningReviewService {
         return learningReviewList;
     }
 
-    @Autowired
-    CourseRegistrationRepository courseRegistrationRepository;
-
-    public Course_registration findCourseRegistrationByCompositeKey(User user, Lecture lecture) {
-        Course_registration_CK course_registration_CK = new Course_registration_CK(user, lecture);
-        Course_registration entityCR = courseRegistrationRepository.findById(course_registration_CK)
-                .orElseThrow(() -> new EntityNotFoundException("course_registration_CK not found"));
-        return entityCR;
-    }
-
     public String saveReview(Learning_review learning_review) {
         try {
             // 입력된 리뷰의 course_registration에서 user와 lecture를 가져와 객체를 생성
@@ -77,7 +72,7 @@ public class LearningReviewService {
             inputLecture.setLectureId(learning_review.getCourse_registration().getLecture().getLectureId());
 
             // 주어진 user와 lecture로 course_registration을 찾음
-            Course_registration entityCR = findCourseRegistrationByCompositeKey(inputUser, inputLecture);
+            Course_registration entityCR = courseRegistrationService.findCourseRegistrationByCompositeKey(inputUser, inputLecture);
 
             // 리뷰의 course_registration 설정
             learning_review.setCourse_registration(entityCR);

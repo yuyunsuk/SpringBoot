@@ -6,17 +6,10 @@
     <link rel="stylesheet" href="/css/lms_qa.css">
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/footer.css">
-
-    <!-- Google 폰트 => Poppins Embed code 사용 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet"
-    />
-
-    <title>LMS_qa</title>
-    <!-- header 에 넣는 이유는 body 에서 사용해야 되기 때문에 미리 로드해야 함 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <title>질의응답</title>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.7.2/dist/axios.min.js"></script>
 </head>
 <body>
@@ -32,17 +25,12 @@
                     </ul>
                 </aside>
                 <main>
-                    <h1>질의응답</h1>
-                    <div class="layout">
-                        <input type="text">
-                        <textarea></textarea>
-                        <button>Submit</button>
-                    </div>
-                    <div class="qa">
-                        <table class="qa-table">
+                    <div id="question-list-container">
+                        <h1>질의응답</h1>
+                        <table id="question-table">
                             <thead>
                                 <tr>
-                                    <th>NO.</th>
+                                    <th>No</th>
                                     <th>카테고리</th>
                                     <th>제목</th>
                                     <th>작성자</th>
@@ -50,19 +38,45 @@
                                     <th>답변상태</th>
                                 </tr>
                             </thead>
-                            <tbody class="qa-body">
-                    
+                            <tbody id="question-list">
+                                <!-- 동적으로 내용이 삽입될 부분 -->
                             </tbody>
                         </table>
-                        <div></div>
-                        <div></div>
+                        <div class="pagination">
+                            <button id="prev-page"><</button>
+                            <span id="page-numbers"></span>
+                            <button id="next-page">></button>
+                        </div>
                     </div>
+            
+                    <!-- 상세 내용 표시 -->
+                    <div id="question-detail" class="question-detail" style="display: none;">
+                        <h2 id="detail-title"></h2>
+                        <p><strong>작성자:</strong> <span id="detail-writer"></span></p>
+                        <p><strong>작성일:</strong> <span id="detail-date"></span></p>
+                        <p id="detail-content"></p>
+
+                        <!-- 답변 섹션 -->
+                        <div id="answer-section"></div>
+
+                        <!-- 답변 입력 폼 (관리자 전용) -->
+                        <div id="admin-response-form" style="display: none;">
+                            <h3>답변 달기</h3>
+                            <textarea id="response-content" rows="4" cols="50"></textarea>
+                            <button id="submit-response">답변 제출</button>
+                        </div>
+
+                        <button id="back-to-list">목록으로 돌아가기</button>
+                    </div>
+
+                    <!-- 답변하기 버튼 (관리자 전용) -->
+                    <button id="reply-button" style="display: none; margin-top: 20px;">답변하기</button>
                 </main>
             </div>
         </div>
         <div id="footer"></div>
     </div>
-
+    
     <script defer src="/js/lms_qa.js"></script>
 </body>
 </html>

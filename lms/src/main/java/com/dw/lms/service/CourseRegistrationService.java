@@ -1,16 +1,15 @@
 package com.dw.lms.service;
 
 import com.dw.lms.dto.LectureStatusCountDto;
+import com.dw.lms.model.CK.Course_registration_CK;
 import com.dw.lms.model.Course_registration;
 import com.dw.lms.model.Lecture;
 import com.dw.lms.model.User;
 import com.dw.lms.repository.CourseRegistrationRepository;
 import com.dw.lms.repository.LectureRepository;
 import com.dw.lms.repository.UserRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
+import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class CourseRegistrationService {
     @Autowired
     CourseRegistrationRepository courseRegistrationRepository;
@@ -30,8 +30,26 @@ public class CourseRegistrationService {
     @Autowired
     LectureRepository lectureRepository;
 
+    public void deleteCourseRegistration(String userId, String lectureId) {
+        User inputUser = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        Lecture inputLecture = lectureRepository.findById(lectureId)
+                .orElseThrow(() -> new EntityNotFoundException("Lecture not found"));
+
+        Course_registration_CK compositeKey = new Course_registration_CK(inputUser, inputLecture);
+        courseRegistrationRepository.deleteById(compositeKey);
+    }
+
     public List<Course_registration> getAllRegistration() {
         return courseRegistrationRepository.findAll();
+    }
+
+    // Course_registration_CK 키 가져오는 부분
+    public Course_registration findCourseRegistrationByCompositeKey(User user, Lecture lecture) {
+        Course_registration_CK course_registration_CK = new Course_registration_CK(user, lecture);
+        Course_registration entityCR = courseRegistrationRepository.findById(course_registration_CK)
+                .orElseThrow(() -> new EntityNotFoundException("course_registration_CK not found"));
+        return entityCR;
     }
 
     @PersistenceContext
@@ -69,7 +87,18 @@ public class CourseRegistrationService {
     // 수강신청을 하는 부분
     public String saveCourseRegistration(Course_registration course_registration) {
         try {
-            // 입력된 리뷰의 course_registration에서 user와 lecture를 가져와 객체를 생성
+            // 입력된 course_registration 에서 user와 lecture를 가져와 객체를 생성
+
+//            [Course_registration 테이블]
+//            private User user;
+//            private Lecture lecture;
+//            private LocalDate courseRegistrationDate;
+//            private Long finalLectureContentsSeq;
+//            private Long progressLectureContentsSeq;
+//            private String lectureStatus;
+//            private String lectureCompletedCheck;
+//            private LocalDateTime sysDate;
+//            private LocalDateTime updDate;
 
             User user = userRepository.findById(course_registration.getUser().getUserId())
                     .orElseThrow(() -> new EntityNotFoundException("User not found"));
@@ -98,9 +127,9 @@ public class CourseRegistrationService {
             course_registration.setSysDate(now); // 현재일시
             course_registration.setUpdDate(now); // 현재일시
 
-            // 리뷰를 저장하고 저장된 리뷰의 userId 반환
-            Course_registration savedReview = courseRegistrationRepository.save(course_registration);
-            return savedReview.getUser().getUserId(); // 없으면 Insert, 있으면 Update
+            // 수강신청을 저장하고 저장된 정보의 userId 반환
+            Course_registration savedCourseRegistration = courseRegistrationRepository.save(course_registration);
+            return savedCourseRegistration.getUser().getUserId(); // 없으면 Insert, 있으면 Update
         } catch (Exception e) {
             // 예외 발생 시 로그를 남기고 null 반환 (혹은 적절한 예외 처리)
             // 예: log.error("Error saving review", e);

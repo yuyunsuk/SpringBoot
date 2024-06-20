@@ -2,12 +2,14 @@ package com.dw.lms.service;
 
 import com.dw.lms.model.Lms_notices;
 import com.dw.lms.repository.Lms_noticesRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class Lms_noticesService {
     @Autowired
     private Lms_noticesRepository repository;

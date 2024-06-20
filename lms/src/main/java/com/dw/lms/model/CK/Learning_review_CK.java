@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode
 public class Learning_review_CK implements Serializable {
     private Course_registration course_registration;

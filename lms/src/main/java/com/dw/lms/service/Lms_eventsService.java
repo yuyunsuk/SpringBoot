@@ -2,6 +2,7 @@ package com.dw.lms.service;
 
 import com.dw.lms.model.Lms_events;
 import com.dw.lms.repository.Lms_eventsRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class Lms_eventsService {
 
     @Autowired
