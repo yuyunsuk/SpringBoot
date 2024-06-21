@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -33,6 +34,16 @@ public class LectureService {
         }else {
             throw new ResourceNotFoundException("Lecture","lectureId",lectureId);
         }
+    }
+
+    public List<Lecture> saveLectureList(List<Lecture> lectureList) {
+        List<Lecture> savedLectureList = lectureList.stream()
+                .map(lecture -> {
+                    // lecture.setCreationTime(LocalDateTime.now()); // 예시로 생성 시간 설정
+                    return lectureRepository.save(lecture);
+                })
+                .collect(Collectors.toList());
+        return savedLectureList;
     }
 
     @PersistenceContext

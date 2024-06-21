@@ -10,16 +10,6 @@ public class ViewController { // 디자인 패턴, MVC(Model[정보] View(=>Fron
         return "login";
     } // login.html (.html 생략)
 
-    @GetMapping("/lms/header.html")
-    public String header() {
-        return "header";
-    }
-
-    @GetMapping("/lms/footer.html")
-    public String footer() {
-        return "footer";
-    }
-
     @GetMapping("/lms/main.html")
     public String main(){return "main";}
 
@@ -67,6 +57,31 @@ public class ViewController { // 디자인 패턴, MVC(Model[정보] View(=>Fron
     public String reviewDetail(){
     		return "reviewDetail";
 		}
+
+    @GetMapping("/lms/header.html")
+    public String header() {
+        return "header";
+    }
+
+    @GetMapping("/lms/header_admin.html")
+    public String header_admin() {
+        return "header_admin";
+    }
+
+    @GetMapping("/lms/footer.html")
+    public String footer() {
+        return "footer";
+    }
+
+    @GetMapping("/lms/mypageLecture.html")
+    public String mypageLecture() {
+    	  return "mypageLecture";
+    }
+
+    @GetMapping("/lms/mypageUserDelete.html")
+    public String mypageUserDelete() {
+    	  return "mypageUserDelete";
+    }
 
 
 

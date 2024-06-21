@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class UserDetailService implements UserDetailsService { // UserDetailsService 인터페이스 상속받아서 loadUserByUsername method 를 만들어야 함(Override).
     private final UserRepository userRepository;
 

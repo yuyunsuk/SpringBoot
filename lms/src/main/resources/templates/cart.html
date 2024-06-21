@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/reviewDetail.css" />
+    <link rel="stylesheet" href="/css/cart.css" />
     <link rel="stylesheet" href="/css/header.css" />
     <link rel="stylesheet" href="/css/footer.css" />
 
@@ -28,10 +28,38 @@
           <div class="sidebar"><p>전체과정</p></div>
           <div class="sidebar"><p>전체과정</p></div>
         </div>
-        <div class="content"></div>
+        <div class="content">
+          <h3>장바구니</h3>
+          <div class="cart-box">
+            <table class="cartTable">
+              <colgroup>
+                <col width="3%" />
+                <col width="25%" />
+                <col width="30%" />
+                <col width="15%" />
+                <col width="15%" />
+                <col width="12%" />
+              </colgroup>
+              <tr>
+                <th>
+                  <!-- chkAll 일단 주석처리, 추후 개발 확인 후 개발 -->
+                  <!-- <input type="checkbox" name="chk" id="chkAll" /> -->
+                </th>
+                <th colspan="2">강의명</th>
+                <th>카테고리</th>
+                <th>등록일</th>
+                <th>가격</th>
+              </tr>
+            </table>
+            <div class="button-box">
+              <div class="deleteBtn">삭제하기</div>
+              <div class="classBtn">수강신청</div>
+            </div>
+          </div>
+        </div>
       </div>
       <div id="footer"></div>
     </div>
-    <script src="/js/reviewDetail.js"></script>
+    <script src="/js/cart.js"></script>
   </body>
 </html>

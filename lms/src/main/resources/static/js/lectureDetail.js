@@ -4,6 +4,7 @@ const url = "http://localhost:8080/lecture/" + lectureId;
 const contentUrl = "http://localhost:8080/learning/contents/" + lectureId;
 const teacherUrl = "http://localhost:8080/teacher/" + lectureId;
 const reviewUrl = "http://localhost:8080/learning/review/" + lectureId;
+const coruseUrl = "http://localhost:8080/course/saveCourseRegistration";
 
 // 각 페이지별 #header와 #footer에 html파일 넣기
 function loadHtml() {
@@ -23,28 +24,10 @@ function loadHtml() {
     .catch((error) => {
       console.error("footer loading error:", error);
     });
+  console.log(userId);
 }
 // 페이지가 로드될 때 header와 footer를 로드
 window.onload = loadHtml;
-
-// axios
-//   .get(url)
-//   .then((response) => {
-//     console.log("데이터 : ", response.data);
-//     lectureSearch(response.data);
-//   })
-//   .catch((error) => {
-//     console.log("에러 발생 : ", error);
-//   });
-// axios
-//   .get(contentUrl)
-//   .then((response) => {
-//     console.log("데이터 : ", response.data);
-//     contentsSearch(response.data);
-//   })
-//   .catch((error) => {
-//     console.log("에러 발생 : ", error);
-//   });
 
 axios
   .all([
@@ -113,6 +96,21 @@ function lectureSearch(data) {
   databox2.appendChild(hours);
   databox3.appendChild(date);
   databox4.appendChild(price);
+
+  document.querySelector(".cartBtn").addEventListener("click", () => {
+    if (confirm("장바구니에 담으시겠습니까 ?")) {
+      sessionCurrent(data);
+      alert("장바구니에 담았습니다.");
+    }
+  });
+
+  //찾기
+  document.querySelector(".classBtn").addEventListener("click", () => {
+    if (confirm("수강신청 하시겠습니까 ?")) {
+      cartAdd(data);
+      alert("수강신청 되었습니다.");
+    }
+  });
 
   // 과정 소개
 
@@ -306,3 +304,78 @@ function ReviewSearch(dataList) {
   }
 }
 ReviewSearch(ReviewList);
+
+// 장바구니
+function sessionCurrent(data) {
+  axios
+    .get("http://localhost:8080/user/current", { withCredentials: true })
+    .then((response) => {
+      console.log("데이터:", response.data);
+      if (response.status == 200) {
+        const userId = response.data.userId;
+        const lectureClassId = lectureId;
+        let cartItems = JSON.parse(localStorage.getItem(userId));
+        if (!cartItems) {
+          cartItems = [];
+        }
+        cartItems.push(data);
+        localStorage.setItem(userId, JSON.stringify(cartItems));
+
+        // 수강신청
+        // const classData = {
+        //   user: {
+        //     userId: userId,
+        //   },
+        //   lecture: {
+        //     lectureId: lectureClassId,
+        //   },
+        // };
+        // axios
+        //   .post(coruseUrl, classData, { withCredentials: true })
+        //   .then((response) => {
+        //     console.log("데이터 :", response);
+        //   })
+        //   .catch((error) => {
+        //     console.log("에러 발생:", error);
+        //   });
+      }
+    })
+    .catch((error) => {
+      console.log("에러 발생:", error);
+      alert("로그인해주세요.");
+    });
+}
+
+function cartAdd() {
+  axios
+    .get("http://localhost:8080/user/current", { withCredentials: true })
+    .then((response) => {
+      console.log("데이터:", response.data);
+      if (response.status == 200) {
+        const userId = response.data.userId;
+        const lectureClassId = lectureId;
+
+        // 수강신청;
+        const classData = {
+          user: {
+            userId: userId,
+          },
+          lecture: {
+            lectureId: lectureClassId,
+          },
+        };
+        axios
+          .post(coruseUrl, classData, { withCredentials: true })
+          .then((response) => {
+            console.log("데이터 :", response);
+          })
+          .catch((error) => {
+            console.log("에러 발생:", error);
+          });
+      }
+    })
+    .catch((error) => {
+      console.log("에러 발생:", error);
+      alert("로그인해주세요.");
+    });
+}

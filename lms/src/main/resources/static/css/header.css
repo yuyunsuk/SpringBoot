@@ -87,3 +87,8 @@ img {
   background-color: lightblue;
   color: dodgerblue;
 }
+
+/* CSS 에서 hidden 은 맨 아래에 위치해야 함, 반응형 media query 등 */
+.hidden {
+  display: none;
+}

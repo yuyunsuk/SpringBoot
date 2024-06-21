@@ -19,7 +19,7 @@ function loadHtml() {
   }
   // 페이지가 로드될 때 header와 footer를 로드
   window.onload = loadHtml;
-  
+
 document.addEventListener('DOMContentLoaded', function() {
     const eventsDiv = document.getElementById('events');
     const prevPageBtn = document.getElementById('prev-page');

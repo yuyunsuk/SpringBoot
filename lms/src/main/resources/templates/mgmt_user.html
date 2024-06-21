@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 Dashboard</title>
+    <link rel="stylesheet" href="./css/sub_navBox.css" />
+    <link rel="stylesheet" href="./css/pagination.css" />
+    <script src="./js/data.js"></script>
+    <style>
+  
+        /* body {
+            font-family: Arial, sans-serif;
+            display: flex;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #f8f8f8;
+            padding: 15px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+
+        .sidebar ul li:hover {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px;
+            display: block;
+        }
+        .sidebar ul li a.active {
+            background-color: #007BFF;
+            color: #fff;
+        } */
+
+        .root {
+            display: flex;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            margin-top: 120px;
+        }
+
+        .header {
+            display: flex;
+            /* justify-content: flex-end; */
+            justify-content: flex-start;
+        }
+
+        .search {
+            margin: 10px 0px 5px 15px;
+            padding: 5px 20px;
+            font-size: 18px;
+        }
+
+        .search.label {
+            margin-left: 0px;
+            border: 1px solid black;
+        }
+
+        .table-container {
+            /* margin-top: 10px; */
+            margin-top: 0px;
+        }
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="root">
+        <!-- 왼쪽메뉴 -->
+        <nav class="sub_navBox">
+            <p class="nav_tit">관리자 메뉴</p>
+            <div class="sub_navBoxIn">
+                <div class="content_wrap">
+                    <ul class="sub_nav">
+                        <li class='active open '>
+                            <a href="#">
+                                <span>회원관리</span>
+                            </a>
+                        </li>
+                        <li class="no_sub">
+                            <a href="#">
+                                <span>강의관리</span>
+                            </a>
+                        </li>
+                        <li class="no_sub">
+                            <a href="#">
+                                <span>수강관리</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <div class="header">
+                <label class="search label">성명조회</label>
+                <input type="text" class="search input" placeholder="Search by Name">
+                <button class="search button">조회</button>
+            </div>
+            <div class="table-container">
+                <table border="1" width="100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody class="user_list">
+                        <tr>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>johndoe@example.com</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>janesmith@example.com</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- <ul>
+                <li>
+                    <div class="post-container">
+                        <p class="post-number">1</p>
+                        <p class="post-title">title</p>
+                    </div>
+                </li>
+            </ul> -->
+            <div class="pagination-container">
+                <div class="prev-button">이전</div>
+                <div class="number-button-wrapper"><button class="number-button">1</button></div>
+                <div class="next-button">이후</div>
+            </div>
+            <!-- <div class="pagination">
+                <a href="#">&laquo;</a>
+                <a href="#">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">&raquo;</a>
+            </div> -->
+        </div>
+    </div>
+    <!-- <script>
+        document.querySelectorAll('.sidebar ul li a').forEach(item => {
+            item.addEventListener('click', function(event) {
+                document.querySelectorAll('.sidebar ul li a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+                background-color: #007BFF;
+                color: #fff;
+            });
+        });
+    </script> -->
+    <script src="./js/sub_navBox.js"></script>
+    <script src="./js/pagination.js"></script>
+</body>
+</html>

@@ -6,9 +6,8 @@ import com.dw.lms.service.LectureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,6 +31,12 @@ public class LectureController {
     public ResponseEntity<List<LectureCategoryCountDto>> getLectureCategoryCountJPQL() {
         return new ResponseEntity<>(lectureService.getLectureCategoryCountJPQL(),
                 HttpStatus.OK);
+    }
+    
+    @PostMapping("/lecture/lectureList")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')") // ADMIN, USER 이외에는 사용 못하게
+    public List<Lecture> saveLecture(@RequestBody List<Lecture> lectureList) {
+        return lectureService.saveLectureList(lectureList);
     }
     
 }
