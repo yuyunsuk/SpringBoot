@@ -118,11 +118,26 @@ public class UserController {
 //        return userService.getUserSQLByUserId(userId);
 //    }
 
+    @GetMapping("/id/name/{userName}")
+    public User getUserByUserName(@PathVariable String userName) {
+        return userService.getUserByUserNameKor(userName);
+    }
+
+//    @GetMapping("/id/{userId}")
+//    public UserDto getUserSQLByUserId(@PathVariable String userId) {
+//        return userService.getUserSQLByUserId(userId);
+//    }
+
     @GetMapping("admin/getAllUsers")
     @PreAuthorize("hasAnyRole('ADMIN')") // ADMIN 이외에는 사용 못하게
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(userService.getAllUsers(),
                 HttpStatus.OK);
+    }
+
+    @PutMapping("/userset")
+    public User SetUserData(@RequestBody User user) {
+        return userService.SetUserData(user);
     }
 
 

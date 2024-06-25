@@ -1,11 +1,15 @@
 package com.dw.lms.controller;
 
+import com.dw.lms.dto.CourseEnrollCountDto;
+import com.dw.lms.dto.CourseLectureCountDto;
+import com.dw.lms.dto.LectureProgressQueryDto;
 import com.dw.lms.dto.LectureStatusCountDto;
 import com.dw.lms.model.Course_registration;
 import com.dw.lms.service.CourseRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +40,18 @@ public class CourseRegistrationController {
     public ResponseEntity<String> saveCourseRegistration(@RequestBody Course_registration course_registration) {
         return new ResponseEntity<>(courseRegistrationService.saveCourseRegistration(course_registration),
                 HttpStatus.OK);
+    }
+
+    @GetMapping("/course/queryCECJPQL")
+    @PreAuthorize("hasAnyRole('ADMIN')") // ADMIN 이외에는 사용 못하게
+    public ResponseEntity<List<CourseEnrollCountDto>> getCourseEnrollCountQueryJPQL(){
+        return new ResponseEntity<>(courseRegistrationService.getCourseEnrollCountQueryJPQL(), HttpStatus.OK);
+    }
+
+    @GetMapping("/course/queryCLCJPQL")
+    @PreAuthorize("hasAnyRole('ADMIN')") // ADMIN 이외에는 사용 못하게
+    public ResponseEntity<List<CourseLectureCountDto>> getCourseLectureCountQueryJPQL(){
+        return new ResponseEntity<>(courseRegistrationService.getCourseLectureCountQueryJPQL(), HttpStatus.OK);
     }
 
 }

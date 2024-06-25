@@ -92,8 +92,38 @@ public class UserService {
         return userOptional.get();
     }
 
+    public User getUserByUserNameKor(String userName) {
+        // 유저아이디로 유저객체 찾기
+        Optional<User> userOptional = userRepository.findByUserNameKor(userName);
+        if (userOptional.isEmpty()) {
+            throw new ResourceNotFoundException("User", "ID", userName);
+        }
+
+        return userOptional.get();
+    }
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public User SetUserData(User user) {
+        Optional<User> userOptional = userRepository.findByUserId(user.getUserId());
+        if(userOptional.isPresent()) {
+            User temp = userOptional.get();
+            temp.setUserNameEng(user.getUserNameEng());
+            temp.setEmail(user.getEmail());
+            temp.setBirthDate(user.getBirthDate());
+            temp.setHpTel(user.getHpTel());
+            temp.setEducation(user.getEducation());
+            temp.setFinalSchool(user.getFinalSchool());
+            temp.setZip_code(user.getZip_code());
+            temp.setAddress1Name(user.getAddress1Name());
+            temp.setAddress2Name(user.getAddress2Name());
+            userRepository.save(temp);
+            return temp;
+        }else {
+            throw new ResourceNotFoundException("user", "ID", user.getUserId());
+        }
     }
 
 

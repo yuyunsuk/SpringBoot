@@ -30,7 +30,7 @@ let pageNumberButtons; // 페이지 버튼들
 
 let currentPage = 1; // 초기 페이지 번호
 
-const url = "http://localhost:8080/user/admin/getAllUsers";
+const url = "http://localhost:8080/course/queryCECJPQL";
 
 const response_data1 = []; // 배열 선언
 
@@ -103,21 +103,21 @@ const setPageOf = (pageNumber) => {
     const td3 = document.createElement('td');
     const td4 = document.createElement('td');
     const td5 = document.createElement('td');
+    const td6 = document.createElement('td');
     
-    td1.textContent = response_data1[i].userId;
-    td2.textContent = response_data1[i].userNameKor;
-    td3.textContent = response_data1[i].email;
-    td4.textContent = response_data1[i].actYn;
-    td5.textContent = response_data1[i].authority.authorityName;
-
-    // authorities[0].authority
-    // authority.authorityName
+    td1.textContent = response_data1[i].lectureId;
+    td2.textContent = response_data1[i].lectureName;
+    td3.textContent = response_data1[i].lectureStartDate;
+    td4.textContent = response_data1[i].lectureEndDate;
+    td5.textContent = response_data1[i].categoryName;
+    td6.textContent = response_data1[i].courseEnrollCount;
 
     tr.appendChild(td1);
     tr.appendChild(td2);
     tr.appendChild(td3);
     tr.appendChild(td4);
     tr.appendChild(td5);
+    tr.appendChild(td6);
         userTableBody.appendChild(tr);
   }
 
@@ -162,15 +162,4 @@ nextButton.addEventListener('click', () => {
     setPageOf(currentPage);
     moveSelectedPageHighlight();
   }
-});
-
-const searchButton = document.querySelector('.search-button'); // 검색 버튼
-
-/**
- * 검색 버튼 클릭 리스너
- */
-searchButton.addEventListener('click', () => {
-  
-  // 검색 조회 추가 예정
-  
 });
