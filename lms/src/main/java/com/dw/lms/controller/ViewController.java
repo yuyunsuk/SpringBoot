@@ -43,11 +43,6 @@ public class ViewController { // 디자인 패턴, MVC(Model[정보] View(=>Fron
         return "mypageDelete";
     }
 
-    @GetMapping("/lms/sub_navBox.html")
-    public String sub_navBox() {
-        return "sub_navBox";
-    }
-
     @GetMapping("/lms/cart.html")
     public String cart() {
         return "cart";
@@ -81,6 +76,21 @@ public class ViewController { // 디자인 패턴, MVC(Model[정보] View(=>Fron
     @GetMapping("/lms/mypageUserDelete.html")
     public String mypageUserDelete() {
     	  return "mypageUserDelete";
+    }
+
+    @GetMapping("/lms/mgmt_user.html")
+    public String mgmt_user() {
+        return "mgmt_user";
+    }
+
+    @GetMapping("/lms/mgmt_lecture.html")
+    public String mgmt_lecture() {
+        return "mgmt_lecture";
+    }
+
+    @GetMapping("/lms/mgmt_enrollment.html")
+    public String mgmt_enrollment() {
+        return "mgmt_enrollment";
     }
 
 

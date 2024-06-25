@@ -2,6 +2,7 @@ package com.dw.lms.controller;
 
 import com.dw.lms.dto.SessionDto;
 import com.dw.lms.dto.UserDto;
+import com.dw.lms.model.Category;
 import com.dw.lms.model.User;
 import com.dw.lms.repository.UserRepository;
 import com.dw.lms.service.UserDetailService;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController // Rest API 사용
@@ -114,5 +117,14 @@ public class UserController {
 //    public UserDto getUserSQLByUserId(@PathVariable String userId) {
 //        return userService.getUserSQLByUserId(userId);
 //    }
+
+    @GetMapping("admin/getAllUsers")
+    @PreAuthorize("hasAnyRole('ADMIN')") // ADMIN 이외에는 사용 못하게
+    public ResponseEntity<List<User>> getAllUsers() {
+        return new ResponseEntity<>(userService.getAllUsers(),
+                HttpStatus.OK);
+    }
+
+
 
 }

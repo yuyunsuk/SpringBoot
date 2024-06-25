@@ -1,0 +1,27 @@
+.pagination-container {
+  display: flex;
+  justify-content: center;
+}
+
+.prev-button:hover,
+.next-button:hover,
+.number-button:hover {
+  font-weight: 800;
+  color: red;
+}
+
+.pagination-container {
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+.number-button {
+  margin: 0px 10px;
+}
+
+.selected {
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: dodgerblue;
+}

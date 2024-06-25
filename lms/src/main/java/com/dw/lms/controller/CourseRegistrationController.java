@@ -13,28 +13,28 @@ import java.util.List;
 @RestController
 public class CourseRegistrationController {
     @Autowired
-    CourseRegistrationService CourseRegistrationService;
+    CourseRegistrationService courseRegistrationService;
 
     @DeleteMapping("/course/delCourseRegistration/{userId}/{lectureId}")
     public void deleteCourseRegistration(@PathVariable String userId, @PathVariable String lectureId) {
-        CourseRegistrationService.deleteCourseRegistration(userId, lectureId);
+        courseRegistrationService.deleteCourseRegistration(userId, lectureId);
     }
 
     @GetMapping("/course/registration")
     public ResponseEntity<List<Course_registration>> getAllRegistration() {
-        return new ResponseEntity<>(CourseRegistrationService.getAllRegistration(),
+        return new ResponseEntity<>(courseRegistrationService.getAllRegistration(),
                 HttpStatus.OK);
     }
 
     @GetMapping("/course/lectureStatusCount/id/{userId}")
     public ResponseEntity<List<LectureStatusCountDto>> getLectureStatusCountJPQL(@PathVariable String userId) {
-        return new ResponseEntity<>(CourseRegistrationService.getLectureStatusCountJPQL(userId),
+        return new ResponseEntity<>(courseRegistrationService.getLectureStatusCountJPQL(userId),
                 HttpStatus.OK);
     }
 
     @PostMapping("/course/saveCourseRegistration")
     public ResponseEntity<String> saveCourseRegistration(@RequestBody Course_registration course_registration) {
-        return new ResponseEntity<>(CourseRegistrationService.saveCourseRegistration(course_registration),
+        return new ResponseEntity<>(courseRegistrationService.saveCourseRegistration(course_registration),
                 HttpStatus.OK);
     }
 

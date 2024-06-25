@@ -53,6 +53,8 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/login"),       // 일반주소, Static Page login 등 허용 주소를 기재함
                                 new AntPathRequestMatcher("/lms/**"), // 페이지 요청 (위의 3개와 다름) (톰켓 까지)
                                 new AntPathRequestMatcher("/image/**"),    // 페이지 요청 (위의 3개와 다름) (톰켓 까지)
+                                new AntPathRequestMatcher("/lecture/**"),  // 페이지 요청 (위의 3개와 다름) (톰켓 까지)
+                                new AntPathRequestMatcher("/pdf/**"),  // 페이지 요청 (위의 3개와 다름) (톰켓 까지)
                                 new AntPathRequestMatcher("/css/**"),      // 페이지 요청 (위의 3개와 다름) (톰켓 까지)
                                 new AntPathRequestMatcher("/js/**")        // 페이지 요청 (위의 3개와 다름) (톰켓 까지)
                         ).permitAll() // 모두 허용

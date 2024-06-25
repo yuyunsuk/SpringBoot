@@ -3,6 +3,7 @@ package com.dw.lms.service;
 import com.dw.lms.dto.UserDto;
 import com.dw.lms.exception.ResourceNotFoundException;
 import com.dw.lms.model.Authority;
+import com.dw.lms.model.Category;
 import com.dw.lms.model.User;
 import com.dw.lms.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -52,7 +54,11 @@ public class UserService {
                 userDto.getEducation(),
                 userDto.getFinalSchool(),
                 userDto.getCfOfEmp(),
-                userDto.getConsentToRiYn(),
+
+                userDto.getReceiveEmailYn(),
+                userDto.getReceiveSmsYn(),
+                userDto.getReceiveAdsPrPromoYn(),
+
                 userDto.getActYn(),
                 userDto.getUpdatedAt()
         );
@@ -85,5 +91,11 @@ public class UserService {
 
         return userOptional.get();
     }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+
 
 }
