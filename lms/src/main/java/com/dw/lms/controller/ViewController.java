@@ -27,11 +27,6 @@ public class ViewController { // 디자인 패턴, MVC(Model[정보] View(=>Fron
         return "header";
     }
 
-    @GetMapping("/lms/header_admin.html")
-    public String header_admin() {
-        return "header_admin";
-    }
-
     @GetMapping("/lms/lecture.html")
     public String lecture(){return "lecture";}
 
@@ -89,6 +84,9 @@ public class ViewController { // 디자인 패턴, MVC(Model[정보] View(=>Fron
     public String reviewDetail(){
     		return "reviewDetail";
 		}
+
+    @GetMapping("/lms/course/video.html")
+    public String video(){return "popupVideo";}
 
 
 

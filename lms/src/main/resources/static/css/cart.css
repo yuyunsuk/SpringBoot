@@ -53,11 +53,18 @@ td {
   height: 40px;
   border: 1px solid black;
   margin: 5px;
+  cursor: pointer;
+}
+.sidebar:hover {
+  background-color: #317abe;
 }
 
 .sidebar p {
   text-align: center;
   padding: 5px;
+}
+.sidebar p:hover {
+  color: #fff;
 }
 
 h3 {

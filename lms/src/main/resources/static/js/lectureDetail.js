@@ -5,6 +5,8 @@ const contentUrl = "http://localhost:8080/learning/contents/" + lectureId;
 const teacherUrl = "http://localhost:8080/teacher/" + lectureId;
 const reviewUrl = "http://localhost:8080/learning/review/" + lectureId;
 const coruseUrl = "http://localhost:8080/course/saveCourseRegistration";
+const studyUrl = "http://localhost:8080/course/registration";
+const sessionUrl = "http://localhost:8080/user/current";
 
 // 각 페이지별 #header와 #footer에 html파일 넣기
 function loadHtml() {
@@ -35,20 +37,53 @@ axios
     axios.get(contentUrl),
     axios.get(teacherUrl),
     axios.get(reviewUrl),
+    axios.get(studyUrl),
+    axios.get(sessionUrl),
   ])
   .then((response) => {
     const lectureResponse = response[0];
     const contentsResponse = response[1];
     const teacherResponse = response[2];
     const reviewResponse = response[3];
+    const studyResponse = response[4];
+    const sessionResponse = response[5];
     console.log("Lecture 데이터: ", lectureResponse.data);
     console.log("Content 데이터: ", contentsResponse.data);
     console.log("Teacher 데이터: ", teacherResponse.data);
     console.log("Review 데이터: ", reviewResponse.data);
+    console.log("Study 데이터: ", studyResponse.data);
+    console.log("session 데이터: ", sessionResponse.data);
     lectureSearch(lectureResponse.data);
     contentsSearch(contentsResponse.data);
     teacherSearch(teacherResponse.data);
     ReviewSearch(reviewResponse.data);
+    studyMove();
+    // 수강하기가 되어있는 유저는 장바구니, 수강신청 버튼 hidden, 학습하기 버튼 hidden 해제
+    let foundMatch = false;
+    for (let i = 0; i < studyResponse.data.length; i++) {
+      const studyData = studyResponse.data[i];
+      if (
+        studyData.user.userId === sessionResponse.data.userId &&
+        studyData.lecture.lectureId === lectureResponse.data.lectureId
+      ) {
+        foundMatch = true;
+        break;
+      }
+    }
+
+    if (foundMatch) {
+      const buttonBox = document.querySelector(".button-box");
+      const studyBox = document.querySelector(".studyBtn");
+
+      buttonBox.classList.add("hidden");
+      studyBox.classList.remove("hidden");
+    } else {
+      const buttonBox = document.querySelector(".button-box");
+      const studyBox = document.querySelector(".studyBtn");
+
+      buttonBox.classList.remove("hidden");
+      studyBox.classList.add("hidden");
+    }
   })
   .catch((error) => {
     console.log("에러 발생 : ", error);
@@ -96,7 +131,6 @@ function lectureSearch(data) {
   databox2.appendChild(hours);
   databox3.appendChild(date);
   databox4.appendChild(price);
-
   document.querySelector(".cartBtn").addEventListener("click", () => {
     if (confirm("장바구니에 담으시겠습니까 ?")) {
       sessionCurrent(data);
@@ -313,31 +347,12 @@ function sessionCurrent(data) {
       console.log("데이터:", response.data);
       if (response.status == 200) {
         const userId = response.data.userId;
-        const lectureClassId = lectureId;
         let cartItems = JSON.parse(localStorage.getItem(userId));
         if (!cartItems) {
           cartItems = [];
         }
         cartItems.push(data);
         localStorage.setItem(userId, JSON.stringify(cartItems));
-
-        // 수강신청
-        // const classData = {
-        //   user: {
-        //     userId: userId,
-        //   },
-        //   lecture: {
-        //     lectureId: lectureClassId,
-        //   },
-        // };
-        // axios
-        //   .post(coruseUrl, classData, { withCredentials: true })
-        //   .then((response) => {
-        //     console.log("데이터 :", response);
-        //   })
-        //   .catch((error) => {
-        //     console.log("에러 발생:", error);
-        //   });
       }
     })
     .catch((error) => {
@@ -372,10 +387,24 @@ function cartAdd() {
           .catch((error) => {
             console.log("에러 발생:", error);
           });
+        window.location.reload();
       }
     })
     .catch((error) => {
       console.log("에러 발생:", error);
       alert("로그인해주세요.");
+    });
+}
+
+function studyMove() {
+  axios
+    .all([axios.get("http://localhost:8080/user/current"), axios.get(url)])
+    .then((response) => {
+      const userId = response[0].data.userId;
+      const lectureId = response[1].data.lectureId;
+      document.querySelector(".studyBtn").addEventListener("click", () => {
+        window.location.href =
+          "course.html?userId=" + userId + "&lectureId=" + lectureId;
+      });
     });
 }

@@ -141,7 +141,7 @@ public class CourseRegistrationService {
         }
     }
 
-    public List<Object[]> executeNativeQueryDto3() {
+    public List<Object[]> executeNativeQueryDto3(String userName) {
         String sqlQuery = "SELECT B.user_id " +
                           "     , B.user_name " +
                           "     , B.email " +
@@ -150,6 +150,7 @@ public class CourseRegistrationService {
                           "  FROM user  B " +
                           "     , course_registration A " +
                           " WHERE A.user_id  = B.user_id " +
+                          "   AND B.user_name like :userName " +
                           " GROUP BY " +
                           "       B.user_id " +
                           "     , B.user_name " +
@@ -162,19 +163,21 @@ public class CourseRegistrationService {
                           "     , B.act_yn " +
                           "     , 0 as course_registration_cnt " +
                           "  FROM user  B " +
-                          " WHERE NOT EXISTS ( SELECT * " +
+                          " WHERE B.user_name like :userName " +
+                          "   AND NOT EXISTS ( SELECT * " +
                           "                      FROM course_registration A " +
                           "                     WHERE A.user_id = B.user_id ) " +
                           " ORDER BY 5 desc, 1 ";
         Query query = entityManager.createNativeQuery(sqlQuery);
+        query.setParameter("userName", userName); // 전체는 %, 조건이 있으면 %조건%
 
         return query.getResultList(); // Returns a list of Object arrays
     }
 
-    public List<CourseLectureCountDto> getCourseLectureCountQueryJPQL() {
+    public List<CourseLectureCountDto> getCourseLectureCountQueryJPQL(String userName) {
 
         List<CourseLectureCountDto> targetDto = new ArrayList<>();
-        List<Object[]> results = executeNativeQueryDto3();
+        List<Object[]> results = executeNativeQueryDto3(userName);
 
 // [CourseEnrollCountDto]
 //        private String lectureId;
@@ -213,23 +216,7 @@ public class CourseRegistrationService {
         return targetDto;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public List<Object[]> executeNativeQueryDto2() {
+    public List<Object[]> executeNativeQueryDto2(String lectureName) {
         String sqlQuery = "SELECT B.lecture_id " +
                           "     , B.lecture_name " +
                           "     , B.education_period_start_date " +
@@ -241,6 +228,7 @@ public class CourseRegistrationService {
                           "     , course_registration A " +
                           " WHERE A.lecture_id  = B.lecture_id " +
                           "   AND B.category_id = C.category_id " +
+                          "   AND B.lecture_name like :lectureName " +
                           " GROUP BY " +
                           "       B.lecture_id " +
                           "     , B.lecture_name " +
@@ -257,19 +245,21 @@ public class CourseRegistrationService {
                           "  FROM category C " +
                           "     , lecture  B " +
                           " WHERE B.category_id = C.category_id " +
+                          "   AND B.lecture_name like :lectureName " +
                           "   AND NOT EXISTS ( SELECT * " +
                           "                      FROM course_registration A " +
                           "                     WHERE A.lecture_id = B.lecture_id ) " +
                           " ORDER BY 6 desc, 1 ";
         Query query = entityManager.createNativeQuery(sqlQuery);
+        query.setParameter("lectureName", lectureName); // 전체는 %, 조건이 있으면 %조건%
 
         return query.getResultList(); // Returns a list of Object arrays
     }
 
-    public List<CourseEnrollCountDto> getCourseEnrollCountQueryJPQL() {
+    public List<CourseEnrollCountDto> getCourseEnrollCountQueryJPQL(String lectureName) {
 
         List<CourseEnrollCountDto> targetDto = new ArrayList<>();
-        List<Object[]> results = executeNativeQueryDto2();
+        List<Object[]> results = executeNativeQueryDto2(lectureName);
 
 // [CourseEnrollCountDto]
 //        private String lectureId;

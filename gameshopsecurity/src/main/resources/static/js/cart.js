@@ -9,7 +9,9 @@ function sessionCurrent() {
         if (response.status == 200) {
             const userId = response.data.userId;
             const authority = response.data.authority[0].authority;
-            let cartItems = JSON.parse(localStorage.getItem(userId));
+            const localStorageKey = "gameshop_" + userId; // 다른 PGM 중복방지
+
+            let cartItems = JSON.parse(localStorage.getItem(localStorageKey));
 
             console.log("Response userId :", userId);
             console.log("Response authority:", authority);
@@ -29,7 +31,7 @@ function sessionCurrent() {
                         .post(url, data, {withCredentials: true})
                         .then((response)=>{
                             console.log("데이터:", response.data);
-                            localStorage.removeItem(userId);
+                            localStorage.removeItem(localStorageKey);
                             //window.location.reload();
                         })
                         .catch((error)=>{

@@ -1,11 +1,12 @@
 package com.dw.lms.service;
 
+import com.dw.lms.dto.AuthorityUpdateDto;
 import com.dw.lms.dto.UserDto;
 import com.dw.lms.exception.ResourceNotFoundException;
 import com.dw.lms.model.Authority;
-import com.dw.lms.model.Category;
 import com.dw.lms.model.User;
 import com.dw.lms.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -124,6 +125,34 @@ public class UserService {
         }else {
             throw new ResourceNotFoundException("user", "ID", user.getUserId());
         }
+    }
+
+    public User updateAuthority(AuthorityUpdateDto request) {
+        // String userId, String authority
+
+        // 사용자를 ID로 찾고 없으면 예외를 던짐
+        User inputUser = userRepository.findByUserId(request.getUserId())
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        // 새로운 Authority 객체 생성
+        Authority authority = new Authority();
+
+        // 현재 날짜와 시간을 한 번만 가져옴
+        LocalDateTime now = LocalDateTime.now();
+
+        // Authority 객체의 필드 설정
+        authority.setAuthorityName(request.getAuthorityName());
+        authority.setSysDate(now);
+        authority.setUpdDate(now);
+
+        // 사용자 객체의 Authority 필드 설정
+        inputUser.setAuthority(authority);
+
+        System.out.println("getUserId: " + inputUser.getUserId());
+        System.out.println("getAuthorityName: " + inputUser.getAuthority().getAuthorityName());
+
+        // 사용자 객체를 저장
+        return userRepository.save(inputUser);
     }
 
 

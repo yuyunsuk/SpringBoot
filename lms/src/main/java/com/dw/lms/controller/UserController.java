@@ -1,5 +1,6 @@
 package com.dw.lms.controller;
 
+import com.dw.lms.dto.AuthorityUpdateDto;
 import com.dw.lms.dto.SessionDto;
 import com.dw.lms.dto.UserDto;
 import com.dw.lms.model.Category;
@@ -138,6 +139,24 @@ public class UserController {
     @PutMapping("/userset")
     public User SetUserData(@RequestBody User user) {
         return userService.SetUserData(user);
+    }
+
+    @PutMapping("/updateAuthority")
+    @PreAuthorize("hasAnyRole('ADMIN')") // ADMIN 이외에는 사용 못하게
+    public ResponseEntity<?> updateAuthority(@RequestBody AuthorityUpdateDto request) {
+        try {
+            System.out.println("Controller getUserId: " + request.getUserId());
+            System.out.println("Controller getAuthorityName: " + request.getAuthorityName());
+
+            // 권한 업데이트 서비스 호출
+            userService.updateAuthority(request);
+
+            // 성공적으로 업데이트한 경우
+            return ResponseEntity.ok("success");
+        } catch (Exception e) {
+            // 실패한 경우
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update authority: " + e.getMessage());
+        }
     }
 
 

@@ -6,7 +6,7 @@
     font-weight: normal;
     font-style: normal;
 }
-
+  
 /* 전체적용 */
 * {
     margin: 0;
@@ -15,26 +15,40 @@
     font-family: Poppins, GmarketSansMedium;
     text-decoration: none;
     color: inherit;
-}
+ }
 
 .root {
     width: 80%;
     margin: 0 auto;
 }
 
-/* 게시판 규격 일정하게 유지하기 */
+/* body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} */
+
+/* .container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+} */
+
 .content {
+    position: relative;
+    width: 100%;
     display: flex;
     flex-grow: 1;
-    overflow: hidden;
+    width: 100%;
 }
 
 aside {
-    width: 200px;
+    width: 10%;
+    float: left;
     background-color: #f4f4f4;
     padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
 }
 
 aside ul {
@@ -57,12 +71,13 @@ aside ul li a.active {
 }
 
 main {
+    width: 90%;
+    float: right;
     flex-grow: 1;
     padding: 20px;
     background-color: #fafafa;
-    overflow: hidden;
 }
-
+/**/
 h1 {
     text-align: center;
     margin-top: 20px;
@@ -72,51 +87,49 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    table-layout: fixed; /* 테이블 레이아웃 고정 */
+    table-layout: auto;
 }
 
 th, td {
     border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
-    word-wrap: break-word; /* 내용이 길 경우 줄 바꿈 */
 }
 
 th {
     background-color: #f2f2f2;
 }
 
-/* 각 열의 고정 너비 설정 */
-th:nth-child(1), td:nth-child(1) {
-    width: 50px; /* No 열 */
-}
-
-th:nth-child(2), td:nth-child(2) {
-    width: 100px; /* 카테고리 열 */
-}
-
-th:nth-child(3), td:nth-child(3) {
-    width: 300px; /* 제목 열 */
-}
-
-th:nth-child(4), td:nth-child(4) {
-    width: 150px; /* 작성자 열 */
-}
-
-th:nth-child(5), td:nth-child(5) {
-    width: 150px; /* 등록일 열 */
-}
-
-th:nth-child(6), td:nth-child(6) {
-    width: 100px; /* 답변상태 열 */
-}
-
 tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
+th:nth-child(1) { width: 5%; }   /* No */
+th:nth-child(2) { width: 5%; }   /* 카테고리 */
+th:nth-child(3) { width: 45%; }  /* 제목 */
+th:nth-child(4) { width: 15%; }  /* 작성자 */
+th:nth-child(5) { width: 20%; }  /* 등록일 */
+th:nth-child(6) { width: 10%; }  /* 답변상태 */
+
+
+#new-question-btn {
+    position: absolute; /* 절대 위치 설정 */
+    right: 20px; /* 우측 여백 */
+    bottom: 20px; /* 하단 여백 */
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    display: block;
+    margin-bottom: 20px;
+}
+
 /* 페이징 스타일 */
 .pagination {
+    clear: both;
     text-align: center;
     margin-top: 20px;
 }
@@ -220,9 +233,4 @@ tr:nth-child(even) {
 
 #reply-button:hover {
     background-color: #0056b3;
-}
-
-/* Hidden class */
-.hidden {
-    display: none;
 }

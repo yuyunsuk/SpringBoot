@@ -8,6 +8,12 @@
         <link rel="stylesheet" href="/css/sub_navBox.css" />
         <link rel="stylesheet" href="/css/pagination.css" />
         <link rel="stylesheet" href="/css/mgmt_user.css" />
+        <link rel="stylesheet" href="/css/modal.css" />
+
+        <!-- <link rel="stylesheet" href="../static/css/sub_navBox.css" />
+        <link rel="stylesheet" href="../static/css/pagination.css" />
+        <link rel="stylesheet" href="../static/css/mgmt_user.css" />
+        <link rel="stylesheet" href="../static/css/modal.css" /> -->
 
         <title>관리자 Dashboard</title>
 
@@ -52,6 +58,16 @@
                                 <label class="search label">성명조회</label>
                                 <input type="text" class="search input" placeholder="Search by Name">
                                 <button class="search button">조회</button>
+
+                                <!-- <button class="hidden" id="openModalBtn">Open Modal</button> -->
+
+                                <div id="myModal" class="modal">
+                                    <div class="modal-content">
+                                        <span class="close">&times;</span>
+                                        <p>This is a simple modal window.</p>
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="table-container">
                                 <table>
@@ -62,6 +78,8 @@
                                             <th>회원Email</th>
                                             <th>회원여부(탈퇴:N)</th>
                                             <th>회원권한</th>
+                                            <th>수정할권한</th>
+                                            <th>업데이트</th>
                                         </tr>
                                     </thead>
                                     <tbody class="user_list">
@@ -87,6 +105,7 @@
                     </div> <!-- main-content 종료 -->
                 </div> <!-- content 종료 -->
                 <script src="/js/mgmt_user.js"></script>
+                <script src="/js/modal.js"></script>
             </div> <!-- root 종료 -->
             <div id="footer"></div>
         </div> <!-- container 종료 -->

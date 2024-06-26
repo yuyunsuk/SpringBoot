@@ -99,12 +99,16 @@ function sessionCurrent(data) {
 
             console.log("유저 ID: " + userId);
 
-            let cartItems = JSON.parse(localStorage.getItem(userId));
+            const localStorageKey = "gameshop_" + userId; // 다른 PGM 중복방지
+
+            //let cartItems = JSON.parse(localStorage.getItem(userId));
+            let cartItems = JSON.parse(localStorage.getItem(localStorageKey));
             if (!cartItems) { // null 이면 초기화
                 cartItems = [];
             }
             cartItems.push(data); // data => Game Data
-            localStorage.setItem(userId, JSON.stringify(cartItems));
+            //localStorage.setItem(userId, JSON.stringify(cartItems));
+            localStorage.setItem(localStorageKey, JSON.stringify(cartItems));
         }
     })
     .catch((error)=>{

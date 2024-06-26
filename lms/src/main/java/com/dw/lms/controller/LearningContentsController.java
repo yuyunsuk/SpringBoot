@@ -27,4 +27,11 @@ public class LearningContentsController {
         return new ResponseEntity<>(learningContentsService.getContentsByLectureId(lectureId),HttpStatus.OK);
     }
 
+    @GetMapping("/learning/contents/{lectureId}/{seq}")
+    public ResponseEntity<List<Learning_contents>>getContentByLectureIdBySeq(@PathVariable String lectureId, @PathVariable Long seq){
+        return new ResponseEntity<>(learningContentsService.getContentByLectureIdBySeq(lectureId, seq), HttpStatus.OK);
+    }
+
+
+
 }

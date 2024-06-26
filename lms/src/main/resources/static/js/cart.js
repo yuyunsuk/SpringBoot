@@ -38,6 +38,7 @@ function sessionCurrent() {
     .catch((error) => {
       console.log("에러 발생:", error);
       alert("로그인해주세요.");
+      window.location.href = "http://localhost:8080/lms/main.html";
     });
 }
 
@@ -100,6 +101,33 @@ function cartView(dataList, userId) {
 
     cartBox.appendChild(tr);
 
+    document.querySelector(".searchBtn_1").addEventListener("click", () => {
+      window.location.href = "lecture.html?category=" + "00";
+    });
+    document.querySelector(".searchBtn_2").addEventListener("click", () => {
+      window.location.href = "lecture.html?category=01";
+    });
+
+    document.querySelector(".searchBtn_3").addEventListener("click", () => {
+      window.location.href = "lecture.html?category=02";
+    });
+
+    document.querySelector(".searchBtn_4").addEventListener("click", () => {
+      window.location.href = "lecture.html?category=" + "03";
+    });
+
+    document.querySelector(".searchBtn_5").addEventListener("click", () => {
+      window.location.href = "lecture.html?category=" + "04";
+    });
+
+    document.querySelector(".searchBtn_6").addEventListener("click", () => {
+      window.location.href = "lecture.html?category=" + "05";
+    });
+
+    document.querySelector(".searchBtn_7").addEventListener("click", () => {
+      window.location.href = "lecture.html?category=" + "99";
+    });
+
     chk.addEventListener("change", () => {
       if (chk.checked) {
         const classBtn = document.querySelector(".classBtn");
@@ -128,9 +156,6 @@ function cartView(dataList, userId) {
             alert("수강신청 되었습니다.");
           }
         });
-      } else {
-        // 체크가 해제된 경우에는 classBtn의 이벤트 리스너를 제거할 수도 있습니다.
-        // 이 예제에서는 추가하지 않았습니다.
       }
     });
   });

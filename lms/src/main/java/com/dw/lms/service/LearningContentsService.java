@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -33,6 +34,24 @@ public class LearningContentsService {
         // sort = 오름차순 or 내림차순 DESC -> 내림차순 ASC -> 오름차순
         Sort sort = Sort.by(Sort.Direction.ASC, "learningContentsSeq");
         return learningContentsRepository.findByLecture_LectureId(lectureId, sort);
+    }
+
+    public List<Learning_contents> getContentByLectureIdBySeq(String lectureId, Long seq){
+        List<Learning_contents> learningContents = learningContentsRepository.findAll();
+        List<Learning_contents> learning_contentsLecture = new ArrayList<>();
+        List<Learning_contents> learning_contentsList = new ArrayList<>();
+
+        for (int i = 0; i < learningContents.size(); i++) {
+            if (learningContents.get(i).getLecture().getLectureId().equals(lectureId)){
+                learning_contentsLecture.add(learningContents.get(i));
+            }
+        }
+        for (int i = 0; i < learning_contentsLecture.size(); i++) {
+            if (learning_contentsLecture.get(i).getLearningContentsSeq().equals(seq)){
+                learning_contentsList.add(learning_contentsLecture.get(i));
+            }
+        }
+        return learning_contentsList;
     }
 
     public String saveLearningContents(Learning_contents learning_contents) {

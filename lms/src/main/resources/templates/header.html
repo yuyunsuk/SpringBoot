@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
     <link rel="stylesheet" href="/css/header.css" />
 
     <!-- Google 폰트 => Poppins Embed code 사용 -->
@@ -15,37 +15,38 @@
     />
 
     <title>LMS</title>
+    <!-- header 에 넣는 이유는 body 에서 사용해야 되기 때문에 미리 로드해야 함 -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.7.2/dist/axios.min.js"></script>
   </head>
   <body>
-
     <div class="header">
-        <div class="wrap">
-            <h1>
-                <a href="main.html">
-                    <img src="/image/logo.png" alt="로고위치" />
-                </a>
-            </h1>
-            <div class="gnb">
-                <ul>
-                    <li>
-                        <a href="lecture.html" class="mainnav">상세조회</a>
-                    </li>
-                    <li>
-                        <a href="cart.html" class="mainnav">장바구니</a>
-                    </li>
-                    <li>
-                        <a href="mypage.html" class="mainnav">마이페이지</a>
-                    </li>
-                    <li>
-                        <a href="lms_notices.html" class="mainnav">커뮤니티</a>
-                    </li>
-                    <li>
-                        <a href="login.html" class="mainnav">로그아웃</a>
-                    </li>
-                </ul>
-            </div>
+      <div class="wrap">
+        <h1>
+          <a href="main.html">
+            <img src="/image/logo.png" alt="로고위치" />
+          </a>
+        </h1>
+        <div class="gnb">
+          <ul>
+            <li>
+              <a href="lecture.html" class="mainnav">상세조회</a>
+            </li>
+            <li>
+              <a href="cart.html" class="mainnav">장바구니</a>
+            </li>
+            <li>
+              <a href="mypage.html" class="mainnav">마이페이지</a>
+            </li>
+            <li>
+              <a href="lms_notices.html" class="mainnav">커뮤니티</a>
+            </li>
+            <li>
+              <a href="login.html" id="login" class="mainnav">로그인</a>
+              <a href="login.html" id="logout" class="mainnav hidden">로그아웃</a>
+            </li>
+          </ul>
         </div>
+      </div>
     </div>
-
-    </body>
+  </body>
 </html>

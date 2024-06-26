@@ -1,7 +1,7 @@
 // 각 페이지별 #header와 #footer에 html파일 넣기
 function loadHtml() {
   axios
-    .get("header_admin.html")
+    .get("header.html")
     .then((response) => {
       document.getElementById("header").innerHTML = response.data;
     })
@@ -30,9 +30,9 @@ let pageNumberButtons; // 페이지 버튼들
 
 let currentPage = 1; // 초기 페이지 번호
 
-const url = "http://localhost:8080/course/queryCLCJPQL";
+let url = "http://localhost:8080/course/queryCLCJPQL/";
 
-const response_data1 = []; // 배열 선언
+let response_data1 = []; // 배열 선언
 
 // 필요한 페이지 번호 수에 맞게 페이지 버튼 구성하기
 const setPageButtons = (getTotalPageCount) => {
@@ -58,10 +58,11 @@ const setPageButtons = (getTotalPageCount) => {
 };
 
 // 데이터 배열을 변환하고 페이지 버튼을 설정하는 함수
-function convertArray(data) {
-  data.forEach((userData) => {
-    response_data1.push(userData);
-  });
+function convertArray(data, pageNumber) {
+
+  currentPage = pageNumber;
+
+  response_data1 = data;
 
   const totalPageCount = Math.ceil(response_data1.length / COUNT_PER_PAGE);
 
@@ -76,8 +77,22 @@ function convertArray(data) {
 axios
   .get(url)
   .then((response) => {
-    console.log("응답 Response : ", response);
-    convertArray(response.data);
+
+    const searchUrlArray = [];
+  
+    if (Array.isArray(response.data)) {
+      console.log("SearchUrl 응답 Response : isArray");
+      response.data.forEach((userData) => {
+        searchUrlArray.push(userData);
+      });
+    } else {
+      console.log("SearchUrl 응답 Response : Not isArray");
+      searchUrlArray.push(response.data);
+    }
+
+    console.log("SearchUrlArray: " + searchUrlArray.length);
+
+    convertArray(searchUrlArray, 1);    
   })
   .catch((error) => {
     console.log("에러", error);
@@ -109,9 +124,6 @@ const setPageOf = (pageNumber) => {
     td3.textContent = response_data1[i].userEmail;
     td4.textContent = response_data1[i].actYn;
     td5.textContent = response_data1[i].courseLectureCount;
-
-    // authorities[0].authority
-    // authority.authorityName
 
     tr.appendChild(td1);
     tr.appendChild(td2);
@@ -162,4 +174,59 @@ nextButton.addEventListener('click', () => {
     setPageOf(currentPage);
     moveSelectedPageHighlight();
   }
+});
+
+//const nextButton = document.querySelector('.next-button'); // 이후 페이지 버튼
+const searchButton = document.querySelector('.search.button'); // 검색 버튼
+
+/**
+ * 검색 버튼 클릭 리스너
+ */
+searchButton.addEventListener('click', () => {
+
+  console.log("searchButton Click!!!");
+
+  const searchText = document.querySelector('.search.input');
+  const userName = searchText.value;
+
+  console.log("userName: " + userName);
+
+    if (userName.length > 0) {
+      url = "http://localhost:8080/course/queryCLCJPQL/" + userName;
+    } else {
+      url = "http://localhost:8080/course/queryCLCJPQL/";
+    }
+
+console.log("url: " + url);
+
+    // 검색 조회 추가 예정
+    axios
+    .get(url)
+    .then((response) => {
+      console.log("nameSearchUrl 응답 Response : ", response);
+
+      currentPage = 1; // 초기 페이지 번호
+
+      const nameSearchUrlArray = [];
+  
+      if (Array.isArray(response.data)) {
+        console.log("nameSearchUrl 응답 Response : isArray");
+        response.data.forEach((userData) => {
+          nameSearchUrlArray.push(userData);
+        });
+      } else {
+        console.log("nameSearchUrl 응답 Response : Not isArray");
+        nameSearchUrlArray.push(response.data);
+      }
+
+      console.log("nameSearchUrlArray: " + nameSearchUrlArray.length);
+
+      convertArray(nameSearchUrlArray, 1);
+    })
+    .catch((error) => {
+      console.log("에러", error);
+    });
+
+ 
+
 });
