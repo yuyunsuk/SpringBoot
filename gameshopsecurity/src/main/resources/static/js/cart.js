@@ -49,8 +49,14 @@ function sessionCurrent() {
 }
 
 function displayCart(games) {
+
     console.log("displayCart Start !!!");
+
+    // tbody 요소 선택
     const tbody = document.querySelector(".cart-body");
+
+    tbody.innerHTML = ''; // 기존 테이블 내용을 모두 삭제 추가
+
     let totalPrice = 0;
 
     games.forEach((data)=>{
@@ -72,24 +78,78 @@ function displayCart(games) {
         deleteBtn.classList.add("deleteBtn"); /* 삭제버튼 클래스추가 */
 
         deleteBtn.addEventListener('click', function() {
-            const row_index = deleteBtn.closest('tr').rowIndex;
+
+            const row = deleteBtn.closest('tr');
+            const row_index = row.rowIndex;
+
             // if(row_index === 1) {
             //   alert(`첫 번째 행은 삭제할 수 없습니다.`);
             //   return;
             // }
             console.log("클릭된 행은 :" + row_index);
+            window.alert("클릭된 행은 :" + row_index);
             document.querySelector(".cart-table").deleteRow(row_index);
+
+            const rowTitle = row.children[1].textContent;
+
+            console.log("rowTitle: " + rowTitle);
+
+            axios
+            .get("http://localhost:8080/user/current", {withCredentials: true})
+            .then((response)=>{
+                if (response.status == 200) {
+                    const userId = response.data.userId;
+                    const localStorageKey = "gameshop_" + userId; // 다른 PGM 중복방지
+                    console.log("current localStorageKey: " + localStorageKey);
+
+                    // let cartItems = JSON.parse(localStorage.getItem(localStorageKey));
+                    let cartItems = JSON.parse(localStorage.getItem(localStorageKey)) || []; // 배열로 인식하도록
+
+                    // 방법 1: filter 메서드를 사용하여 새로운 배열 반환
+                    // cartItems = cartItems.filter(item => item.title !== rowTitle);
+
+                    // 방법 2: 반복문을 사용하여 삭제할 요소의 인덱스 추적 후 한꺼번에 삭제
+                    // const indexesToDelete = [];
+                    // cartItems.forEach((item) => {
+                    //     if (item.title === rowTitle) {
+                    //         console.log("item.title :" + item.title);
+                    //         indexesToDelete.push(item);
+                    //     }
+                    // });
+
+                    // 방법 3: indexesToDelete 배열을 역순으로 정렬하여 뒤에서부터 삭제 (앞에서부터 삭제하면 인덱스가 변경될 수 있음)
+                    // indexesToDelete.reverse().forEach(index => {
+                    //     cartItems.splice(index, 1);
+                    // });
+
+                    console.log("작업 전 cartItems: " + cartItems);
+
+                    cartItems = cartItems.filter(item => item.title !== rowTitle);
+
+                    console.log("작업 후 cartItems: " + cartItems);
+
+                    // localStorage.removeItem(localStorageKey);
+                    localStorage.setItem(localStorageKey, JSON.stringify(cartItems));
+
+
+                    sessionCurrent();
+                }
+            })
+            .catch((error)=>{
+              console.log("에러 발생:", error);
+              alert("로그인해주세요.");
+            })
         })
 
-        const click = (btn) => {
-            const row_index = btn.closest('tr').rowIndex;
-            if(row_index === 1) {
-              alert(`첫 번째 행은 삭제할 수 없습니다.`);
-              return;
-            }
-            console.log("클릭된 행은 :" + row_index);
-            document.querySelector(".cart-table").deleteRow(row_index);
-          };
+        // const click = (btn) => {
+        //     const row_index = btn.closest('tr').rowIndex;
+        //     if(row_index === 1) {
+        //       alert(`첫 번째 행은 삭제할 수 없습니다.`);
+        //       return;
+        //     }
+        //     console.log("클릭된 행은 :" + row_index);
+        //     document.querySelector(".cart-table").deleteRow(row_index);
+        //   };
 
         // 테이블의 클릭 이벤트를 이벤트 위임 방식으로 처리
         // cart-table
@@ -102,8 +162,6 @@ function displayCart(games) {
         //         document.querySelector(".cart-table").deleteRow(row);
         //     }
         // });
-
-
 
         // 태그속성추가
         img.src = data.image;
