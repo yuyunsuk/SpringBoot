@@ -21,11 +21,11 @@ public class LectureProgressController {
     @Autowired
     LectureProgressService lectureProgressService;
 
-//    @GetMapping("/progress/getAllLectureProgress")
-//    public ResponseEntity<List<Lecture_progress>> getAllLectureProgress() {
-//        return new ResponseEntity<>(lectureProgressService.getAllLectureProgress(),
-//                HttpStatus.OK);
-//    }
+    @GetMapping("/progress/getAllLectureProgress")
+    public ResponseEntity<List<Lecture_progress>> getAllLectureProgress() {
+        return new ResponseEntity<>(lectureProgressService.getAllLectureProgress(),
+                HttpStatus.OK);
+    }
 
 //    @GetMapping("/progress/queryJPQL/{userId}/{lectureId}")
 //    public ResponseEntity<List<LectureProgressQueryDto>> getLectureProgressQueryJPQL(@PathVariable String userId, @PathVariable String lectureId){

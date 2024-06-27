@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+        <link rel="stylesheet" href="/css/header.css" />
         <link rel="stylesheet" href="/css/sub_navBox.css" />
         <link rel="stylesheet" href="/css/pagination.css" />
         <link rel="stylesheet" href="/css/mgmt_lecture.css" />
@@ -17,7 +17,35 @@
     </head>
     <body>
         <div class="container">
-            <div id="header"></div>
+                <div class="header">
+      <div class="wrap">
+        <h1>
+          <a href="main.html">
+            <img src="/image/logo.png" alt="로고위치" />
+          </a>
+        </h1>
+        <div class="gnb">
+          <ul>
+            <li>
+              <a href="lecture.html" class="mainnav">상세조회</a>
+            </li>
+            <li>
+              <a href="cart.html" class="mainnav">장바구니</a>
+            </li>
+            <li>
+              <a href="mypage.html" class="mainnav">마이페이지</a>
+            </li>
+            <li>
+              <a href="lms_notices.html" class="mainnav">커뮤니티</a>
+            </li>
+            <li>
+              <a href="login.html" id="login" class="mainnav">로그인</a>
+              <a href="login.html" id="logout" class="mainnav hidden">로그아웃</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
             <div class="root">
                 <div class="content">
                     <!-- 왼쪽메뉴 -->
@@ -91,5 +119,6 @@
             </div> <!-- root 종료 -->
             <div id="footer"></div>
         </div> <!-- container 종료 -->
+        <script defer src="/js/common.js"></script>
     </body>
 </html>

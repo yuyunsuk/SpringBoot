@@ -120,6 +120,11 @@ public class UserService {
             temp.setZip_code(user.getZip_code());
             temp.setAddress1Name(user.getAddress1Name());
             temp.setAddress2Name(user.getAddress2Name());
+            temp.setCfOfEmp(user.getCfOfEmp());
+            temp.setReceiveEmailYn(user.getReceiveEmailYn());
+            temp.setReceiveSmsYn(user.getReceiveSmsYn());
+            temp.setReceiveAdsPrPromoYn(user.getReceiveAdsPrPromoYn());
+            temp.setUpdatedAt(user.getUpdatedAt());
             userRepository.save(temp);
             return temp;
         }else {

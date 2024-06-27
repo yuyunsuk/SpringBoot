@@ -1,6 +1,7 @@
 package com.dw.lms.service;
 
 import com.dw.lms.dto.LectureProgressDto;
+import com.dw.lms.model.Lecture_progress;
 import com.dw.lms.repository.LectureProgressRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -15,6 +16,10 @@ import java.util.List;
 public class LectureProgressService {
     @Autowired
     LectureProgressRepository lectureProgressRepository;
+
+    public List<Lecture_progress> getAllLectureProgress() {
+        return lectureProgressRepository.findAll();
+    }
 
     @PersistenceContext
     private EntityManager entityManager;

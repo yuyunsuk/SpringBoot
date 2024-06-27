@@ -154,6 +154,17 @@ function displayLecture(lectureList) { // --------------------------------------
           tr.appendChild(classRoom);
           tbody.appendChild(tr);
 
+					// 나의학습[학습중]에서 강의실 홈으로 이동
+          classRoomBtn.addEventListener("click", () => {
+            const courseUserId = data.user.userId;
+            const courseLectureId = data.lecture.lectureId;
+            window.location.href =
+              "course.html?userId=" +
+              courseUserId +
+              "&lectureId=" +
+              courseLectureId;
+          });
+
           document.querySelector("#lecturemenu2").addEventListener("click", () => {
             progressBar2.animate(
               [

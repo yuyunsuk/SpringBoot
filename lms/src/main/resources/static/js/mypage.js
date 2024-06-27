@@ -6,8 +6,6 @@ axios.get(urlCurrent)
   .then((response) => {
     console.log("응답 Response: ", response);
 
-    const userId = response.data.userId;
-
     /* 240625 Admin 관련 추가 */
     const authorityArray = response.data.authority;
     const authorityName = authorityArray[0].authority;
