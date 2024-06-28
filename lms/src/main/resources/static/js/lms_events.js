@@ -55,10 +55,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         <div class="badge">${statusText}</div>
                         <img src="${event.imagePath}" alt="이미지">
                         <h2>${event.lmsEventsTitle}</h2>
-                        <p>${event.lmsEventsContent}</p>
-                        <p>Start: ${event.lmsEventsStartDate}</p>
-                        <p>End: ${event.lmsEventEndDate}</p>
-                        <p>Views: ${event.lmsEventViewCount}</p>
+                        <p class="eventcontent">${event.lmsEventsContent}</p>
+                        <div>${event.lmsEventsStartDate} ~ ${event.lmsEventEndDate}</div>
+                        <div>Views: ${event.lmsEventViewCount}</div>
                     `;
           eventsDiv.appendChild(eventElement);
         });
