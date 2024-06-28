@@ -32,6 +32,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     const questionDetail = document.getElementById('notice-detail');
     const questionListContainer = document.getElementById('notice-table');
     const categoryButtons = document.getElementById('category-buttons');
+
+    // 240628 추가
+    const categoryBtn = document.getElementById("categoryBtn");
+
     const paginationContainer = document.querySelector('.pagination');
     const backToListBtn = document.getElementById('back-to-list');
     const adminResponseForm = document.getElementById('admin-response-form');
@@ -155,7 +159,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                 if (isLoggedIn) {
                     newQuestionBtn.style.display = 'block';
                 }
-                categoryButtons.style.display = 'block'; // 카테고리 버튼 보이기
+
+                categoryButtons.style.display = 'flex'; // 카테고리 버튼 보이기 (div)
+                categoryBtn.style.display     = 'block'; // 카테고리 버튼 보이기 (button)
+
                 searchBox.style.display = 'block'; // 검색창 보이기
             })
             .catch(error => {
@@ -194,7 +201,10 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                 questionDetail.style.display = 'block';
                 questionListContainer.style.display = 'none';
+
                 categoryButtons.style.display = 'none'; // 카테고리 버튼 숨기기
+                categoryBtn.style.display     = 'none';
+
                 paginationContainer.style.display = 'none'; // 페이지네이션 숨기기
                 searchBox.style.display = 'none'; // 검색창 숨기기
                 newQuestionBtn.style.display = 'none'; // 새 질문 버튼 숨기기
@@ -238,7 +248,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             alert('게시글이 성공적으로 삭제되었습니다.');
             questionDetail.style.display = 'none';
             questionListContainer.style.display = 'block';
-            categoryButtons.style.display = 'block'; // 카테고리 버튼 보이기
+
+            categoryButtons.style.display = 'flex'; // 카테고리 버튼 보이기
+            categoryBtn.style.display     = 'block';
+
             paginationContainer.style.display = 'block'; // 페이지네이션 보이기
             searchBox.style.display = 'block'; // 검색창 보이기
             if (isLoggedIn) {
@@ -257,9 +270,12 @@ function showQuestionForm() {
     questionListContainer.style.display = 'none';
     questionDetail.style.display = 'none'; // 상세보기 숨기기
     paginationContainer.style.display = 'none';
-    categoryButtons.style.display = 'none'; // 카테고리 버튼 숨기기
     searchBox.style.display = 'none'; // 검색창 숨기기
     newQuestionBtn.style.display = 'none'; // 새 질문 버튼 숨기기
+    
+    // 240628 추가
+    categoryButtons.style.display = 'none'; // 카테고리 버튼 숨기기
+    categoryBtn.style.display     = 'none';
 }
 
 function hideQuestionForm() {
@@ -267,11 +283,14 @@ function hideQuestionForm() {
     questionListContainer.style.display = 'block';
     questionDetail.style.display = 'none'; // 상세보기 숨기기
     paginationContainer.style.display = 'block';
-    categoryButtons.style.display = 'block'; // 카테고리 버튼 보이기
     searchBox.style.display = 'block'; // 검색창 보이기
     if (isLoggedIn) {
         newQuestionBtn.style.display = 'block'; // 새 질문 버튼 보이기
     }
+
+    // 240628 추가
+    categoryButtons.style.display = 'flex'; // 카테고리 버튼 숨기기
+    categoryBtn.style.display     = 'block';
 }
 
 async function submitQuestion() {
@@ -435,7 +454,10 @@ editQuestionBtn.addEventListener('click', editQuestion);
 backToListBtn.addEventListener('click', () => {
     questionDetail.style.display = 'none';
     questionListContainer.style.display = 'block';
-    categoryButtons.style.display = 'block'; // 카테고리 버튼 보이기
+    
+    categoryButtons.style.display = 'flex'; // 카테고리 버튼 보이기
+    categoryBtn.style.display     = 'block';
+
     paginationContainer.style.display = 'block'; // 페이지네이션 보이기
     searchBox.style.display = 'block'; // 검색창 보이기
     if (isLoggedIn) {
