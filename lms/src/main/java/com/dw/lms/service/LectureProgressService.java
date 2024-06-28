@@ -53,6 +53,27 @@ public class LectureProgressService {
         return sumLearningTime;
     }
 
+    private static int convertToSeconds(String convertTime) {
+        int hours = Integer.parseInt(convertTime.substring(0, 2));
+        int minutes = Integer.parseInt(convertTime.substring(2, 4));
+        int seconds = Integer.parseInt(convertTime.substring(4, 6));
+
+        return hours * 3600 + minutes * 60 + seconds;
+    }
+
+    private static double calculatePercentage(int currentTimeInSeconds, int baseTimeInSeconds) {
+
+        // 기준시간 보다 크면 100%
+        if (currentTimeInSeconds >= baseTimeInSeconds) {
+            return 100.00;
+        }
+
+        if (baseTimeInSeconds == 0) {
+            throw new IllegalArgumentException("Base time in seconds cannot be zero");
+        }
+        return ((double) currentTimeInSeconds / baseTimeInSeconds) * 100;
+    }
+
     public Lecture_progress updateLearningTime(Long lpSeq, String learningTime) {
 
         // Lecture Process Seq 로 전체 데이터 조회
@@ -61,7 +82,7 @@ public class LectureProgressService {
 
         String previousTime = inputLectureProgress.getLearningTime();
 
-        if (previousTime.length() < 6) {
+        if (previousTime.length() < 6 || previousTime == null) {
             previousTime = "000000";
         }
 
@@ -89,11 +110,35 @@ public class LectureProgressService {
 
 //        lecture_completed_check => Y => progress_rate => 100 %
 //        progress_rate           => inputlearningTime / refLearningTime
+//        테스트용으로 기준시간 1분
 
-//        [Start, Pause, Stop] => Stop 시에만 반영
-//        complete_learning_datetime => inputlearningTime 하고 목차 refLearningTime 로드 비교 같거나 클때에만 아래 적용
-//        learning_count             => 이전 횟수 + 1
+//        progress_rate 가 100% 이면 setCompleteLearningDatetime 완료일자 세팅
 
+//        String currentTime = "010203"; // 현재 시간 "HHMMSS" 형식
+//        String baseTime    = "050101"; // 기준 시간 "HHMMSS" 형식
+
+        String currentTime = inputlearningTime; // 현재 시간 "HHMMSS" 형식
+        String baseTime    = "000100"; // 기준 시간 "HHMMSS" 형식 1분
+
+        int currentTimeInSeconds = convertToSeconds(currentTime);
+        int baseTimeInSeconds = convertToSeconds(baseTime);
+
+        double percentage = calculatePercentage(currentTimeInSeconds, baseTimeInSeconds);
+
+        long percentageLong = (long)percentage;
+
+        inputLectureProgress.setProgressRate(percentageLong);
+
+        System.out.printf("Percentage: %.2f%%\n", percentage);
+
+        // complete_learning_datetime => inputlearningTime 하고 목차 refLearningTime 로드 비교 같거나 클때에만 아래 적용
+        if (percentage == 100.00) {
+            inputLectureProgress.setCompleteLearningDatetime(now); // 현재일시
+            inputLectureProgress.setLearningCount(inputLectureProgress.getLearningCount() + 1); // 완료시 이전 수강횟수 + 1
+        }
+
+        // [Start, Pause, Stop] => Pause 및 Stop 시에 반영
+        // learning_count => 이전 횟수 + 1
 
         // 사용자 객체를 저장
         return lectureProgressRepository.save(inputLectureProgress);
@@ -112,7 +157,7 @@ public class LectureProgressService {
                 "     , A.learning_count " +
                 "     , IFNULL(DATE_FORMAT(A.last_learning_datetime, '%Y-%m-%d %H:%i:%s'),'') as last_learning_datetime " +
                 "     , IFNULL(concat('(', DATE_FORMAT(A.complete_learning_datetime, '%Y-%m-%d %H:%i:%s'), ')'),'') as complete_learning_datetime " +
-                "     , IF(LENGTH(A.learning_time) = 0,'', concat(mid(A.learning_time,1,2),'시', " +
+                "     , IF(LENGTH(IFNULL(A.learning_time,'')) = 0,'', concat(mid(A.learning_time,1,2),'시', " +
                 "              mid(A.learning_time,3,2),'분', " +
                 "              mid(A.learning_time,5,2),'초')) as learning_time " +
                 "     , concat('(',  " +
