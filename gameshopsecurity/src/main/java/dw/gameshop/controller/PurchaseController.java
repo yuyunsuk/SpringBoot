@@ -1,5 +1,6 @@
 package dw.gameshop.controller;
 
+import dw.gameshop.dto.PurchaseDto;
 import dw.gameshop.model.Purchase;
 import dw.gameshop.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class PurchaseController {
 
     // 모든 구매상품 조회는 관리자만 가능하도록 구현해야 함 (권한 사용)
     @GetMapping("/products/purchase")
-    public List<Purchase> getAllPurchases() {
+    public List<PurchaseDto> getAllPurchases() {
         return purchaseService.getAllPurchases();
     }
 

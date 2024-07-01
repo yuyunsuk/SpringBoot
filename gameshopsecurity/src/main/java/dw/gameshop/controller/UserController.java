@@ -9,6 +9,7 @@ import dw.gameshop.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @PostMapping("signup") // "/user/signup"
-    public ResponseEntity<String> signUp(@RequestBody UserDto userDto) {
+    public ResponseEntity<String> signUp(@Valid @RequestBody UserDto userDto) {
         return new ResponseEntity<>(userService.saveUser(userDto), // 저장 Service 로 보냄
                 HttpStatus.CREATED); // CREATED => 201 리턴
     }

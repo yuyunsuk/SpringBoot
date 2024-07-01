@@ -23,7 +23,7 @@ public class User implements UserDetails { // UserDetails 를 상속받아 사�
     @Column(name="user_id", length=100)
     private String userId;
     @Column(name="user_name", length=255, nullable = false)
-    private String userName;
+    private String userNameKor;
     @Column(name="email", length=255, nullable = false)
     private String email;
     @Column(name="password")

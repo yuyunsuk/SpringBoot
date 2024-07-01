@@ -1,5 +1,6 @@
 package dw.gameshop.service;
 
+import dw.gameshop.dto.PurchaseDto;
 import dw.gameshop.exception.ResourceNotFoundException;
 import dw.gameshop.model.Purchase;
 import dw.gameshop.model.User;
@@ -50,8 +51,10 @@ public class PurchaseService {
         return savedPurchaseList;
     }
 
-    public List<Purchase> getAllPurchases() {
-        return purchaseRepository.findAll();
+    public List<PurchaseDto> getAllPurchases() {
+//        return purchaseRepository.findAll();
+        return purchaseRepository.findAll().stream().map((data)-> PurchaseDto.toPurchaseDto(data))
+                .collect(Collectors.toList());
     }
 
     public List<Purchase> getPurchaseListByUser(String userId) {
@@ -67,7 +70,7 @@ public class PurchaseService {
     //유저 이름으로 구매한 게임 찾기
     public List<Purchase> getPurchaseListByUserName(String userName) {
         // 유저이름으로 유저객체 찾기
-        Optional<User> userOptional = userRepository.findByUserName(userName);
+        Optional<User> userOptional = userRepository.findByUserNameKor(userName);
         if (userOptional.isEmpty()) {
             // throw new ResourceNotFoundException("User", "Name", userName);
             throw new ResourceNotFoundException("ResourceNotFoundException User Name: " + userName);

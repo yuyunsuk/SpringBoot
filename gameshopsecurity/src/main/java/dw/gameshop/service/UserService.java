@@ -36,7 +36,7 @@ public class UserService {
         authority.setAuthorityName("ROLE_USER");
 
         User user = new User(userDto.getUserId(),
-                userDto.getUserName(),
+                userDto.getUserNameKor(),
                 userDto.getUserEmail(),
                 bCryptPasswordEncoder.encode(userDto.getPassword()), // 암호화 하여 적용
                 authority,
