@@ -48,7 +48,8 @@ public class UserService {
         // 유저아이디로 유저객체 찾기
         Optional<User> userOptional = userRepository.findByUserId(userId);
         if (userOptional.isEmpty()) {
-            throw new ResourceNotFoundException("User", "ID", userId);
+            // throw new ResourceNotFoundException("User", "ID", userId);
+            throw new ResourceNotFoundException("ResourceNotFoundException User ID: " + userId);
         }
         return userOptional.get();
     }

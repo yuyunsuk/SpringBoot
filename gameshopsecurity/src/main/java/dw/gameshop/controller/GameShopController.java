@@ -1,5 +1,7 @@
 package dw.gameshop.controller;
 
+import dw.gameshop.dto.BaseResponse;
+import dw.gameshop.enumstatus.ResultCode;
 import dw.gameshop.model.Game;
 import dw.gameshop.model.User;
 import dw.gameshop.service.GameShopService;
@@ -20,10 +22,19 @@ public class GameShopController {
         this.gameShopService = gameShopService;
     }
 
+//    @GetMapping("/products") // Gameshop products 12개 자료 모두 조회
+//    public ResponseEntity<List<Game>> getAllGames() {
+//        return new ResponseEntity<>(gameShopService.getAllGames(),
+//                HttpStatus.OK);
+//    }
+
     @GetMapping("/products") // Gameshop products 12개 자료 모두 조회
-    public ResponseEntity<List<Game>> getAllGames() {
-        return new ResponseEntity<>(gameShopService.getAllGames(),
-                HttpStatus.OK);
+        public ResponseEntity<BaseResponse<List<Game>>> getAllGames() {
+        return new ResponseEntity<>(
+                new BaseResponse(ResultCode.SUCCESS.name(),
+                        gameShopService.getAllGames(),
+                        ResultCode.SUCCESS.getMsg())
+                , HttpStatus.OK);
     }
 
     @GetMapping("/products/{id}") // Gameshop product ID 를 가지고 1개의 데이터를 조회

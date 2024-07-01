@@ -34,7 +34,8 @@ public class GameShopService {
         if(gameOptional.isPresent()) {
             return gameOptional.get();
         }else {
-            throw new ResourceNotFoundException("Game", "ID", id);
+            //throw new ResourceNotFoundException("Game", "ID", id);
+            throw new ResourceNotFoundException("해당 Game이 없습니다. ID: " + id);
         }
     }
 
@@ -50,7 +51,8 @@ public class GameShopService {
             gameShopRepository.save(temp);
             return temp;
         }else {
-            throw new ResourceNotFoundException("Game", "ID", id);
+            // throw new ResourceNotFoundException("Game", "ID", id);
+            throw new ResourceNotFoundException("ResourceNotFoundException Game ID: " + id);
         }
     }
 

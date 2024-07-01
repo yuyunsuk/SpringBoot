@@ -118,7 +118,7 @@ public class LectureProgressService {
 //        String baseTime    = "050101"; // 기준 시간 "HHMMSS" 형식
 
         String currentTime = inputlearningTime; // 현재 시간 "HHMMSS" 형식
-        String baseTime    = "000100"; // 기준 시간 "HHMMSS" 형식 1분
+        String baseTime    = "000200"; // 기준 시간 "HHMMSS" 형식 2분
 
         int currentTimeInSeconds = convertToSeconds(currentTime);
         int baseTimeInSeconds = convertToSeconds(baseTime);
