@@ -28,6 +28,7 @@ public class ViewController { // 디자인 패턴, MVC(Model[정보] View(=>Fron
     @GetMapping("/gameshop/login.html")
     public String login() {
         return "login";
+        //return "forward:/login.html";
     }
 
     @GetMapping("/gameshop/cart.html")
@@ -39,5 +40,25 @@ public class ViewController { // 디자인 패턴, MVC(Model[정보] View(=>Fron
     public String mypage() {
         return "mypage";
     }
+
+    @GetMapping("/gameshop/board.html")
+    public String board() {
+        //return "forward:/board.html";
+        return "board";
+    }
+
+    @GetMapping("/gameshop/video.html")
+    public String video() {
+        //return "forward:/video.html";
+        return "video";
+    }
+
+    @GetMapping("/gameshop/upload.html")
+    public String upload() {
+        //return "forward:/upload.html";
+        return "upload";
+    }
+
+
 
 }

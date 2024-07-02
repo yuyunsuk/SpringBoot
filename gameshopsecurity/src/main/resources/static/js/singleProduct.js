@@ -1,15 +1,17 @@
+const urlSession = "http://localhost:8080/api/user/current"; // current session
+
 // const url = "http://localhost:8080/products/1";
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get("id");
 console.log("Game ID: ", id);
 
-const url = "http://localhost:8080/products/"+ id;
+const url = "http://localhost:8080/api/products/"+ id;
 
 axios
 .get(url)
 .then((response)=>{
     console.log("데이터: ", response.data);
-    displaySingleProduct(response.data);
+    displaySingleProduct(response.data.data);
 })
 .catch((error)=>{
     console.log("에러 발생: ", error);
@@ -87,15 +89,29 @@ function displaySingleProduct(data) {
 // });
 
 function sessionCurrent(data) {
+
+    const jwtToken = sessionStorage.getItem("JWT-token");
+    if (!jwtToken) {
+        console.log("인증이 필요합니다.")
+        return;
+    }
+
     /*  withCredentials 옵션은 단어 그대로, 다른 도메인(Cross Origin)에 요청을 보낼 때
        요청에 인증(credential) 정보를 담아서 보낼 지를 결정하는 항목 */
     axios
-    .get("http://localhost:8080/user/current", {withCredentials: true})
+    //.get("http://localhost:8080/user/current", {withCredentials: true})
+    .get(urlSession, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      })
     .then((response)=>{
         console.log("SingleProduct 세션확인 데이터: ", response.data);
         console.log("SingleProduct 세션 Status: ", response.status);
-        if (response.status == 200) {
-            const userId = response.data.userId; // 권한 관련 수정하였음
+
+        if (response.data.resultCode == "SUCCESS") {
+            const userId = response.data.data.userId; // 권한 관련 수정하였음
 
             console.log("유저 ID: " + userId);
 

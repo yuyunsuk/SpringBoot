@@ -1,6 +1,8 @@
-const urlLogin  = "http://localhost:8080/user/login";  // 로그인
-const urlLogout = "http://localhost:8080/user/logout"; // 로그아웃
-const urlSignup = "http://localhost:8080/user/signup"; // 회원가입(Signup)
+//const urlLogin  = "http://localhost:8080/user/login";  // 로그인
+const urlLogin  = "http://localhost:8080/api/authenticate";  // 로그인
+const urlLogout = "http://localhost:8080/api/user/logout"; // 로그아웃
+const urlSignup = "http://localhost:8080/api/user/signup"; // 회원가입(Signup)
+const urlSession = "http://localhost:8080/api/user/current"; // current session
 
 let userId   = "";
 let password = "";
@@ -33,6 +35,13 @@ document.querySelector(".loginBtn").addEventListener("click", ()=>{
     .post(urlLogin, data, {withCredentials: true})
     .then((response)=>{
         console.log("로그인 데이터: ", response.data);
+
+        // 토큰 관련 추가
+        if (response.data.resultCode == "SUCCESS") {
+            sessionStorage.setItem("JWT-token", response.data.data.token);
+        }
+        //window.location.reload();
+
         sessionCurrent();
     })
     .catch((error)=>{
@@ -140,18 +149,29 @@ document.querySelector(".logoutBtn").addEventListener("click", ()=>{
 
 /* 세션확인 */
 function sessionCurrent() {
+
+    const jwtToken = sessionStorage.getItem("JWT-token");
+    if (!jwtToken) {
+        console.log("인증이 필요합니다.")
+        return;
+    }
+
     axios
-    .get("http://localhost:8080/user/current", {withCredentials: true})
+    // .get("http://localhost:8080/user/current", {withCredentials: true}) // 기존
+    .get(urlSession, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      })
     .then((response)=>{
-        console.log("데이터: ", response);
-        if (response.status == 200) {
+        console.log("세션 데이터: ", response.data);
+        if (response.data.resultCode == "SUCCESS") {
             console.log("세션 유지");
-            if (response.status == 200) {
-                document.querySelector(".login-box").classList.add("hidden");
-                document.querySelector(".user-box").classList.remove("hidden");
-                document.querySelector(".user-box p").textContent
-                    = response.data.userId + "님, 환영합니다.";
-            }
+            document.querySelector(".login-box").classList.add("hidden");
+            document.querySelector(".user-box").classList.remove("hidden");
+            document.querySelector(".user-box p").textContent
+                = response.data.data.userId + "님, 환영합니다.";
         }
     })
     .catch((error)=>{

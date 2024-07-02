@@ -1,4 +1,4 @@
-const url = "http://localhost:8080/products";
+const url = "http://localhost:8080/api/products";
 
 /* axios.post */
 /* axios.put */
@@ -13,7 +13,9 @@ const url = "http://localhost:8080/products";
 axios.get(url) /* get 방식으로 보냄 */
 .then((response)=>{ /* 받은 데이터 처리, 매개변수 용도는  */
     console.log("응답 Response: ", response);
-    displayProducts(response.data); /* 아래 함수 사용 */
+    console.log("응답 Response message: ", response.data.message);
+    console.log("응답 Response resultCode: ", response.data.resultCode);
+    displayProducts(response.data.data); /* 아래 함수 사용 */
 })
 .catch((response)=>{
     console.log("에러 발생: ", error)

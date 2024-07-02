@@ -2,6 +2,8 @@ package dw.gameshop.config;
 
 import dw.gameshop.exception.MyAccessDeniedHandler;
 import dw.gameshop.exception.MyAuthenticationEntryPoint;
+import dw.gameshop.jwt.JwtFilter;
+import dw.gameshop.jwt.TokenProvider;
 import dw.gameshop.service.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +18,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -26,6 +29,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SecurityConfig {
     @Autowired
     private UserDetailService userDetailService;
+
+    @Autowired
+    private TokenProvider tokenProvider; // 토큰 관련 추가
 
 // [login.html] form 부분
 //          <form action="/login" method="POST">
@@ -47,23 +53,42 @@ public class SecurityConfig {
                 .authorizeRequests(auth -> auth
                         .requestMatchers(
                                 /* CORS 체크 후에 진행 */
-                                new AntPathRequestMatcher("/products/**"), // REST API 용 주소(WAS 까지), 제품 관련 REST API 인증 추가 (24/05/27)
-                                new AntPathRequestMatcher("/user/login"),  // REST API 용 주소(WAS 까지), Rest API 로그인, /user/** 이하 모든것, /user/* 첫번째 레벨 자식들
-                                new AntPathRequestMatcher("/user/signup"), // REST API 용 주소(WAS 까지), 가입
-                                new AntPathRequestMatcher("/login"),       // 일반주소, Static Page login 등 허용 주소를 기재함
+                                new AntPathRequestMatcher("/api/authenticate"), // 토큰 관련 추가
+                                new AntPathRequestMatcher("/api/products/**"),
+                                new AntPathRequestMatcher("/api/board/**"),
+                                new AntPathRequestMatcher("/api/user/login"),
+                                new AntPathRequestMatcher("/api/user/signup"),
+                                // new AntPathRequestMatcher("/products/**"), // REST API 용 주소(WAS 까지), 제품 관련 REST API 인증 추가 (24/05/27)
+                                //new AntPathRequestMatcher("/user/login"),  // REST API 용 주소(WAS 까지), Rest API 로그인, /user/** 이하 모든것, /user/* 첫번째 레벨 자식들
+                                //new AntPathRequestMatcher("/user/signup"), // REST API 용 주소(WAS 까지), 가입
+                                //new AntPathRequestMatcher("/login"),       // 일반주소, Static Page login 등 허용 주소를 기재함
                                 new AntPathRequestMatcher("/gameshop/**"), // 페이지 요청 (위의 3개와 다름) (톰켓 까지)
+                                new AntPathRequestMatcher("/*"),
                                 new AntPathRequestMatcher("/image/**"),    // 페이지 요청 (위의 3개와 다름) (톰켓 까지)
-                                new AntPathRequestMatcher("/css/**"),      // 페이지 요청 (위의 3개와 다름) (톰켓 까지)
-                                new AntPathRequestMatcher("/js/**")        // 페이지 요청 (위의 3개와 다름) (톰켓 까지)
+                                new AntPathRequestMatcher("/css/**"),
+                                new AntPathRequestMatcher("/js/**"),
+                                new AntPathRequestMatcher("/mp4/**")
                         ).permitAll() // 모두 허용
                         .anyRequest().authenticated()) // 어떠한 요청이든 인증받겠다.
                 .formLogin(form->form.loginPage("/login").defaultSuccessUrl("/articles")) // (formLogin => 로그인 화면 창) 정적 로그인 화면이 존재하는 경우, 로그인 성공시 다음화면 => defaultSuccessUrl
+//                .sessionManagement(session -> session
+//                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)) // 세션 관리 세팅, (ALWAYS) 항상 세션을 만듬, IF_REQUIRED (요청시) 사용 가능, 세션 인증시 접속 가능, 참조 => (JWT 는 STATELESS 사용, 상태없음)
+//                .csrf(AbstractHttpConfigurer::disable) // CSRF는 Cross Site Request Forgery(사이트 간 요청 위조) 다른 사이트에서 들어오는 요청 막음 => 안씀
+//                .exceptionHandling(exception -> exception
+//                        .authenticationEntryPoint(new MyAuthenticationEntryPoint()) // 인증예외
+//                        .accessDeniedHandler(new MyAccessDeniedHandler())) // 인가예외(권한실패)
+//                .build();
+
+                // 토큰을 위해 수정
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)) // 세션 인증시 접속 가능
-                .csrf(AbstractHttpConfigurer::disable) // CSRF는 Cross Site Request Forgery(사이트 간 요청 위조) 다른 사이트에서 들어오는 요청 막음 => 안씀
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 수정 부분
+                .csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(new MyAuthenticationEntryPoint()) // 인증예외
-                        .accessDeniedHandler(new MyAccessDeniedHandler())) // 인가예외(권한실패)
+                        .authenticationEntryPoint(new MyAuthenticationEntryPoint())
+                        .accessDeniedHandler(new MyAccessDeniedHandler()))
+                .addFilterBefore(
+                        new JwtFilter(tokenProvider), // 수정 부분
+                        UsernamePasswordAuthenticationFilter.class) // 수정 부분
                 .build();
     }
 

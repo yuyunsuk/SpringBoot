@@ -1,6 +1,8 @@
 package dw.gameshop.controller;
 
+import dw.gameshop.dto.BaseResponse;
 import dw.gameshop.dto.PurchaseDto;
+import dw.gameshop.enumstatus.ResultCode;
 import dw.gameshop.model.Purchase;
 import dw.gameshop.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +26,24 @@ public class PurchaseController {
     }
 
     // List 형태로 Post Save 추가
+
+//    @PostMapping("/products/purchaselist")
+    //@PreAuthorize("hasAnyRole('ADMIN')") // 권한 중요(ROLE_ 뒤에만 인식 적용)
+//    @PreAuthorize("hasAnyRole('ADMIN','USER','TEACHER')") //권한 중요(ROLE_ 뒤에만 인식 적용)
+//    public List<Purchase> savePurchase(@RequestBody List<Purchase> purchaseList) {
+//        return purchaseService.savePurchaseList(purchaseList);
+//    }
+
     @PostMapping("/products/purchaselist")
     //@PreAuthorize("hasAnyRole('ADMIN')") // 권한 중요(ROLE_ 뒤에만 인식 적용)
     @PreAuthorize("hasAnyRole('ADMIN','USER','TEACHER')") //권한 중요(ROLE_ 뒤에만 인식 적용)
-    public List<Purchase> savePurchase(@RequestBody List<Purchase> purchaseList) {
-        return purchaseService.savePurchaseList(purchaseList);
+    public ResponseEntity<BaseResponse<Purchase>> savePurchase(@RequestBody List<Purchase> purchaseList) {
+        return new ResponseEntity<>(
+                new BaseResponse(ResultCode.SUCCESS.name(),
+                        purchaseService.savePurchaseList(purchaseList),
+                        ResultCode.SUCCESS.getMsg())
+                , HttpStatus.CREATED);
+
     }
 
     // 모든 구매상품 조회는 관리자만 가능하도록 구현해야 함 (권한 사용)

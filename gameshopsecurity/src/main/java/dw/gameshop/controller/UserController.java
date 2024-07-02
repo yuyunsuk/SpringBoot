@@ -1,8 +1,9 @@
 package dw.gameshop.controller;
 
+import dw.gameshop.dto.BaseResponse;
 import dw.gameshop.dto.SessionDto;
 import dw.gameshop.dto.UserDto;
-import dw.gameshop.model.Purchase;
+import dw.gameshop.enumstatus.ResultCode;
 import dw.gameshop.model.User;
 import dw.gameshop.service.UserDetailService;
 import dw.gameshop.service.UserService;
@@ -16,14 +17,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController // Rest API 사용
-@RequestMapping("/user")
+@RequestMapping("/api/user")
+
 public class UserController {
     private UserService userService;
     private UserDetailService userDetailService;
@@ -48,7 +49,11 @@ public class UserController {
         Authentication authentication = authenticationManager.authenticate( // 보안 관련 코드이므로 바로 리턴
                 new UsernamePasswordAuthenticationToken(userDto.getUserId(), userDto.getPassword()) // 토큰을 만듦 (스프링 시큐리티 인증방식)
         );
+
+        // 인증정보 저장공간
         SecurityContextHolder.getContext().setAuthentication(authentication); // 보안컨텍스트홀더 인증 저장 (컨텍스트에 인증정보 저장)
+
+        // 이후 Sesstion 과 토큰 방식이 틀림, 토큰 방식은 토큰 생성
 
         // current 테스트를 위해 추가
         // 세션 생성
@@ -70,7 +75,8 @@ public class UserController {
     }
 
     @GetMapping("current") // 현재 세션의 주인의 정보를 알고 싶을때 사용
-    public SessionDto getCurrentUser() { // 리턴값 String 에서 SessionDto 로 변경
+    //public SessionDto getCurrentUser() { // 리턴값 String 에서 SessionDto 로 변경
+    public ResponseEntity<BaseResponse<SessionDto>> getCurrentUser() { // 리턴값 String 에서 SessionDto 로 변경
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new IllegalStateException("User is not authenticated");
@@ -82,7 +88,13 @@ public class UserController {
         sessionDto.setAuthority(authentication.getAuthorities());
 
         //return authentication.getName(); // 없는 경우 무명(anonymous), 있는 경우 유저네임
-        return sessionDto; // 없는 경우 무명(anonymous), 있는 경우 유저네임 과 함께 권한도 같이 보냄
+        //return sessionDto; // 없는 경우 무명(anonymous), 있는 경우 유저네임 과 함께 권한도 같이 보냄
+
+        return new ResponseEntity<>(
+                new BaseResponse(ResultCode.SUCCESS.name(),
+                        sessionDto,
+                        ResultCode.SUCCESS.getMsg())
+                , HttpStatus.OK);
     }
 
     @GetMapping("/user/id/{userId}")

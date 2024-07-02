@@ -1,5 +1,6 @@
 package dw.gameshop.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -16,9 +17,12 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowCredentials(true); /* 인증정보가 필요한 컨텐츠도 허용 */
     }
 
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**")
-                .addResourceLocations("classpath:/static/image/");
+        registry.addResourceHandler("/resources/**", "/uploads/**")
+                .addResourceLocations("classpath:/static/image/", "file:" + uploadDir + "/");
     }
 }

@@ -37,10 +37,19 @@ public class GameShopController {
                 , HttpStatus.OK);
     }
 
+    // @GetMapping("/products/{id}") // Gameshop product ID 를 가지고 1개의 데이터를 조회
+    // public ResponseEntity<Game> getGameById(@PathVariable long id) {
+    //    return new ResponseEntity<>(gameShopService.getGameById(id),
+    //            HttpStatus.OK);
+    // }
+
     @GetMapping("/products/{id}") // Gameshop product ID 를 가지고 1개의 데이터를 조회
-    public ResponseEntity<Game> getGameById(@PathVariable long id) {
-        return new ResponseEntity<>(gameShopService.getGameById(id),
-                HttpStatus.OK);
+    public ResponseEntity<BaseResponse<Game>> getGameById(@PathVariable long id) {
+        return new ResponseEntity<>(
+                new BaseResponse(ResultCode.SUCCESS.name(),
+                        gameShopService.getGameById(id),
+                        ResultCode.SUCCESS.getMsg())
+                , HttpStatus.OK);
     }
 
     @PutMapping("/products/{id}")

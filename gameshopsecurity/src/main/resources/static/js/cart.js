@@ -1,14 +1,29 @@
 const url = "http://localhost:8080/api/products/purchaselist";
+const urlSession = "http://localhost:8080/api/user/current"; // current session
 
 function sessionCurrent() {
+
+    const jwtToken = sessionStorage.getItem("JWT-token");
+    if (!jwtToken) {
+        console.log("인증이 필요합니다.")
+        return;
+    }
+
     axios
-    .get("http://localhost:8080/user/current", {withCredentials: true})
+    // .get(urlSession, {withCredentials: true})
+    .get(urlSession, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      })
     .then((response)=>{
         console.log("Response 데이터:", response.data);
         console.log("Response 상태:", response.status);
-        if (response.status == 200) {
-            const userId = response.data.userId;
-            const authority = response.data.authority[0].authority;
+        if (response.data.resultCode == "SUCCESS") {
+       
+            const userId = response.data.data.userId;
+            const authority = response.data.data.authority[0].authority;
             const localStorageKey = "gameshop_" + userId; // 다른 PGM 중복방지
 
             let cartItems = JSON.parse(localStorage.getItem(localStorageKey));
@@ -28,10 +43,20 @@ function sessionCurrent() {
                     .addEventListener("click", ()=>{
                     if (confirm("구매하시겠습니까?")) {
                         axios
-                        .post(url, data, {withCredentials: true})
+                        //.post(url, data, {withCredentials: true})
+
+                        .post(url, data, {
+                            withCredentials: true,
+                            headers: {
+                              Authorization: `Bearer ${jwtToken}`,
+                            },
+                          })
                         .then((response)=>{
                             console.log("데이터:", response.data);
                             localStorage.removeItem(localStorageKey);
+
+
+                            
                             //window.location.reload();
                         })
                         .catch((error)=>{
@@ -95,10 +120,17 @@ function displayCart(games) {
             console.log("rowTitle: " + rowTitle);
 
             axios
-            .get("http://localhost:8080/user/current", {withCredentials: true})
+            //.get(urlSession, {withCredentials: true})
+            .get(urlSession, {
+                withCredentials: true,
+                headers: {
+                  Authorization: `Bearer ${jwtToken}`,
+                },
+              })
             .then((response)=>{
-                if (response.status == 200) {
-                    const userId = response.data.userId;
+                //if (response.status == 200) {
+                if (response.data.resultCode == "SUCCESS") {
+                    const userId = response.data.data.userId;
                     const localStorageKey = "gameshop_" + userId; // 다른 PGM 중복방지
                     console.log("current localStorageKey: " + localStorageKey);
 
