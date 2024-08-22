@@ -1,11 +1,10 @@
 package com.dw.lms.service;
 
 import com.dw.lms.model.*;
+import com.dw.lms.model.CK.Code_class_detail_CK;
 import com.dw.lms.repository.Code_classRepository;
 import com.dw.lms.repository.Code_class_detailRepository;
-import jakarta.persistence.Column;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.Id;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +23,16 @@ public class Code_class_detailService {
 
     public List<Code_class_detail> getAllCodeClassDetail() {
         return code_class_detailRepository.findAll();
+    }
+
+    public Code_class_detail getCodeClassByKey(String codeClase, String code) {
+
+        Code_class inputCodeClass = code_classRepository.findById(codeClase)
+                .orElseThrow(() -> new EntityNotFoundException("CodeClass not found"));
+
+        Code_class_detail_CK code_class_detail_ck = new Code_class_detail_CK(inputCodeClass, code);
+
+        return code_class_detailRepository.findById(code_class_detail_ck).orElseThrow(() -> new EntityNotFoundException("Code not found"));
     }
 
     public String saveCodeClassDetail(Code_class_detail code_class_detail) {

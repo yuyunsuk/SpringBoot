@@ -57,8 +57,11 @@ public class Lms_noticesController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/current")
-    public UserDetails getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
-        return userDetails;
-    }
+//    @GetMapping("/current")
+//    public UserDetails getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
+//        return userDetails;
+//    }
+
+
+
 }
