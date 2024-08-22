@@ -1,7 +1,7 @@
 package com.dw.lms.repository;
 
-import com.dw.lms.model.Teacher;
 import com.dw.lms.model.CK.Teacher_CK;
+import com.dw.lms.model.Teacher;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

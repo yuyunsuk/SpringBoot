@@ -2,11 +2,9 @@ package com.dw.lms.service;
 
 import com.dw.lms.model.Learning_contents;
 import com.dw.lms.model.Lecture;
-import com.dw.lms.model.Teacher;
-import com.dw.lms.model.User;
 import com.dw.lms.repository.LearningContentsRepository;
 import com.dw.lms.repository.LectureRepository;
-import jakarta.persistence.*;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;

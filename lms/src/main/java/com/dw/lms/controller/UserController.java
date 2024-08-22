@@ -3,7 +3,6 @@ package com.dw.lms.controller;
 import com.dw.lms.dto.AuthorityUpdateDto;
 import com.dw.lms.dto.SessionDto;
 import com.dw.lms.dto.UserDto;
-import com.dw.lms.model.Category;
 import com.dw.lms.model.User;
 import com.dw.lms.repository.UserRepository;
 import com.dw.lms.service.UserDetailService;

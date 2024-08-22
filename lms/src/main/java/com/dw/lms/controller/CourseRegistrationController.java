@@ -2,7 +2,6 @@ package com.dw.lms.controller;
 
 import com.dw.lms.dto.CourseEnrollCountDto;
 import com.dw.lms.dto.CourseLectureCountDto;
-import com.dw.lms.dto.LectureProgressQueryDto;
 import com.dw.lms.dto.LectureStatusCountDto;
 import com.dw.lms.model.Course_registration;
 import com.dw.lms.service.CourseRegistrationService;

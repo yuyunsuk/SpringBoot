@@ -1,6 +1,6 @@
 package com.dw.lms.controller;
 
-import com.dw.lms.model.*;
+import com.dw.lms.model.Learning_review;
 import com.dw.lms.service.LearningReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

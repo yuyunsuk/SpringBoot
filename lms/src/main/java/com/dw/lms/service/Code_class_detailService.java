@@ -1,7 +1,8 @@
 package com.dw.lms.service;
 
-import com.dw.lms.model.*;
+import com.dw.lms.model.Code_class;
 import com.dw.lms.model.CK.Code_class_detail_CK;
+import com.dw.lms.model.Code_class_detail;
 import com.dw.lms.repository.Code_classRepository;
 import com.dw.lms.repository.Code_class_detailRepository;
 import jakarta.persistence.EntityNotFoundException;

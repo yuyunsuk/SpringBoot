@@ -6,12 +6,9 @@ import com.dw.lms.model.Lms_qa;
 import com.dw.lms.service.Lms_qaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 @RestController

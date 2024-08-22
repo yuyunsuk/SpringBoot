@@ -10,12 +10,14 @@ import com.dw.lms.model.User;
 import com.dw.lms.repository.CourseRegistrationRepository;
 import com.dw.lms.repository.LectureRepository;
 import com.dw.lms.repository.UserRepository;
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

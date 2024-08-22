@@ -1,13 +1,12 @@
 package com.dw.lms.service;
 
-import com.dw.lms.model.Course_registration;
 import com.dw.lms.model.Lecture;
 import com.dw.lms.model.Teacher;
 import com.dw.lms.model.User;
 import com.dw.lms.repository.LectureRepository;
 import com.dw.lms.repository.TeacherRepository;
 import com.dw.lms.repository.UserRepository;
-import jakarta.persistence.*;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

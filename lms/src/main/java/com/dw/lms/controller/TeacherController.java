@@ -1,6 +1,5 @@
 package com.dw.lms.controller;
 
-import com.dw.lms.model.Course_registration;
 import com.dw.lms.model.Teacher;
 import com.dw.lms.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
