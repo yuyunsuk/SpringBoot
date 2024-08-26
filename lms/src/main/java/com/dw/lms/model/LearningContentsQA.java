@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -15,7 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name="learning_contents_qa")
-public class Learning_contents_qa {
+public class LearningContentsQA {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,11 +28,11 @@ public class Learning_contents_qa {
     })
     private Learning_contents learning_contents;
 
-    @Column(name = "qustion_seq")
-    private Integer qustionSeq; // (Question: 1,2,3)
+    @Column(name = "question_seq")
+    private Integer questionSeq; // (Question: 1,2,3)
 
-    @Column(name = "qustion_content", length = 255)
-    private String qustionContent;
+    @Column(name = "question_content", length = 255)
+    private String questionContent;
 
     @Column(name = "answer1_content", length = 255)
     private String answer1Content;
