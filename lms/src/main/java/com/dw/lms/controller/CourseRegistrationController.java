@@ -18,6 +18,13 @@ public class CourseRegistrationController {
     @Autowired
     CourseRegistrationService courseRegistrationService;
 
+    @GetMapping("/course/registration/{userId}/{lectureId}")
+    public ResponseEntity<List<Course_registration>> getCourseRegistraionById(
+            @PathVariable String userId, @PathVariable String lectureId) {
+        List<Course_registration> courseRegistrations = courseRegistrationService.getCourseRegistraionById(userId, lectureId);
+        return ResponseEntity.ok(courseRegistrations);
+    }
+
     @DeleteMapping("/course/delCourseRegistration/{userId}/{lectureId}")
     public void deleteCourseRegistration(@PathVariable String userId, @PathVariable String lectureId) {
         courseRegistrationService.deleteCourseRegistration(userId, lectureId);
@@ -62,7 +69,7 @@ public class CourseRegistrationController {
     }
 
     @GetMapping("/course/queryCLCJPQL/")
-    @PreAuthorize("hasAnyRole('ADMIN')") // ADMIN 이외에는 사용 못하게
+    // @PreAuthorize("hasAnyRole('ADMIN')") // ADMIN 이외에는 사용 못하게
     public ResponseEntity<List<CourseLectureCountDto>> getCourseLectureCountQueryJPQL(){
         String queryData = "%"; // 전체 조회
         return new ResponseEntity<>(courseRegistrationService.getCourseLectureCountQueryJPQL(queryData), HttpStatus.OK);
