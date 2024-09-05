@@ -69,7 +69,7 @@ public class CourseRegistrationController {
     }
 
     @GetMapping("/course/queryCLCJPQL/")
-    // @PreAuthorize("hasAnyRole('ADMIN')") // ADMIN 이외에는 사용 못하게
+    @PreAuthorize("hasAnyRole('ADMIN')") // ADMIN 이외에는 사용 못하게
     public ResponseEntity<List<CourseLectureCountDto>> getCourseLectureCountQueryJPQL(){
         String queryData = "%"; // 전체 조회
         return new ResponseEntity<>(courseRegistrationService.getCourseLectureCountQueryJPQL(queryData), HttpStatus.OK);
