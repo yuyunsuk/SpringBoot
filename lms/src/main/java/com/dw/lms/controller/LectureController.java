@@ -22,7 +22,7 @@ public class LectureController {
 //                HttpStatus.OK);
 //    }
 
-    @GetMapping("/lecture")
+    @GetMapping("/api/lecture")
     public ResponseEntity<List<Lecture>> getAllLecture(@RequestParam(required = false) String search,
                                                        @RequestParam(required = false) String category) {
         List<Lecture> lectures;
@@ -44,28 +44,25 @@ public class LectureController {
         return new ResponseEntity<>(lectures, HttpStatus.OK);
     }
 
-    @GetMapping("/lecture/category/{keyword}")
+    @GetMapping("/api/lecture/category/{keyword}")
     public ResponseEntity<List<Lecture>> getCategoryLecture(@PathVariable String keyword){
         return new ResponseEntity<>(lectureService.getCategoryLecture(keyword),HttpStatus.OK);
     }
 
-    @GetMapping("/lecture/{lectureId}")
+    @GetMapping("/api/lecture/{lectureId}")
     public ResponseEntity<Lecture> getLecture(@PathVariable String lectureId){
         return new ResponseEntity<>(lectureService.getLecture(lectureId), HttpStatus.OK);
     }
     
-    @GetMapping("/lecture/categoryCount")
+    @GetMapping("/api/lecture/categoryCount")
     public ResponseEntity<List<LectureCategoryCountDto>> getLectureCategoryCountJPQL() {
         return new ResponseEntity<>(lectureService.getLectureCategoryCountJPQL(),
                 HttpStatus.OK);
     }
     
-    @PostMapping("/lecture/lectureList")
+    @PostMapping("/api/lecture/lectureList")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')") // ADMIN, USER 이외에는 사용 못하게
     public List<Lecture> saveLecture(@RequestBody List<Lecture> lectureList) {
         return lectureService.saveLectureList(lectureList);
     }
-
-
-
 }

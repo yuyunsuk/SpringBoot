@@ -15,7 +15,7 @@ public class CourseHistoryController {
     @Autowired
     CourseHistoryService courseHistoryService;
 
-    @GetMapping("/course/history")
+    @GetMapping("/api/course/history")
     public ResponseEntity<List<Course_history>> getAllHistory() {
         return new ResponseEntity<>(courseHistoryService.getAllHistory(),
                 HttpStatus.OK);
