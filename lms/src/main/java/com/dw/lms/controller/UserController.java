@@ -100,6 +100,7 @@ public class UserController {
         Optional<User> userOptional = userRepository.findByUserId(authentication.getName());
         if (userOptional.isPresent()){
             sessionDto.setUserName(userOptional.get().getUserNameKor());
+            sessionDto.setEmail(userOptional.get().getEmail());
         }
 
         sessionDto.setAuthority(authentication.getAuthorities());
