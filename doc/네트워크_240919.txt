@@ -1,0 +1,20 @@
+[네트워크]
+
+[네트워크]
+https://velog.io/@ppmyor/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-01.-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80
+
+[OSI 7계층]
+https://velog.io/@hkh9601/OSI-7%EA%B3%84%EC%B8%B5-%ED%95%B5%EC%8B%AC-%EC%A0%95%EB%A6%AC
+
+[Proxy]
+https://maker5587.tistory.com/47
+
+스프링 빌드 명령
+mvnw clean package
+
+코드 변경후 작업
+1) Git Pull
+2) npm run build (React)
+3) nginx -s reload
+4) mvnw clean package (SpringBoot)
+5) java -jar 파일.jar
