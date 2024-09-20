@@ -27,6 +27,13 @@ https://git-scm.com/book/ko/v2
 https://marklodato.github.io/visual-git-guide/index-ko.html
 
 [오라클 클라우드 웹서버 설치]
-https://okjsp.tistory.com/1165644380
+[오라클DB]
 https://ssdragon.tistory.com/41
+
+[오라클DB 에 스프링부트 프로젝트 연결]
 https://ssdragon.tistory.com/47?category=1001274
+
+[엔진x 설치]
+https://okjsp.tistory.com/1165644380
+[오라클 클라우드 우분투, mariaDB 설치]
+https://devwithpug.github.io/database/oci-mariadb/
