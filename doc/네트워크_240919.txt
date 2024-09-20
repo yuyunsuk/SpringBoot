@@ -21,3 +21,12 @@ mvnw clean package
 
 [깃 및 깃허브 관리]
 https://gin-girin-grim.tistory.com/10
+https://rogerdudler.github.io/git-guide/index.ko.html
+
+https://git-scm.com/book/ko/v2
+https://marklodato.github.io/visual-git-guide/index-ko.html
+
+[오라클 클라우드 웹서버 설치]
+https://okjsp.tistory.com/1165644380
+https://ssdragon.tistory.com/41
+https://ssdragon.tistory.com/47?category=1001274
